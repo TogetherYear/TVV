@@ -1,0 +1,72 @@
+{
+    "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+    "build": {
+        "beforeBuildCommand": "npm run build",
+        "beforeDevCommand": "npm run dev",
+        "devPath": "http://localhost:6768",
+        "distDir": "../dist"
+    },
+    "package": {
+        "productName": "Application",
+        "version": "0.1.0"
+    },
+    "tauri": {
+        "allowlist": {
+            "all": false
+        },
+        "bundle": {
+            "active": true,
+            "category": "DeveloperTool",
+            "copyright": "",
+            "deb": {
+                "depends": []
+            },
+            "externalBin": [],
+            "icon": [
+                "icons/32x32.png",
+                "icons/128x128.png",
+                "icons/128x128@2x.png",
+                "icons/icon.icns",
+                "icons/icon.ico"
+            ],
+            "identifier": "com.tauri.build",
+            "longDescription": "",
+            "resources": [
+                "./Need"
+            ],
+            "shortDescription": "",
+            "targets": "all",
+            "windows": {
+                "webviewInstallMode": {
+                    "silent": true,
+                    "type": "downloadBootstrapper"
+                },
+                "wix": {
+                    "language": "zh-CN"
+                },
+                "nsis": {
+                    "installerIcon": "icons/icon.ico",
+                    "installMode": "perMachine"
+                },
+                "certificateThumbprint": null,
+                "digestAlgorithm": "sha256",
+                "timestampUrl": ""
+            }
+        },
+        "security": {
+            "csp": null
+        },
+        "updater": {
+            "active": false
+        },
+        "windows": [
+            {
+                "fullscreen": false,
+                "height": 600,
+                "resizable": true,
+                "title": "Application",
+                "width": 800
+            }
+        ]
+    }
+}
