@@ -4,6 +4,10 @@ import AppVue from './App.vue'
 
 import router from './router'
 
+import { Tauri } from './Config'
+
+Tauri()
+
 import { naive } from './naive'
 
 import pinia from './pinia'
