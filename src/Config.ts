@@ -6,6 +6,7 @@ function Tauri() {
         e.preventDefault()
     })
     appWindow.once('tauri://window-created', async () => {
+        await appWindow.show()
         await appWindow.setFocus()
     })
 }

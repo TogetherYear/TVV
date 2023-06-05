@@ -28,11 +28,11 @@ class HeaderBar extends AActor {
             await appWindow.minimize()
         }
         else if (type == 'Max') {
-            if (await appWindow.isFullscreen()) {
-                appWindow.setFullscreen(false)
+            if (await appWindow.isMaximized()) {
+                appWindow.unmaximize()
             }
             else {
-                await appWindow.setFullscreen(true)
+                await appWindow.maximize()
             }
         }
         else if (type == 'Close') {
