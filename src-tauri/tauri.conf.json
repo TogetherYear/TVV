@@ -103,8 +103,7 @@
                 "minWidth": 1000,
                 "decorations": false,
                 "focus": true,
-                "label": "Application",
-                "transparent": true
+                "label": "Application"
             }
         ]
     }
