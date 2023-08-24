@@ -1,0 +1,110 @@
+{
+    "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+    "build": {
+        "beforeBuildCommand": "npm run build",
+        "beforeDevCommand": "npm run dev",
+        "devPath": "http://localhost:6768",
+        "distDir": "../dist"
+    },
+    "package": {
+        "productName": "Application",
+        "version": "0.1.0"
+    },
+    "tauri": {
+        "allowlist": {
+            "window": {
+                "all": false,
+                "center": false,
+                "close": true,
+                "create": false,
+                "hide": false,
+                "maximize": true,
+                "minimize": true,
+                "print": false,
+                "requestUserAttention": false,
+                "setAlwaysOnTop": false,
+                "setContentProtected": false,
+                "setCursorGrab": false,
+                "setCursorIcon": false,
+                "setCursorPosition": false,
+                "setCursorVisible": false,
+                "setDecorations": false,
+                "setFocus": true,
+                "setFullscreen": false,
+                "setIcon": false,
+                "setIgnoreCursorEvents": false,
+                "setMaxSize": false,
+                "setMinSize": false,
+                "setPosition": false,
+                "setResizable": false,
+                "setSize": false,
+                "setSkipTaskbar": false,
+                "setTitle": false,
+                "show": true,
+                "startDragging": true,
+                "unmaximize": true,
+                "unminimize": false
+            }
+        },
+        "bundle": {
+            "active": true,
+            "category": "DeveloperTool",
+            "copyright": "",
+            "deb": {
+                "depends": []
+            },
+            "externalBin": [],
+            "icon": [
+                "icons/32x32.png",
+                "icons/128x128.png",
+                "icons/128x128@2x.png",
+                "icons/icon.icns",
+                "icons/icon.ico"
+            ],
+            "identifier": "com.tauri.build",
+            "longDescription": "",
+            "resources": [
+                "./Need"
+            ],
+            "shortDescription": "",
+            "targets": "all",
+            "windows": {
+                "webviewInstallMode": {
+                    "silent": true,
+                    "type": "downloadBootstrapper"
+                },
+                "wix": {
+                    "language": "zh-CN"
+                },
+                "nsis": {
+                    "installerIcon": "icons/icon.ico",
+                    "installMode": "perMachine"
+                },
+                "certificateThumbprint": null,
+                "digestAlgorithm": "sha256",
+                "timestampUrl": ""
+            }
+        },
+        "security": {
+            "csp": null
+        },
+        "updater": {
+            "active": false
+        },
+        "windows": [
+            {
+                "fullscreen": false,
+                "height": 560,
+                "minHeight": 560,
+                "resizable": true,
+                "center": true,
+                "title": "Application",
+                "width": 1000,
+                "minWidth": 1000,
+                "decorations": false,
+                "focus": true,
+                "label": "Application"
+            }
+        ]
+    }
+}
