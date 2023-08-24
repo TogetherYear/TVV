@@ -27,7 +27,7 @@ class Vessel extends AActor {
     }
 
     public Test() {
-        invoke("renderer", { name: 'Hello World !' }).then(res => {
+        invoke("Introduce").then(res => {
             Message.success(res as string)
         })
     }
