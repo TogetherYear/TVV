@@ -34,7 +34,7 @@ fn main() {
                     .add_item(CustomMenuItem::new("quit".to_string(), "退出")),
             ),
         )
-        .on_system_tray_event(|app: &tauri::AppHandle, event| match event {
+        .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::DoubleClick {
                 position: _,
                 size: _,
