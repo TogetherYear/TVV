@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-const TogetherStore = defineStore('Together', {
+const GlobalStore = defineStore('GlobalStore', {
     state: () => {
         return {
             test: 'Hello World !'
@@ -10,4 +10,4 @@ const TogetherStore = defineStore('Together', {
     actions: {}
 })
 
-export { TogetherStore }
+export { GlobalStore }

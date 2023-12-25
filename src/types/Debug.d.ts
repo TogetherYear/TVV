@@ -6,6 +6,11 @@ declare namespace Debug {
 
     export const IsProd: boolean
 
+    /**
+     * 不要调用
+     */
+    export function Run(): void;
+
     export function Clear(): void;
 
     export function Log(...args: Array<any>): void;

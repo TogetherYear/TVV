@@ -7,8 +7,10 @@ export default defineConfig({
     clearScreen: false,
     plugins: [
         vue({
-            script: {}
-        })
+            script: {
+                defineModel: true
+            }
+        }),
     ],
     resolve: {
         alias: {

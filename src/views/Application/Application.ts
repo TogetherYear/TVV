@@ -2,7 +2,7 @@ import { onMounted, onUnmounted } from "vue"
 import { AActor } from "@/libs/AActor"
 import { invoke } from '@tauri-apps/api'
 
-class Vessel extends AActor {
+class Application extends AActor {
     public constructor() { super() }
 
     public InitStates() {
@@ -33,4 +33,4 @@ class Vessel extends AActor {
     }
 }
 
-export { Vessel }
+export { Application }

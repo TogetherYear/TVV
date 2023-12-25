@@ -17,12 +17,13 @@ instance.Run()
 </script>
 
 <template>
-    <div class="HeaderBar" data-tauri-drag-region :style="{ background: attribute.bgc }">
+    <div class="HeaderBar" :style="{ background: attribute.bgc }">
         <span class="Btn">
             <span class="Item" v-for="item in options" :key="item.type" @click="instance.OptionClick(item.type)">
                 <img :src="item.icon" :title="item.label" class="Icon" />
             </span>
         </span>
+        <span class="Drag" data-tauri-drag-region></span>
     </div>
 </template>
 

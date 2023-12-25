@@ -1,6 +1,5 @@
 import { EventSystem } from "@/libs/EventSystem";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import router from "@/router"
 
 /**
  * Axios请求
@@ -21,6 +20,13 @@ class AppRequest extends EventSystem {
     private static outCode = 401
 
     public Run() {
+        if (!window.Debug) {
+            (window as any).AppRequest = this
+        }
+        this.CreateRequest()
+    }
+
+    private CreateRequest() {
         this.request = axios.create({
             headers: {
                 'Content-Type': 'application/json',
@@ -69,10 +75,7 @@ class AppRequest extends EventSystem {
                         maskClosable: false,
                         onPositiveClick: () => {
                             this.ResetAccount()
-                            router.push({ path: '/Login' })
-                            setTimeout(() => {
-                                location.reload()
-                            }, 100);
+                            Message.error('登录凭证过期')
                         }
                     })
                 }
@@ -84,34 +87,31 @@ class AppRequest extends EventSystem {
     private ResetAccount() {
         this.SetAuthToken('')
         this.SetUserName('')
-        this.SetWorkSpaceId('')
     }
 
     public GetAuthToken() {
-        return localStorage.getItem('ORIGINTOKEN') || ''
+        return localStorage.getItem('TAURITOKEN') || ''
     }
 
-    /**
-     * 设置Token
-     */
     public SetAuthToken(token: string) {
-        localStorage.setItem('ORIGINTOKEN', token)
-    }
-
-    public GetWorkSpaceId() {
-        return localStorage.getItem('ORIGINWORKSPACEID') || ''
-    }
-
-    public SetWorkSpaceId(id: string) {
-        localStorage.setItem('ORIGINWORKSPACEID', id)
+        localStorage.setItem('TAURITOKEN', token)
     }
 
     public GetUserName() {
-        return localStorage.getItem('ORIGINUSERNAME') || ''
+        return localStorage.getItem('TAURIUSERNAME') || ''
     }
 
     public SetUserName(name: string) {
-        localStorage.setItem('ORIGINUSERNAME', name)
+        localStorage.setItem('TAURIUSERNAME', name)
+    }
+
+    public SetRemember(e: boolean) {
+        localStorage.setItem('TAURIREMEMBER', e ? '1' : '0')
+    }
+
+    public GetRemember() {
+        const r = localStorage.getItem('TAURIREMEMBER')
+        return !r || r == '1'
     }
 
     public Get(url: string, config?: AxiosRequestConfig) {
@@ -120,7 +120,7 @@ class AppRequest extends EventSystem {
         }
     }
 
-    public Post(url: string, data?: Record<any, any>, config?: AxiosRequestConfig) {
+    public Post(url: string, data?: Record<string, any>, config?: AxiosRequestConfig) {
         if (this.R) {
             return this.R.post(url, data, config)
         }

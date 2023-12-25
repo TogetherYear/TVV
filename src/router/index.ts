@@ -4,7 +4,7 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
         name: 'Default',
-        redirect: '/Vessel'
+        redirect: '/Application'
     },
     {
         path: '/:pathMatch(.*)',
@@ -17,9 +17,9 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/Empty/Empty.vue')
     },
     {
-        path: '/Vessel',
-        name: 'Vessel',
-        component: () => import('@/views/Vessel/Vessel.vue')
+        path: '/Application',
+        name: 'Application',
+        component: () => import('@/views/Application/Application.vue')
     }
 ]
 

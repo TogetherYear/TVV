@@ -14,7 +14,7 @@
         "allowlist": {
             "window": {
                 "all": false,
-                "center": false,
+                "center": true,
                 "close": true,
                 "create": false,
                 "hide": false,
