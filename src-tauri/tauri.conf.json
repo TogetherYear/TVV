@@ -30,7 +30,7 @@
                 "setCursorVisible": false,
                 "setDecorations": false,
                 "setFocus": true,
-                "setFullscreen": false,
+                "setFullscreen": true,
                 "setIcon": false,
                 "setIgnoreCursorEvents": false,
                 "setMaxSize": false,
@@ -92,12 +92,12 @@
             {
                 "fullscreen": false,
                 "height": 560,
-                "minHeight": 560,
+                "minHeight": 280,
                 "resizable": true,
                 "center": true,
                 "title": "Application",
                 "width": 1000,
-                "minWidth": 1000,
+                "minWidth": 550,
                 "decorations": false,
                 "focus": true,
                 "label": "Application"
