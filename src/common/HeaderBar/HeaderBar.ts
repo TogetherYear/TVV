@@ -14,7 +14,7 @@ class HeaderBar extends AActor {
     private options = ref<Array<DR.IHeaderBarOptionItem>>([
         { type: 'Min', icon: minIcon, label: '最小化' },
         { type: 'Max', icon: maxIcon, label: '最大化' },
-        { type: 'Close', icon: closeIcon, label: '隐藏' }
+        { type: 'Hide', icon: closeIcon, label: '隐藏' }
     ])
 
     public async OptionClick(type: string) {
@@ -29,8 +29,8 @@ class HeaderBar extends AActor {
                 await appWindow.setFullscreen(true)
             }
         }
-        else if (type == 'Close') {
-            appWindow.close()
+        else if (type == 'Hide') {
+            await appWindow.hide()
         }
     }
 
