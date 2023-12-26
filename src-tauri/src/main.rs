@@ -27,7 +27,7 @@ fn main() {
         }))
         .invoke_handler(generate_handler![Introduce])
         .system_tray(
-            SystemTray::new().with_menu(
+            SystemTray::new().with_tooltip("去码头整点薯条").with_menu(
                 SystemTrayMenu::new()
                     .add_item(CustomMenuItem::new("show".to_string(), "显示"))
                     .add_native_item(SystemTrayMenuItem::Separator)
