@@ -100,7 +100,8 @@
                 "minWidth": 550,
                 "decorations": false,
                 "focus": true,
-                "label": "Application"
+                "label": "Application",
+                "transparent": true
             }
         ],
         "systemTray": {
