@@ -22,7 +22,7 @@
                 "minimize": true,
                 "print": false,
                 "requestUserAttention": false,
-                "setAlwaysOnTop": false,
+                "setAlwaysOnTop": true,
                 "setContentProtected": false,
                 "setCursorGrab": false,
                 "setCursorIcon": false,
@@ -44,6 +44,12 @@
                 "startDragging": true,
                 "unmaximize": true,
                 "unminimize": false
+            },
+            "process": {
+                "all": false,
+                "exit": true,
+                "relaunch": false,
+                "relaunchDangerousAllowSymlinkMacos": false
             }
         },
         "bundle": {
@@ -101,7 +107,29 @@
                 "decorations": false,
                 "focus": true,
                 "label": "Application",
-                "transparent": true
+                "transparent": true,
+                "url": "/#/Application",
+                "visible": true
+            },
+            {
+                "fullscreen": false,
+                "height": 303,
+                "minHeight": 303,
+                "maxHeight": 303,
+                "resizable": false,
+                "center": false,
+                "title": "Tray",
+                "width": 260,
+                "minWidth": 260,
+                "maxWidth": 260,
+                "decorations": false,
+                "focus": false,
+                "label": "Tray",
+                "transparent": true,
+                "url": "/#/Tray",
+                "visible": false,
+                "alwaysOnTop": true,
+                "skipTaskbar": true
             }
         ],
         "systemTray": {
