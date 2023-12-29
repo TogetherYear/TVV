@@ -13,9 +13,9 @@ declare namespace Debug {
 
     export function Clear(): void;
 
-    export function Log(...args: Array<any>): void;
+    export function Log(...args: Array<unknown>): void;
 
-    export function Warn(...args: Array<any>): void;
+    export function Warn(...args: Array<unknown>): void;
 
-    export function Error(...args: Array<any>): void;
+    export function Error(...args: Array<unknown>): void;
 }

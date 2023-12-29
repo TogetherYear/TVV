@@ -3,7 +3,7 @@ import { EventSystem } from "./EventSystem";
 abstract class AActor extends EventSystem {
     constructor() { super() }
 
-    public abstract InitStates(): Record<string, any>
+    public abstract InitStates(): Record<string, unknown>
 
     public abstract InitHooks(): void
 

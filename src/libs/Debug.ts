@@ -18,19 +18,19 @@ class Debug {
         }
     }
 
-    public Log(...args: Array<any>) {
+    public Log(...args: Array<unknown>) {
         if (this.mode == 0) {
             console.log("%c Log: ", 'color:#80ff80;font-size:14px;line-height:20px;background:rgba(255,255,255,0.1);border-radius:2px;', ...args)
         }
     }
 
-    public Warn(...args: Array<any>) {
+    public Warn(...args: Array<unknown>) {
         if (this.mode == 0) {
             console.log("%c Warn: ", 'color:#ffff80;font-size:14px;line-height:20px;background:rgba(255,255,255,0.1);border-radius:2px;', ...args)
         }
     }
 
-    public Error(...args: Array<any>) {
+    public Error(...args: Array<unknown>) {
         if (this.mode == 0) {
             console.log("%c Error: ", 'color:#ff8080;font-size:14px;line-height:20px;background:rgba(255,255,255,0.1);border-radius:2px;', ...args)
         }

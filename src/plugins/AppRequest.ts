@@ -120,7 +120,7 @@ class AppRequest extends EventSystem {
         }
     }
 
-    public Post(url: string, data?: Record<string, any>, config?: AxiosRequestConfig) {
+    public Post(url: string, data?: Record<string, unknown>, config?: AxiosRequestConfig) {
         if (this.R) {
             return this.R.post(url, data, config)
         }

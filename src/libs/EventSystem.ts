@@ -104,7 +104,7 @@ class EventSystem extends Object {
      * @param data [ { } ] 传递参数
      * @description 触发事件 
      */
-    public Emit(key: string, data: Record<string, any> = {}) {
+    public Emit(key: string, data: Record<string, unknown> = {}) {
         let cc = this.continue.find(ci => ci.key === key)
         let tc = this.temporary.find(ti => ti.key === key)
         if (cc && tc) {
