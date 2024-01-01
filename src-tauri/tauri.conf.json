@@ -109,7 +109,7 @@
                 "label": "Application",
                 "transparent": true,
                 "url": "/#/Application",
-                "visible": true
+                "visible": false
             },
             {
                 "fullscreen": false,
