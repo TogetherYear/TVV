@@ -18,7 +18,6 @@ import { FieldObserver } from './plugins/FieldObserver'
 FieldObserver.Instance.Run()
 
 import { Tauri } from './Config'
-
 Tauri()
 
 createApp(AppVue)
