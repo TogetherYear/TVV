@@ -47,7 +47,12 @@ fn main() {
         .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
             let _p = Payload { args: argv, cwd };
             let window = app.get_window("Application").unwrap();
-            window.show().unwrap();
+            if window.is_minimized().unwrap() {
+                window.unminimize().unwrap();
+                window.set_focus().unwrap();
+            } else {
+                window.show().unwrap();
+            }
         }))
         .invoke_handler(generate_handler![Introduce])
         .system_tray(SystemTray::new().with_tooltip("去码头整点薯条"))
