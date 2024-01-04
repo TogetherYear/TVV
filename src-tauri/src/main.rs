@@ -81,6 +81,7 @@ fn main() {
                     .unwrap();
                 window.set_always_on_top(true).unwrap();
                 window.show().unwrap();
+                window.set_focus().unwrap();
             }
             _ => {}
         })

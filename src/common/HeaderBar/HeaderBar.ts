@@ -11,6 +11,10 @@ class HeaderBar extends AActor {
         super()
     }
 
+    private dragDomRegion = ref<HTMLSpanElement | null>(null)
+
+    private fullscreen = ref<boolean>(false)
+
     private options = ref<Array<DR.IHeaderBarOptionItem>>([
         { type: 'Min', icon: minIcon, label: '最小化' },
         { type: 'Max', icon: maxIcon, label: '最大化' },
@@ -22,11 +26,15 @@ class HeaderBar extends AActor {
             await appWindow.minimize()
         }
         else if (type == 'Max') {
-            if (await appWindow.isMaximized()) {
-                await appWindow.unmaximize()
+            if (await appWindow.isFullscreen()) {
+                await appWindow.setFullscreen(false)
+                await appWindow.setResizable(true)
+                this.fullscreen.value = false
             }
             else {
-                await appWindow.maximize()
+                await appWindow.setFullscreen(true)
+                await appWindow.setResizable(false)
+                this.fullscreen.value = true
             }
         }
         else if (type == 'Hide') {
@@ -37,6 +45,8 @@ class HeaderBar extends AActor {
     public InitStates() {
         return {
             options: this.options,
+            dragDomRegion: this.dragDomRegion,
+            fullscreen: this.fullscreen,
         }
     }
 
@@ -46,7 +56,7 @@ class HeaderBar extends AActor {
 
     public Run() {
         onMounted(() => {
-
+            this.ListenEvents()
         })
 
         onUnmounted(() => {
@@ -56,6 +66,17 @@ class HeaderBar extends AActor {
 
     protected Destroy() {
 
+    }
+
+    private ListenEvents() {
+        if (this.dragDomRegion.value) {
+            this.dragDomRegion.value.addEventListener('dblclick', async (e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                e.stopImmediatePropagation()
+                await this.OptionClick("Max")
+            })
+        }
     }
 }
 

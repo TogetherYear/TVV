@@ -10,7 +10,9 @@ const attribute = withDefaults(defineProps<{
 const instance = new HeaderBar()
 
 const {
-    options
+    options,
+    fullscreen,
+    dragDomRegion,
 } = instance.InitStates()
 instance.InitHooks()
 instance.Run()
@@ -23,7 +25,8 @@ instance.Run()
                 <img :src="item.icon" :title="item.label" class="Icon" />
             </span>
         </span>
-        <span class="Drag" data-tauri-drag-region></span>
+        <span class="Drag" ref="dragDomRegion" v-show="!fullscreen" data-tauri-drag-region></span>
+        <span class="Drag" v-show="fullscreen"></span>
     </div>
 </template>
 

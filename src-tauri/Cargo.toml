@@ -17,14 +17,9 @@ tauri-build = { version = "1.4.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.4.0", features = [ "process-exit", "window-set-always-on-top", "window-hide", "system-tray", "window-center",
-    "window-close",
-    "window-maximize",
+tauri = { version = "1.4.0", features = [ "window-set-resizable", "window-set-focus", "window-show", "window-set-fullscreen", "process-exit", "window-hide", "system-tray",
     "window-minimize",
-    "window-set-focus",
-    "window-show",
     "window-start-dragging",
-    "window-unmaximize",
 ] }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 window-shadows = "0.2.2"

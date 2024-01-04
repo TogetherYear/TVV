@@ -17,6 +17,7 @@ class Application extends AActor {
     public Run() {
         onMounted(async () => {
             await appWindow.show()
+            await appWindow.setFocus()
         })
         onUnmounted(() => {
             this.Destroy()
