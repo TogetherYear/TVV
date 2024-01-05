@@ -4,9 +4,15 @@ import { Application } from './Application';
 import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
 
 const instance = new Application()
+
 provide('instance', instance)
-const { } = instance.InitStates()
+
+const {
+
+} = instance.InitStates()
+
 instance.InitHooks()
+
 instance.Run()
 </script>
 
