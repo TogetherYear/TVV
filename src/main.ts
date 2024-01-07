@@ -17,8 +17,9 @@ AppRequest.Instance.Run()
 import { FieldObserver } from './plugins/FieldObserver'
 FieldObserver.Instance.Run()
 
-import { Tauri } from './Config'
+import { Tauri, Renderer } from './Config'
 Tauri()
+Renderer()
 
 createApp(AppVue)
   .use(router)

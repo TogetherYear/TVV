@@ -3,7 +3,6 @@ import minIcon from '@/assets/mc/min.png'
 import maxIcon from '@/assets/mc/max.png'
 import closeIcon from '@/assets/mc/close.png'
 import { AActor } from '@/libs/AActor'
-import { appWindow } from '@tauri-apps/api/window'
 import { DR } from '@/decorators/DR'
 
 class HeaderBar extends AActor {
@@ -23,22 +22,14 @@ class HeaderBar extends AActor {
 
     public async OptionClick(type: string) {
         if (type == 'Min') {
-            await appWindow.minimize()
+            await Renderer.Widget.Min()
         }
         else if (type == 'Max') {
-            if (await appWindow.isFullscreen()) {
-                await appWindow.setFullscreen(false)
-                await appWindow.setResizable(true)
-                this.fullscreen.value = false
-            }
-            else {
-                await appWindow.setFullscreen(true)
-                await appWindow.setResizable(false)
-                this.fullscreen.value = true
-            }
+            this.fullscreen.value = !this.fullscreen.value
+            await Renderer.Widget.Max()
         }
         else if (type == 'Hide') {
-            await appWindow.hide()
+            await Renderer.Widget.Hide()
         }
     }
 

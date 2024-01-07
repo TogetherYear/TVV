@@ -1,7 +1,6 @@
 import { AActor } from "@/libs/AActor"
+import { appWindow } from "@tauri-apps/api/window"
 import { onMounted, onUnmounted } from "vue"
-import { process } from '@tauri-apps/api'
-import { appWindow } from "@tauri-apps/api/window";
 
 class Tray extends AActor {
     public constructor() { super() }
@@ -29,13 +28,13 @@ class Tray extends AActor {
     }
 
     private ListenEvents() {
-        appWindow.listen("tauri://blur", async () => {
-            await appWindow.hide()
+        Renderer.Widget.Listen("tauri://blur", async () => {
+            await Renderer.Widget.Hide()
         })
     }
 
     public async OnClose() {
-        await process.exit(0)
+        await Renderer.App.Close()
     }
 }
 

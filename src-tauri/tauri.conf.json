@@ -50,6 +50,16 @@
                 "exit": true,
                 "relaunch": false,
                 "relaunchDangerousAllowSymlinkMacos": false
+            },
+            "protocol": {
+                "all": false,
+                "asset": true,
+                "assetScope": [
+                    "**"
+                ]
+            },
+            "path": {
+                "all": true
             }
         },
         "bundle": {
