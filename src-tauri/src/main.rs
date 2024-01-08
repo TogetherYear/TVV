@@ -49,10 +49,10 @@ fn main() {
             let window = app.get_window("Application").unwrap();
             if window.is_minimized().unwrap() {
                 window.unminimize().unwrap();
-                window.set_focus().unwrap();
             } else {
                 window.show().unwrap();
             }
+            window.set_focus().unwrap();
         }))
         .invoke_handler(generate_handler![Introduce])
         .system_tray(SystemTray::new().with_tooltip("去码头整点薯条"))
@@ -63,7 +63,12 @@ fn main() {
                 ..
             } => {
                 let window = app.get_window("Application").unwrap();
-                window.show().unwrap();
+                if window.is_minimized().unwrap() {
+                    window.unminimize().unwrap();
+                } else {
+                    window.show().unwrap();
+                }
+                window.set_focus().unwrap();
             }
             SystemTrayEvent::RightClick {
                 position: _,
