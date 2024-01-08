@@ -1,6 +1,5 @@
 import { onMounted, onUnmounted } from "vue"
 import { AActor } from "@/libs/AActor"
-import { appWindow } from "@tauri-apps/api/window"
 
 class Application extends AActor {
     public constructor() { super() }

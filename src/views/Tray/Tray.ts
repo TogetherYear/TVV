@@ -1,5 +1,4 @@
 import { AActor } from "@/libs/AActor"
-import { appWindow } from "@tauri-apps/api/window"
 import { onMounted, onUnmounted } from "vue"
 
 class Tray extends AActor {
