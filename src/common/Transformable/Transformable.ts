@@ -3,9 +3,14 @@ import { Vector2 } from "three"
 import { onMounted, onUnmounted, ref } from "vue"
 
 class Transformable extends AActor {
-    public constructor() {
+    public constructor(x: number, y: number) {
         super()
+        this.originX = x
+        this.originY = y
     }
+
+    private originX = 0
+    private originY = 0
 
     private dom = ref<HTMLSpanElement | null>(null)
 
@@ -36,6 +41,7 @@ class Transformable extends AActor {
     public Run() {
         onMounted(() => {
             this.ListenEvents()
+            this.SetDefault()
         })
 
         onUnmounted(() => {
@@ -127,6 +133,18 @@ class Transformable extends AActor {
             this.result.x += this.delta.x;
             this.result.y += this.delta.y;
 
+            this.dom.value.style.transform = 'translate3d(' + this.result.x + 'px, ' + this.result.y + 'px, 0) scale(' + this.scale + ')';
+        }
+    }
+
+    private SetDefault() {
+        if (this.dom.value) {
+            this.delta.x = this.originX - this.lastPoint.x;
+            this.delta.y = this.originY - this.lastPoint.y;
+            this.lastPoint.x = this.originX
+            this.lastPoint.y = this.originY
+            this.result.x += this.delta.x;
+            this.result.y += this.delta.y;
             this.dom.value.style.transform = 'translate3d(' + this.result.x + 'px, ' + this.result.y + 'px, 0) scale(' + this.scale + ')';
         }
     }

@@ -1,7 +1,15 @@
 <script lang="ts" setup>
 import { Transformable } from './Transformable';
 
-const instance = new Transformable()
+const attribute = withDefaults(defineProps<{
+    x?: string,
+    y?: string,
+}>(), {
+    x: '0',
+    y: '0',
+})
+
+const instance = new Transformable(parseInt(attribute.x), parseInt(attribute.y))
 
 const {
     dom
