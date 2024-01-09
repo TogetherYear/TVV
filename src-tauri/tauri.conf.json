@@ -52,14 +52,19 @@
                 "relaunchDangerousAllowSymlinkMacos": false
             },
             "protocol": {
-                "all": false,
-                "asset": true,
+                "all": true,
                 "assetScope": [
                     "**"
                 ]
             },
             "path": {
                 "all": true
+            },
+            "fs": {
+                "all": true,
+                "scope": [
+                    "**"
+                ]
             }
         },
         "bundle": {

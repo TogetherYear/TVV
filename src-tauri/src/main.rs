@@ -33,7 +33,7 @@ fn GetCursorPos() -> Option<(i32, i32)> {
 }
 
 #[tauri::command]
-fn Introduce() -> String {
+fn RustTest() -> String {
     String::from("去码头整点薯条:Rust!")
 }
 
@@ -54,7 +54,7 @@ fn main() {
             }
             window.set_focus().unwrap();
         }))
-        .invoke_handler(generate_handler![Introduce])
+        .invoke_handler(generate_handler![RustTest])
         .system_tray(SystemTray::new().with_tooltip("去码头整点薯条"))
         .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::DoubleClick {

@@ -47,6 +47,14 @@ declare namespace Renderer {
         /**
          * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.png
          */
-        export function GetPathByName(name: string): Promise<string>
+        export function GetPathByName(name: string, convert?: boolean): Promise<string>
+        /**
+         * 读取Json文件到对象 不能用Tauri转换后的地址
+         */
+        export function ReadJsonFileToObject(name: string): Promise<Record<string, unknown>>
+        /**
+         * 将字符串写入文件 不能用Tauri转换后的地址
+         */
+        export function WriteStringToFile(path: string, content: string): Promise<void>
     }
 }

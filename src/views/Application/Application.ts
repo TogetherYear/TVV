@@ -28,7 +28,7 @@ class Application extends AActor {
     }
 
     public async Test() {
-        const a = await Renderer.App.Invoke("Introduce") as string
+        const a = await Renderer.App.Invoke("RustTest") as string
         Message.success(a)
     }
 }

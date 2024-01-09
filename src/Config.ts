@@ -2,6 +2,7 @@ import { invoke, process } from '@tauri-apps/api'
 import { appWindow } from "@tauri-apps/api/window"
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { resourceDir, join } from "@tauri-apps/api/path";
+import * as F from "@tauri-apps/api/fs";
 
 function Tauri() {
     window.addEventListener('contextmenu', (e) => {
@@ -45,11 +46,21 @@ function Renderer() {
             Listen: appWindow.listen.bind(appWindow)
         },
         Resource: {
-            GetPathByName: async (name: string) => {
-                const base = await join(await resourceDir(), '\\Need\\', name.replaceAll('/', '\\'))
-                const path = convertFileSrc(base)
+            GetPathByName: async (name: string, convert: boolean = true) => {
+                const base = (await join(await resourceDir(), 'Need/', name)).replace('\\\\?\\', '').replaceAll('\\', '/')
+                const path = convert ? convertFileSrc(base) : base
                 return path
-            }
+            },
+            ReadJsonFileToObject: async (path: string) => {
+                const r = JSON.parse(await F.readTextFile(path))
+                return r
+            },
+            WriteStringToFile: async (path: string, content: string) => {
+                const file = path.split('/').slice(-1)[0]
+                const dir = path.replace(file, '')
+                !(await F.exists(dir)) && (await F.createDir(dir))
+                return F.writeTextFile(path, content)
+            },
         }
     }
 
