@@ -1,5 +1,6 @@
 import { EventSystem } from "../libs/EventSystem"
-import { useDialog, useMessage } from "naive-ui"
+import { useDialog, useMessage, useNotification } from "naive-ui"
+import { NotificationApiInjection } from "naive-ui/es/notification/src/NotificationProvider"
 import { DialogApiInjection } from "naive-ui/lib/dialog/src/DialogProvider"
 import { MessageApiInjection } from "naive-ui/lib/message/src/MessageProvider"
 
@@ -14,6 +15,8 @@ class Preload extends EventSystem {
 
     private dialog: DialogApiInjection | null = null
 
+    private notification: NotificationApiInjection | null = null
+
     public Run() {
         this.CreateNaive()
     }
@@ -26,6 +29,10 @@ class Preload extends EventSystem {
         if (!window.Dialog) {
             this.dialog = useDialog();
             (window as any).Dialog = this.dialog
+        }
+        if (!window.Noti) {
+            this.notification = useNotification();
+            (window as any).Noti = this.notification
         }
     }
 }

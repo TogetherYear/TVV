@@ -3,6 +3,7 @@ import {
     NConfigProvider,
     NMessageProvider,
     NDialogProvider,
+    NNotificationProvider,
     NButton,
     GlobalThemeOverrides,
     darkTheme
@@ -16,6 +17,7 @@ const naive = create({
         NConfigProvider,
         NMessageProvider,
         NDialogProvider,
+        NNotificationProvider,
         NButton
     ]
 })
