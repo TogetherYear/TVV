@@ -5,15 +5,7 @@ import { resourceDir, join } from "@tauri-apps/api/path";
 import * as F from "@tauri-apps/api/fs";
 import { shell } from "@tauri-apps/api"
 
-function Tauri() {
-    window.addEventListener('contextmenu', (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-    })
-}
-
-function Renderer() {
+function Limit() {
     const Renderer = {
         App: {
             Close: () => {
@@ -71,4 +63,17 @@ function Renderer() {
     window.Renderer = Renderer
 }
 
-export { Tauri, Renderer }
+async function Tauri() {
+    const path = await Renderer.Resource.GetPathByName(`Configs/${import.meta.env.PROD ? 'Production' : 'Development'}.json`, false)
+    const json = await Renderer.Resource.ReadJsonFileToObject(path)
+    if (!json.debug) {
+        window.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            e.stopImmediatePropagation()
+        })
+    }
+
+}
+
+export { Limit, Tauri }
