@@ -3,6 +3,7 @@ import { appWindow } from "@tauri-apps/api/window"
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { resourceDir, join } from "@tauri-apps/api/path";
 import * as F from "@tauri-apps/api/fs";
+import { shell } from "@tauri-apps/api"
 
 function Tauri() {
     window.addEventListener('contextmenu', (e) => {
@@ -61,6 +62,9 @@ function Renderer() {
                 !(await F.exists(dir)) && (await F.createDir(dir))
                 return F.writeTextFile(path, content)
             },
+            OpenPathInFolder: (path: string) => {
+                return shell.open(path)
+            }
         }
     }
 

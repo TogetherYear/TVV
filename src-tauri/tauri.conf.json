@@ -65,6 +65,9 @@
                 "scope": [
                     "**"
                 ]
+            },
+            "shell": {
+                "all": true
             }
         },
         "bundle": {

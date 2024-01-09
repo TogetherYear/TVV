@@ -45,7 +45,7 @@ declare namespace Renderer {
      */
     export namespace Resource {
         /**
-         * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.png
+         * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.png ( convert 是否转换 默认 true)
          */
         export function GetPathByName(name: string, convert?: boolean): Promise<string>
         /**
@@ -56,5 +56,9 @@ declare namespace Renderer {
          * 将字符串写入文件 不能用Tauri转换后的地址
          */
         export function WriteStringToFile(path: string, content: string): Promise<void>
+        /**
+         * 在文件资源管理器中打开路径 不能用Tauri转换后的地址
+         */
+        export function OpenPathInFolder(path: string): Promise<void>
     }
 }
