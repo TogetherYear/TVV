@@ -60,5 +60,9 @@ declare namespace Renderer {
          * 在文件资源管理器中打开路径 不能用Tauri转换后的地址
          */
         export function OpenPathInFolder(path: string): Promise<void>
+        /**
+         * 判断文件是否存在 不能用Tauri转换后的地址
+         */
+        export function IsPathExists(path: string): Promise<boolean>
     }
 }

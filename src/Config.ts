@@ -56,6 +56,9 @@ function Limit() {
             },
             OpenPathInFolder: (path: string) => {
                 return shell.open(path)
+            },
+            IsPathExists: (path: string) => {
+                return F.exists(path)
             }
         }
     }
