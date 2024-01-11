@@ -51,7 +51,7 @@ declare namespace Renderer {
         /**
          * 读取Json文件到对象 不能用Tauri转换后的地址
          */
-        export function ReadJsonFileToObject(name: string): Promise<Record<string, unknown>>
+        export function ReadJsonFileToObject(path: string): Promise<Record<string, unknown>>
         /**
          * 将字符串写入文件 不能用Tauri转换后的地址
          */
