@@ -64,5 +64,9 @@ declare namespace Renderer {
          * 判断文件是否存在 不能用Tauri转换后的地址
          */
         export function IsPathExists(path: string): Promise<boolean>
+        /**
+         * 判断文件夹里文件目录 不能用Tauri转换后的地址
+         */
+        export function ReadDirFiles(path: string): Promise<Array<{ path: string, name?: string }>>
     }
 }

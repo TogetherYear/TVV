@@ -5,6 +5,8 @@ import { resourceDir, join } from "@tauri-apps/api/path";
 import * as F from "@tauri-apps/api/fs";
 import { shell } from "@tauri-apps/api"
 
+const allow = ["Application"]
+
 function Limit() {
     const Renderer = {
         App: {
@@ -59,6 +61,9 @@ function Limit() {
             },
             IsPathExists: (path: string) => {
                 return F.exists(path)
+            },
+            ReadDirFiles: (path: string) => {
+                return F.readDir(path)
             }
         }
     }
@@ -79,4 +84,16 @@ async function Tauri() {
 
 }
 
-export { Limit, Tauri }
+async function Process() {
+    if (allow.indexOf(location.href.split('/').slice(-1)[0]) != -1) {
+        const files = await Renderer.Resource.ReadDirFiles(await Renderer.Resource.GetPathByName("ChildProcesses/", false))
+        for (let f of files) {
+            let script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = await Renderer.Resource.GetPathByName(`ChildProcesses/${f.name}`);
+            document.body.appendChild(script);
+        }
+    }
+}
+
+export { Limit, Tauri, Process }

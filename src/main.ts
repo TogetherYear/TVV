@@ -17,9 +17,10 @@ AppRequest.Instance.Run()
 import { FieldObserver } from './plugins/FieldObserver'
 FieldObserver.Instance.Run()
 
-import { Limit, Tauri } from './Config'
+import { Limit, Tauri, Process } from './Config'
 Limit()
 Tauri()
+Process()
 
 createApp(AppVue)
   .use(router)
