@@ -45,7 +45,7 @@ declare namespace Renderer {
      */
     export namespace Resource {
         /**
-         * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.png ( convert 是否转换 默认 true)
+         * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.png ( convert 是否转换成 Webview 可使用的格式 默认 true)
          */
         export function GetPathByName(name: string, convert?: boolean): Promise<string>
         /**
@@ -65,7 +65,7 @@ declare namespace Renderer {
          */
         export function IsPathExists(path: string): Promise<boolean>
         /**
-         * 判断文件夹里文件目录 不能用Tauri转换后的地址
+         * 获取文件夹里所有文件列表 不能用Tauri转换后的地址
          */
         export function ReadDirFiles(path: string): Promise<Array<{ path: string, name?: string }>>
     }
