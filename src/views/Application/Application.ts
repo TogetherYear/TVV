@@ -29,8 +29,8 @@ class Application extends AActor {
     }
 
     public async Test() {
-        const a = await Renderer.App.Invoke("RustTest") as string
-        Message.success(a)
+        const struct = await Renderer.App.Invoke("GetRustStruct") as Record<string, unknown>
+        Message.success(Object.entries(struct).map(c => c.join(':')).join(';'))
     }
 }
 

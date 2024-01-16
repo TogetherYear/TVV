@@ -11,19 +11,30 @@ use window_shadows::set_shadow;
 
 use windows_sys::Win32::{Foundation::POINT, UI::WindowsAndMessaging::GetCursorPos};
 
-#[tauri::command]
-fn RustTest() -> String {
-    String::from("去码头整点薯条:Rust!")
+#[derive(Clone, serde::Serialize)]
+struct Rect {
+    left: i32,
+    right: i32,
+    top: i32,
+    bottom: i32,
 }
 
-fn GetCursorPosition() -> Option<(i32, i32)> {
-    let mut pt = POINT { x: -1, y: -1 };
-    let ret = unsafe { GetCursorPos(&mut pt) };
-    if ret != 1 || pt.x == -1 && pt.y == -1 {
-        None
-    } else {
-        Some((pt.x, pt.y))
+#[tauri::command]
+fn GetRustStruct() -> Rect {
+    Rect {
+        left: -1,
+        right: -1,
+        top: -1,
+        bottom: -1,
     }
+}
+
+fn GetCursorPosition() -> POINT {
+    let mut pt = POINT { x: -1, y: -1 };
+    unsafe {
+        GetCursorPos(&mut pt);
+    };
+    pt
 }
 
 fn main() {
@@ -42,7 +53,7 @@ fn main() {
             }
             window.set_focus().unwrap();
         }))
-        .invoke_handler(generate_handler![RustTest,])
+        .invoke_handler(generate_handler![GetRustStruct,])
         .system_tray(SystemTray::new().with_tooltip("去码头整点薯条"))
         .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::DoubleClick {
@@ -64,12 +75,12 @@ fn main() {
                 ..
             } => {
                 let window = app.get_window("Tray").unwrap();
-                let point = GetCursorPosition().unwrap();
+                let point = GetCursorPosition();
                 let size = window.inner_size().unwrap();
                 window
                     .set_position(PhysicalPosition::new(
-                        (point.0 as u32) - size.width + 2,
-                        (point.1 as u32) - size.height + 2,
+                        (point.x as u32) - size.width + 2,
+                        (point.y as u32) - size.height + 2,
                     ))
                     .unwrap();
                 window.set_always_on_top(true).unwrap();
