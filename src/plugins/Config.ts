@@ -41,11 +41,13 @@ class Config {
                     return W.appWindow.minimize()
                 },
                 Max: async () => {
-                    if (await W.appWindow.isMaximized()) {
-                        return W.appWindow.unmaximize()
+                    if (await W.appWindow.isFullscreen()) {
+                        await W.appWindow.setFullscreen(false)
+                        return W.appWindow.setResizable(true)
                     }
                     else {
-                        return W.appWindow.maximize()
+                        await W.appWindow.setFullscreen(true)
+                        return W.appWindow.setResizable(false)
                     }
                 },
                 Hide: () => {

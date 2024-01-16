@@ -16,11 +16,14 @@ class HeaderBar extends AActor {
         { type: 'Hide', icon: closeIcon, label: '隐藏' }
     ])
 
+    private isMax = ref<boolean>(false)
+
     public async OptionClick(type: string) {
         if (type == 'Min') {
             await Renderer.Widget.Min()
         }
         else if (type == 'Max') {
+            this.isMax.value = !this.isMax.value
             await Renderer.Widget.Max()
         }
         else if (type == 'Hide') {
@@ -30,6 +33,7 @@ class HeaderBar extends AActor {
 
     public InitStates() {
         return {
+            isMax: this.isMax,
             options: this.options,
         }
     }

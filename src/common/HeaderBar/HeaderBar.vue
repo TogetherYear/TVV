@@ -10,6 +10,7 @@ const attribute = withDefaults(defineProps<{
 const instance = new HeaderBar()
 
 const {
+    isMax,
     options,
 } = instance.InitStates()
 instance.InitHooks()
@@ -23,7 +24,8 @@ instance.Run()
                 <img :src="item.icon" :title="item.label" class="Icon" />
             </span>
         </span>
-        <span class="Drag" data-tauri-drag-region></span>
+        <span class="Drag" data-tauri-drag-region v-show="!isMax"></span>
+        <span class="Drag" v-show="isMax"></span>
     </div>
 </template>
 
