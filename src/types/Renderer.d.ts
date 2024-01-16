@@ -17,6 +17,11 @@ declare namespace Renderer {
          * 调用Rust方法
          */
         export function Invoke(cmd: string, args?: Record<string, unknown>): Promise<unknown>
+
+        /**
+         * 创建新窗口
+         */
+        export function CreateWidget(label: string, options?: Record<string, unknown>): unknown
     }
 
     /**

@@ -1,51 +1,55 @@
-import { invoke, process } from '@tauri-apps/api'
-import { appWindow } from "@tauri-apps/api/window"
-import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { resourceDir, join } from "@tauri-apps/api/path";
+import * as W from "@tauri-apps/api/window"
+import * as T from "@tauri-apps/api/tauri";
+import * as Pa from "@tauri-apps/api/path";
+import * as Pr from '@tauri-apps/api/process'
 import * as F from "@tauri-apps/api/fs";
-import { shell } from "@tauri-apps/api"
+import * as S from "@tauri-apps/api/shell"
 import * as G from "@tauri-apps/api/globalShortcut"
 
 function Limit() {
     const Renderer = {
         App: {
             Close: () => {
-                return process.exit(0)
+                return Pr.exit(0)
             },
             Relaunch: () => {
-                return process.relaunch()
+                return Pr.relaunch()
             },
             Invoke: (cmd: string, args?: Record<string, unknown>) => {
-                return invoke(cmd, args)
+                return T.invoke(cmd, args)
+            },
+            CreateWidget: (label: string, options?: Record<string, unknown>) => {
+                const widget = new W.WebviewWindow(label, options) as unknown
+                return widget
             }
         },
         Widget: {
             Min: () => {
-                return appWindow.minimize()
+                return W.appWindow.minimize()
             },
             Max: async () => {
-                if (await appWindow.isFullscreen()) {
-                    await appWindow.setFullscreen(false)
-                    return appWindow.setResizable(true)
+                if (await W.appWindow.isFullscreen()) {
+                    await W.appWindow.setFullscreen(false)
+                    return W.appWindow.setResizable(true)
                 }
                 else {
-                    await appWindow.setFullscreen(true)
-                    return appWindow.setResizable(false)
+                    await W.appWindow.setFullscreen(true)
+                    return W.appWindow.setResizable(false)
                 }
             },
             Hide: () => {
-                return appWindow.hide()
+                return W.appWindow.hide()
             },
             Show: async () => {
-                await appWindow.show()
-                return appWindow.setFocus()
+                await W.appWindow.show()
+                return W.appWindow.setFocus()
             },
-            Listen: appWindow.listen.bind(appWindow)
+            Listen: W.appWindow.listen.bind(W.appWindow)
         },
         Resource: {
             GetPathByName: async (name: string, convert: boolean = true) => {
-                const base = (await join(await resourceDir(), 'Need/', name)).replace('\\\\?\\', '').replaceAll('\\', '/')
-                const path = convert ? convertFileSrc(base) : base
+                const base = (await Pa.join(await Pa.resourceDir(), 'Need/', name)).replace('\\\\?\\', '').replaceAll('\\', '/')
+                const path = convert ? T.convertFileSrc(base) : base
                 return path
             },
             ReadJsonFileToObject: async (path: string) => {
@@ -59,7 +63,7 @@ function Limit() {
                 return F.writeTextFile(path, content)
             },
             OpenPathInFolder: (path: string) => {
-                return shell.open(path)
+                return S.open(path)
             },
             IsPathExists: (path: string) => {
                 return F.exists(path)
