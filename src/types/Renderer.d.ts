@@ -113,4 +113,19 @@ declare namespace Renderer {
          */
         export function Unregister(shortcut: string): Promise<void>
     }
+
+    /**
+     * 屏幕
+     */
+    export namespace Screen {
+        /**
+         * 获取所有屏幕
+         */
+        export function GetAllScreens(): Promise<Array<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number }>>
+
+        /**
+         * 获取当前窗口所在的屏幕
+         */
+        export function GetWidgetScreen(): Promise<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number } | null>
+    }
 }

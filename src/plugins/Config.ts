@@ -98,6 +98,14 @@ class Config {
                 Unregister: (shortcut: string) => {
                     return G.unregister(shortcut)
                 },
+            },
+            Screen: {
+                GetAllScreens: () => {
+                    return W.availableMonitors()
+                },
+                GetWidgetScreen: () => {
+                    return W.currentMonitor()
+                }
             }
         }
 
