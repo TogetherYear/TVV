@@ -71,8 +71,8 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-single-instance",
- "winapi",
  "window-shadows",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]

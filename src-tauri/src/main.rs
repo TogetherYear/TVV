@@ -2,9 +2,6 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-#[cfg(windows)]
-extern crate winapi;
-
 use tauri::{
     generate_context, generate_handler, Builder, Manager, PhysicalPosition, SystemTray,
     SystemTrayEvent,
@@ -12,17 +9,14 @@ use tauri::{
 
 use window_shadows::set_shadow;
 
-#[derive(Clone, serde::Serialize)]
-struct Payload {
-    args: Vec<String>,
-    cwd: String,
+use windows_sys::Win32::{Foundation::POINT, UI::WindowsAndMessaging::GetCursorPos};
+
+#[tauri::command]
+fn RustTest() -> String {
+    String::from("去码头整点薯条:Rust!")
 }
 
-#[cfg(windows)]
-fn GetCursorPos() -> Option<(i32, i32)> {
-    use winapi::shared::windef::POINT;
-    use winapi::um::winuser::GetCursorPos;
-
+fn GetCursorPosition() -> Option<(i32, i32)> {
     let mut pt = POINT { x: -1, y: -1 };
     let ret = unsafe { GetCursorPos(&mut pt) };
     if ret != 1 || pt.x == -1 && pt.y == -1 {
@@ -32,11 +26,6 @@ fn GetCursorPos() -> Option<(i32, i32)> {
     }
 }
 
-#[tauri::command]
-fn RustTest() -> String {
-    String::from("去码头整点薯条:Rust!")
-}
-
 fn main() {
     Builder::default()
         .setup(|app| {
@@ -44,8 +33,7 @@ fn main() {
             set_shadow(&windowA, true).expect("Unsupported platform!");
             Ok(())
         })
-        .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-            let _p = Payload { args: argv, cwd };
+        .plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
             let window = app.get_window("Application").unwrap();
             if window.is_minimized().unwrap() {
                 window.unminimize().unwrap();
@@ -54,7 +42,7 @@ fn main() {
             }
             window.set_focus().unwrap();
         }))
-        .invoke_handler(generate_handler![RustTest])
+        .invoke_handler(generate_handler![RustTest,])
         .system_tray(SystemTray::new().with_tooltip("去码头整点薯条"))
         .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::DoubleClick {
@@ -76,7 +64,7 @@ fn main() {
                 ..
             } => {
                 let window = app.get_window("Tray").unwrap();
-                let point = GetCursorPos().unwrap();
+                let point = GetCursorPosition().unwrap();
                 let size = window.inner_size().unwrap();
                 window
                     .set_position(PhysicalPosition::new(
