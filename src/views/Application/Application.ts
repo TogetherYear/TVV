@@ -18,7 +18,8 @@ class Application extends AActor {
         onMounted(async () => {
             await Renderer.Widget.Show()
         })
-        onUnmounted(() => {
+        onUnmounted(async () => {
+            await Renderer.GlobalShortcut.UnregisterAll()
             this.Destroy()
         })
     }

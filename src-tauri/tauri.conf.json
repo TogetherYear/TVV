@@ -46,10 +46,7 @@
                 "unminimize": false
             },
             "process": {
-                "all": false,
-                "exit": true,
-                "relaunch": false,
-                "relaunchDangerousAllowSymlinkMacos": false
+                "all": true
             },
             "protocol": {
                 "all": true,
@@ -67,6 +64,9 @@
                 ]
             },
             "shell": {
+                "all": true
+            },
+            "globalShortcut": {
                 "all": true
             }
         },

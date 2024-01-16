@@ -4,14 +4,16 @@ import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { resourceDir, join } from "@tauri-apps/api/path";
 import * as F from "@tauri-apps/api/fs";
 import { shell } from "@tauri-apps/api"
-
-const allow = ["Application"]
+import * as G from "@tauri-apps/api/globalShortcut"
 
 function Limit() {
     const Renderer = {
         App: {
             Close: () => {
                 return process.exit(0)
+            },
+            Relaunch: () => {
+                return process.relaunch()
             },
             Invoke: (cmd: string, args?: Record<string, unknown>) => {
                 return invoke(cmd, args)
@@ -65,6 +67,20 @@ function Limit() {
             ReadDirFiles: (path: string) => {
                 return F.readDir(path)
             }
+        },
+        GlobalShortcut: {
+            UnregisterAll: () => {
+                return G.unregisterAll()
+            },
+            IsRegistered: (shortcut: string) => {
+                return G.isRegistered(shortcut)
+            },
+            Register: (shortcut: string, handler: (shortcut: string) => {}) => {
+                return G.register(shortcut, handler)
+            },
+            Unregister: (shortcut: string) => {
+                return G.unregister(shortcut)
+            },
         }
     }
 
@@ -85,7 +101,7 @@ async function Tauri() {
 }
 
 async function Process() {
-    if (allow.indexOf(location.href.split('/').slice(-1)[0]) != -1) {
+    if (location.href.split('/').slice(-1)[0] == "Application") {
         const files = await Renderer.Resource.ReadDirFiles(await Renderer.Resource.GetPathByName("ChildProcesses/", false))
         for (let f of files) {
             let script = document.createElement("script");
