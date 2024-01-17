@@ -3,8 +3,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::{
-    generate_context, generate_handler, Builder, Manager, PhysicalPosition, SystemTray,
-    SystemTrayEvent,
+    generate_context, generate_handler, App, AppHandle, Builder, Manager, PhysicalPosition,
+    SystemTray, SystemTrayEvent,
 };
 
 use window_shadows::set_shadow;
@@ -30,12 +30,12 @@ fn main() {
         .expect("Error while running tauri application");
 }
 
-fn OnSetup(app: &mut tauri::App) {
+fn OnSetup(app: &mut App) {
     let shadowWindow = app.get_window("Application").unwrap();
     set_shadow(&shadowWindow, true).expect("Unsupported platform!");
 }
 
-fn OnSecondInstance(app: &tauri::AppHandle) {
+fn OnSecondInstance(app: &AppHandle) {
     let window = app.get_window("Application").unwrap();
     if window.is_minimized().unwrap() {
         window.unminimize().unwrap();
@@ -45,7 +45,7 @@ fn OnSecondInstance(app: &tauri::AppHandle) {
     window.set_focus().unwrap();
 }
 
-fn OnTrayEvent(app: &tauri::AppHandle, event: SystemTrayEvent) {
+fn OnTrayEvent(app: &AppHandle, event: SystemTrayEvent) {
     match event {
         SystemTrayEvent::DoubleClick {
             position: _,
