@@ -1,5 +1,38 @@
 declare namespace Renderer {
     /**
+     * 窗口构造接口
+     */
+    export interface IWidget {
+        url?: string;
+        center?: boolean;
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+        minWidth?: number;
+        minHeight?: number;
+        maxWidth?: number;
+        maxHeight?: number;
+        resizable?: boolean;
+        title?: string;
+        fullscreen?: boolean;
+        focus?: boolean;
+        transparent?: boolean;
+        maximized?: boolean;
+        visible?: boolean;
+        decorations?: boolean;
+        alwaysOnTop?: boolean;
+        contentProtected?: boolean;
+        skipTaskbar?: boolean;
+        fileDropEnabled?: boolean;
+        tabbingIdentifier?: string;
+        userAgent?: string;
+        maximizable?: boolean;
+        minimizable?: boolean;
+        closable?: boolean;
+    }
+
+    /**
      * 应用
      */
     export namespace App {
@@ -21,7 +54,7 @@ declare namespace Renderer {
         /**
          * 创建新窗口
          */
-        export function CreateWidget(label: string, options?: Record<string, unknown>): unknown
+        export function CreateWidget(label: string, options?: IWidget): unknown
     }
 
     /**

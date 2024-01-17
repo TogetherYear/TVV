@@ -28,10 +28,10 @@ class Config {
                 Relaunch: () => {
                     return Pr.relaunch()
                 },
-                Invoke: (cmd: string, args?: Record<string, unknown>) => {
+                Invoke: (cmd: string, args?: T.InvokeArgs) => {
                     return T.invoke(cmd, args)
                 },
-                CreateWidget: (label: string, options?: Record<string, unknown>) => {
+                CreateWidget: (label: string, options?: W.WindowOptions) => {
                     const widget = new W.WebviewWindow(label, options) as unknown
                     return widget
                 }
