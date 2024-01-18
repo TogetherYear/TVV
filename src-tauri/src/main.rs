@@ -31,8 +31,7 @@ fn main() {
 }
 
 fn OnSetup(app: &mut App) {
-    let shadowWindow = app.get_window("Application").unwrap();
-    set_shadow(&shadowWindow, true).expect("Unsupported platform!");
+    SetWindowShadow(app);
 }
 
 fn OnSecondInstance(app: &AppHandle) {
@@ -89,6 +88,11 @@ fn OnTrayEvent(app: &AppHandle, event: SystemTrayEvent) {
         }
         _ => {}
     }
+}
+
+fn SetWindowShadow(app: &mut App) {
+    let window = app.get_window("Application").unwrap();
+    set_shadow(&window, true).expect("Unsupported platform!");
 }
 
 fn GetCursorPosition() -> POINT {

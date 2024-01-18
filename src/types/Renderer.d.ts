@@ -77,6 +77,11 @@ declare namespace Renderer {
         export function Hide(): Promise<void>
 
         /**
+         * 关闭
+         */
+        export function Close(): Promise<void>
+
+        /**
          * 显示
          */
         export function Show(): Promise<void>

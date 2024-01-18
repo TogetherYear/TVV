@@ -42,11 +42,14 @@ namespace DR {
     export enum RendererEvent {
         Message = 'Message',
         SecondInstance = 'SecondInstance',
+        Create = 'Create',
+        Destroy = 'Destroy'
     }
 
     export type RendererSendMessage = {
         event: RendererEvent,
-        send: string
+        send: string,
+        extra?: Record<string, unknown>
     }
 
     export type RendererEventCallback = (e: RendererSendMessage) => void

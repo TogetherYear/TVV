@@ -27,7 +27,13 @@ class Renderer extends EventSystem {
                 return T.invoke(cmd, args)
             },
             CreateWidget: (label: string, options?: W.WindowOptions) => {
-                const widget = new W.WebviewWindow(label, options) as unknown
+                const widget = new W.WebviewWindow(label, options)
+                widget.once('tauri://window-created', (e) => {
+                    this.Emit(DR.RendererEvent.Create, { event: DR.RendererEvent.Create, send: '', extra: { windowLabel: label } })
+                })
+                widget.once('tauri://destroyed', (e) => {
+                    this.Emit(DR.RendererEvent.Destroy, { event: DR.RendererEvent.Destroy, send: '', extra: { windowLabel: label } })
+                })
                 return widget
             }
         }
@@ -50,6 +56,9 @@ class Renderer extends EventSystem {
             },
             Hide: () => {
                 return W.appWindow.hide()
+            },
+            Close: () => {
+                return W.appWindow.close()
             },
             Show: async () => {
                 await W.appWindow.show()
@@ -141,11 +150,13 @@ class Renderer extends EventSystem {
     private CreateEvents() {
         this.AddKey(DR.RendererEvent.Message)
         this.AddKey(DR.RendererEvent.SecondInstance)
+        this.AddKey(DR.RendererEvent.Create)
+        this.AddKey(DR.RendererEvent.Destroy)
     }
 
     private ListenEvents() {
         W.appWindow.listen("Tauri", (e) => {
-            const r = e.payload as Record<string, unknown>
+            const r = e.payload as DR.RendererSendMessage
             if (r.event == DR.RendererEvent.SecondInstance) {
                 this.Emit(DR.RendererEvent.SecondInstance, r)
             }
@@ -176,6 +187,14 @@ class Renderer extends EventSystem {
                 document.body.appendChild(script);
             }
         }
+    }
+
+    public override AddKey(key: DR.RendererEvent): void {
+        super.AddKey(key)
+    }
+
+    public override Emit(key: DR.RendererEvent, data: DR.RendererSendMessage): void {
+        super.Emit(key, data)
     }
 
     public override AddListen(key: DR.RendererEvent, scope: Object, callback: DR.RendererEventCallback, once?: boolean): void {

@@ -17,6 +17,7 @@
                 "center": true,
                 "create": true,
                 "hide": true,
+                "close": true,
                 "minimize": true,
                 "setAlwaysOnTop": true,
                 "setFocus": true,
