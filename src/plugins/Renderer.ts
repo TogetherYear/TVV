@@ -1,12 +1,13 @@
 import * as C from "@tauri-apps/api/clipboard"
 import * as D from "@tauri-apps/api/dialog"
-import * as W from "@tauri-apps/api/window"
-import * as T from "@tauri-apps/api/tauri";
+import * as E from "@tauri-apps/api/event"
+import * as F from "@tauri-apps/api/fs";
+import * as G from "@tauri-apps/api/globalShortcut"
 import * as Pa from "@tauri-apps/api/path";
 import * as Pr from '@tauri-apps/api/process'
-import * as F from "@tauri-apps/api/fs";
 import * as S from "@tauri-apps/api/shell"
-import * as G from "@tauri-apps/api/globalShortcut"
+import * as T from "@tauri-apps/api/tauri";
+import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/libs/EventSystem";
 import { DR } from "@/decorators/DR";
 
@@ -30,10 +31,10 @@ class Renderer extends EventSystem {
             },
             CreateWidget: (label: string, options?: W.WindowOptions) => {
                 const widget = new W.WebviewWindow(label, options)
-                widget.once('tauri://window-created', (e) => {
+                widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
                     this.Emit(DR.RendererEvent.Create, { event: DR.RendererEvent.Create, send: '', extra: { windowLabel: label } })
                 })
-                widget.once('tauri://destroyed', (e) => {
+                widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
                     this.Emit(DR.RendererEvent.Destroy, { event: DR.RendererEvent.Destroy, send: '', extra: { windowLabel: label } })
                 })
                 return widget
