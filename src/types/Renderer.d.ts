@@ -132,6 +132,16 @@ declare namespace Renderer {
         export function WriteStringToFile(path: string, content: string): Promise<void>
 
         /**
+         * 从读取文件转换为字节数组 不能用Tauri转换后的地址
+         */
+        export function ReadBinaryFromFile(path: string): Promise<Uint8Array>
+
+        /**
+         * 将字节数组写入文件 不能用Tauri转换后的地址
+         */
+        export function WriteBinaryToFile(path: string, content: Iterable<number> | ArrayLike<number> | ArrayBuffer): Promise<void>
+
+        /**
          * 在文件资源管理器中打开路径 不能用Tauri转换后的地址
          */
         export function OpenPathInFolder(path: string): Promise<void>

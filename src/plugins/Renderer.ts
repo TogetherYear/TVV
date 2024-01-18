@@ -96,6 +96,15 @@ class Renderer extends EventSystem {
                 !(await F.exists(dir)) && (await F.createDir(dir))
                 return F.writeTextFile(path, content)
             },
+            ReadBinaryFromFile: (path: string) => {
+                return F.readBinaryFile(path)
+            },
+            WriteBinaryToFile: async (path: string, content: F.BinaryFileContents) => {
+                const file = path.split('/').slice(-1)[0]
+                const dir = path.replace(file, '')
+                !(await F.exists(dir)) && (await F.createDir(dir))
+                return F.writeBinaryFile(path, content)
+            },
             OpenPathInFolder: (path: string) => {
                 return S.open(path)
             },
