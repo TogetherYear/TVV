@@ -1,3 +1,5 @@
+import * as C from "@tauri-apps/api/clipboard"
+import * as D from "@tauri-apps/api/dialog"
 import * as W from "@tauri-apps/api/window"
 import * as T from "@tauri-apps/api/tauri";
 import * as Pa from "@tauri-apps/api/path";
@@ -36,6 +38,31 @@ class Renderer extends EventSystem {
                 })
                 return widget
             }
+        }
+    }
+
+    public get Dialog() {
+        return {
+            Message: (message: string, options?: string | D.MessageDialogOptions) => {
+                return D.message(message, options)
+            },
+            Ask: (message: string, options?: string | D.ConfirmDialogOptions) => {
+                return D.ask(message, options)
+            },
+            Confirm: (message: string, options?: string | D.ConfirmDialogOptions) => {
+                return D.confirm(message, options)
+            }
+        }
+    }
+
+    public get Clipboard() {
+        return {
+            WriteText: (text: string) => {
+                return C.writeText(text)
+            },
+            ReadText: () => {
+                return C.readText()
+            },
         }
     }
 

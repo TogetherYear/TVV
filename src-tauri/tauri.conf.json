@@ -51,6 +51,12 @@
             },
             "globalShortcut": {
                 "all": true
+            },
+            "clipboard": {
+                "all": true
+            },
+            "dialog": {
+                "all": true
             }
         },
         "bundle": {
