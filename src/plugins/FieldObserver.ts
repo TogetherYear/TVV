@@ -68,8 +68,9 @@ class FieldObserver extends EventSystem {
     public static get Instance() { return this.instance }
 
     public Run() {
-        if (!window.Debug) {
-            (window as any).FieldObserver = this
+        if (!window.FieldObserver) {
+            //@ts-ignore
+            window.FieldObserver = this
         }
     }
 

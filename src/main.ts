@@ -17,8 +17,8 @@ AppRequest.Instance.Run()
 import { FieldObserver } from './plugins/FieldObserver'
 FieldObserver.Instance.Run()
 
-import { Config } from './plugins/Config'
-await Config.Instance.Run()
+import { Renderer } from './plugins/Renderer'
+await Renderer.Instance.Run()
 
 createApp(AppVue)
   .use(router)

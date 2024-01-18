@@ -82,6 +82,26 @@ declare namespace Renderer {
         export function Show(): Promise<void>
 
         /**
+         * 居中
+         */
+        export function Center(): Promise<void>
+
+        /**
+         * 设置是否显示在最上层
+         */
+        export function SetAlwaysOnTop(b: boolean): Promise<void>
+
+        /**
+         * 设置大小
+         */
+        export function SetSize(width: number, height: number): Promise<void>
+
+        /**
+         * 设置位置
+         */
+        export function setPosition(x: number, y: number): Promise<void>
+
+        /**
          * 监听Tauri事件
          */
         export function Listen<T>(event: string, handler: (event: { event: string, windowLabel: string, id: number, payload: T }) => void): Promise<() => void>
@@ -161,4 +181,14 @@ declare namespace Renderer {
          */
         export function GetWidgetScreen(): Promise<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number } | null>
     }
+
+    /**
+     * 监听事件
+     */
+    export function AddListen(key: string, scope: Object, callback: (e: { event: string, send: string }) => void, once?: boolean): void
+
+    /**
+     * 取消监听事件
+     */
+    export function RemoveListen(key: string, scope: Object, callback: (e: { event: string, send: string }) => void): void
 }

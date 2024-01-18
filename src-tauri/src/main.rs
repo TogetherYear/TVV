@@ -43,6 +43,15 @@ fn OnSecondInstance(app: &AppHandle) {
         window.show().unwrap();
     }
     window.set_focus().unwrap();
+    window
+        .emit(
+            "Tauri",
+            TauriSendRendererPayload {
+                event: "SecondInstance",
+                send: "",
+            },
+        )
+        .unwrap();
 }
 
 fn OnTrayEvent(app: &AppHandle, event: SystemTrayEvent) {
@@ -88,6 +97,12 @@ fn GetCursorPosition() -> POINT {
         GetCursorPos(&mut pt);
     };
     pt
+}
+
+#[derive(Clone, serde::Serialize)]
+struct TauriSendRendererPayload<'a> {
+    event: &'a str,
+    send: &'a str,
 }
 
 #[derive(Clone, serde::Serialize)]

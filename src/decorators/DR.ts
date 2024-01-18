@@ -38,5 +38,17 @@ namespace DR {
         icon: string,
         label: string
     }
+
+    export enum RendererEvent {
+        Message = 'Message',
+        SecondInstance = 'SecondInstance',
+    }
+
+    export type RendererSendMessage = {
+        event: RendererEvent,
+        send: string
+    }
+
+    export type RendererEventCallback = (e: RendererSendMessage) => void
 }
 export { DR }
