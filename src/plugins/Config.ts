@@ -65,9 +65,8 @@ class Config {
                     const path = convert ? T.convertFileSrc(base) : base
                     return path
                 },
-                ReadJsonFileToObject: async (path: string) => {
-                    const r = JSON.parse(await F.readTextFile(path))
-                    return r
+                ReadStringFromFile: (path: string) => {
+                    return F.readTextFile(path)
                 },
                 WriteStringToFile: async (path: string, content: string) => {
                     const file = path.split('/').slice(-1)[0]
@@ -114,7 +113,7 @@ class Config {
 
     private async Limit() {
         const path = await Renderer.Resource.GetPathByName(`Configs/${import.meta.env.PROD ? 'Production' : 'Development'}.json`, false)
-        const json = await Renderer.Resource.ReadJsonFileToObject(path)
+        const json = JSON.parse(await Renderer.Resource.ReadStringFromFile(path))
         if (!json.debug) {
             window.addEventListener('contextmenu', (e) => {
                 e.preventDefault()

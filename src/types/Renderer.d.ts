@@ -97,9 +97,9 @@ declare namespace Renderer {
         export function GetPathByName(name: string, convert?: boolean): Promise<string>
 
         /**
-         * 读取Json文件到对象 不能用Tauri转换后的地址
+         * 从读取文件转换为字符串 不能用Tauri转换后的地址
          */
-        export function ReadJsonFileToObject(path: string): Promise<Record<string, unknown>>
+        export function ReadStringFromFile(path: string): Promise<string>
 
         /**
          * 将字符串写入文件 不能用Tauri转换后的地址
