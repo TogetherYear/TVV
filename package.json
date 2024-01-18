@@ -8,15 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.4.0",
+    "@tauri-apps/api": "^1.5.3",
     "axios": "^1.4.0",
     "pinia": "^2.1.4",
+    "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
     "three": "^0.139.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.4.0",
+    "@tauri-apps/cli": "^1.5.9",
     "@types/node": "^20.3.3",
     "@types/three": "^0.139.0",
     "@vitejs/plugin-vue": "^4.2.3",

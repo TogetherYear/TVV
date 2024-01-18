@@ -1,3 +1,4 @@
+import * as A from "tauri-plugin-autostart-api";
 import * as C from "@tauri-apps/api/clipboard"
 import * as D from "@tauri-apps/api/dialog"
 import * as E from "@tauri-apps/api/event"
@@ -20,6 +21,18 @@ class Renderer extends EventSystem {
 
     public get App() {
         return {
+            IsAutostart: () => {
+                return A.isEnabled()
+            },
+            SetAutostart: async (b: boolean) => {
+                const current = await A.isEnabled()
+                if (current && !b) {
+                    return A.disable()
+                }
+                else if (!current && b) {
+                    return A.enable()
+                }
+            },
             Close: () => {
                 return Pr.exit(0)
             },

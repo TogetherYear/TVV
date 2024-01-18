@@ -4,6 +4,16 @@ declare namespace Renderer {
      */
     export namespace App {
         /**
+         * 是否开机自启
+         */
+        export function IsAutostart(): Promise<boolean>
+
+        /**
+         * 设置开机自启
+         */
+        export function SetAutostart(b: boolean): Promise<void>
+
+        /**
          * 关闭
          */
         export function Close(): Promise<void>

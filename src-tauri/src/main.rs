@@ -7,6 +7,8 @@ use tauri::{
     SystemTray, SystemTrayEvent,
 };
 
+use tauri_plugin_autostart::MacosLauncher;
+
 use window_shadows::set_shadow;
 
 use windows_sys::Win32::{Foundation::POINT, UI::WindowsAndMessaging::GetCursorPos};
@@ -21,6 +23,10 @@ fn main() {
         .plugin(tauri_plugin_single_instance::init(|app, _argv, _cwd| {
             OnSecondInstance(app);
         }))
+        .plugin(tauri_plugin_autostart::init(
+            MacosLauncher::LaunchAgent,
+            Some(vec!["TSingleton", "去码头整点薯条"]),
+        ))
         .invoke_handler(generate_handler![GetRustStruct])
         .system_tray(SystemTray::new().with_tooltip("去码头整点薯条"))
         .on_system_tray_event(|app, event| {
