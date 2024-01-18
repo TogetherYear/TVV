@@ -33,6 +33,7 @@ const themeOverrides: GlobalThemeOverrides = {
     },
     Message: darkTheme.Message,
     Dialog: darkTheme.Dialog,
+    Notification: darkTheme.Notification,
     // Button: {
     //     textColor: '#FF0000'
     // }
