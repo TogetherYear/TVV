@@ -7,9 +7,9 @@ use tauri::{
     SystemTray, SystemTrayEvent,
 };
 
-use window_shadows::set_shadow;
-
 use windows_sys::Win32::{Foundation::POINT, UI::WindowsAndMessaging::GetCursorPos};
+
+use window_shadows::set_shadow;
 
 fn main() {
     Builder::default()
