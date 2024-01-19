@@ -42,6 +42,13 @@ class Renderer extends EventSystem {
             Invoke: (cmd: string, args?: T.InvokeArgs) => {
                 return T.invoke(cmd, args)
             },
+            GetAllWidgets: () => {
+                return W.getAll()
+            },
+            GetWidgetByLabel: (label: string) => {
+                const ws = W.getAll()
+                return ws.find(w => w.label == label)
+            },
             CreateWidget: (label: string, options?: W.WindowOptions) => {
                 const widget = new W.WebviewWindow(label, options)
                 widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
@@ -154,6 +161,31 @@ class Renderer extends EventSystem {
             },
             ReadDirFiles: (path: string) => {
                 return F.readDir(path)
+            },
+            CreateDir: async (path: string) => {
+                if (!(await F.exists(path))) {
+                    return F.createDir(path)
+                }
+            },
+            RemoveDir: async (path: string) => {
+                if (await F.exists(path)) {
+                    return F.removeDir(path)
+                }
+            },
+            RemoveFile: async (path: string) => {
+                if (await F.exists(path)) {
+                    return F.removeFile(path)
+                }
+            },
+            Rename: async (path: string, newPath: string) => {
+                if (await F.exists(path)) {
+                    return F.renameFile(path, newPath)
+                }
+            },
+            CopyFile: async (path: string, newPath: string) => {
+                if (await F.exists(path)) {
+                    return F.copyFile(path, path)
+                }
             }
         }
     }
@@ -182,6 +214,9 @@ class Renderer extends EventSystem {
             },
             GetWidgetScreen: () => {
                 return W.currentMonitor()
+            },
+            GetPrimaryScreen: () => {
+                return W.primaryMonitor()
             }
         }
     }

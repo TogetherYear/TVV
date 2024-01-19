@@ -29,6 +29,16 @@ declare namespace Renderer {
         export function Invoke(cmd: string, args?: Record<string, unknown>): Promise<unknown>
 
         /**
+         * 获取所有窗口
+         */
+        export function GetAllWidgets(): Array<unknown>
+
+        /**
+         * 根据 label 获取窗口
+         */
+        export function GetWidgetByLabel(label: string): unknown
+
+        /**
          * 创建新窗口
          */
         export function CreateWidget(label: string, options?: Record<string, unknown>): unknown
@@ -167,6 +177,31 @@ declare namespace Renderer {
          * 获取文件夹里所有文件列表 不能用Tauri转换后的地址
          */
         export function ReadDirFiles(path: string): Promise<Array<{ path: string, name?: string }>>
+
+        /**
+         * 创建文件夹 不能用Tauri转换后的地址
+         */
+        export function CreateDir(path: string): Promise<void>
+
+        /**
+         * 删除文件夹 不能用Tauri转换后的地址
+         */
+        export function RemoveDir(path: string): Promise<void>
+
+        /**
+         * 删除文件 不能用Tauri转换后的地址
+         */
+        export function RemoveFile(path: string): Promise<void>
+
+        /**
+         * 重命名 不能用Tauri转换后的地址
+         */
+        export function Rename(path: string, newPath: string): Promise<void>
+
+        /**
+         * 复制文件 不能用Tauri转换后的地址
+         */
+        export function CopyFile(path: string, newPath: string): Promise<void>
     }
 
     /**
@@ -207,6 +242,11 @@ declare namespace Renderer {
          * 获取当前窗口所在的屏幕
          */
         export function GetWidgetScreen(): Promise<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number } | null>
+
+        /**
+         * 获取系统主屏幕
+         */
+        export function GetPrimaryScreen(): Promise<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number } | null>
     }
 
     /**
