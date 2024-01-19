@@ -23,7 +23,7 @@ fn main() {
         }))
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
-            Some(vec!["TSingleton", "去码头整点薯条"]),
+            Some(vec![]),
         ))
         .plugin(tauri_plugin_fs_extra::init())
         .plugin(tauri_plugin_upload::init())
