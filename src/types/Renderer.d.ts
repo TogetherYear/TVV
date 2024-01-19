@@ -126,7 +126,7 @@ declare namespace Renderer {
         /**
          * 设置位置
          */
-        export function setPosition(x: number, y: number): Promise<void>
+        export function SetPosition(x: number, y: number): Promise<void>
 
         /**
          * 监听Tauri事件
