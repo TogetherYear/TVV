@@ -4,10 +4,13 @@ import * as D from "@tauri-apps/api/dialog"
 import * as E from "@tauri-apps/api/event"
 import * as F from "@tauri-apps/api/fs";
 import * as G from "@tauri-apps/api/globalShortcut"
+import * as M from 'tauri-plugin-fs-extra-api'
 import * as Pa from "@tauri-apps/api/path";
 import * as Pr from '@tauri-apps/api/process'
-import * as S from "@tauri-apps/api/shell"
+import * as Sh from "@tauri-apps/api/shell"
+import * as St from 'tauri-plugin-store-api'
 import * as T from "@tauri-apps/api/tauri";
+import * as U from 'tauri-plugin-upload-api'
 import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/libs/EventSystem";
 import { DR } from "@/decorators/DR";
@@ -25,7 +28,7 @@ class Renderer extends EventSystem {
                 return A.isEnabled()
             },
             SetAutostart: async (b: boolean) => {
-                const current = await A.isEnabled()
+                const current = await this.App.IsAutostart()
                 if (current && !b) {
                     return A.disable()
                 }
@@ -46,7 +49,7 @@ class Renderer extends EventSystem {
                 return W.getAll()
             },
             GetWidgetByLabel: (label: string) => {
-                const ws = W.getAll()
+                const ws = this.App.GetAllWidgets()
                 return ws.find(w => w.label == label)
             },
             CreateWidget: (label: string, options?: W.WindowOptions) => {
@@ -135,13 +138,16 @@ class Renderer extends EventSystem {
                 const path = convert ? T.convertFileSrc(base) : base
                 return path
             },
+            GetPathMetadata: (path: string) => {
+                return M.metadata(path)
+            },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path)
             },
             WriteStringToFile: async (path: string, content: string) => {
                 const file = path.split('/').slice(-1)[0]
                 const dir = path.replace(file, '')
-                !(await F.exists(dir)) && (await F.createDir(dir))
+                await this.Resource.CreateDir(dir)
                 return F.writeTextFile(path, content)
             },
             ReadBinaryFromFile: (path: string) => {
@@ -150,11 +156,11 @@ class Renderer extends EventSystem {
             WriteBinaryToFile: async (path: string, content: F.BinaryFileContents) => {
                 const file = path.split('/').slice(-1)[0]
                 const dir = path.replace(file, '')
-                !(await F.exists(dir)) && (await F.createDir(dir))
+                await this.Resource.CreateDir(dir)
                 return F.writeBinaryFile(path, content)
             },
             OpenPathInFolder: (path: string) => {
-                return S.open(path)
+                return Sh.open(path)
             },
             IsPathExists: (path: string) => {
                 return F.exists(path)
@@ -163,29 +169,35 @@ class Renderer extends EventSystem {
                 return F.readDir(path)
             },
             CreateDir: async (path: string) => {
-                if (!(await F.exists(path))) {
+                if (!(await this.Resource.IsPathExists(path))) {
                     return F.createDir(path)
                 }
             },
             RemoveDir: async (path: string) => {
-                if (await F.exists(path)) {
+                if (await this.Resource.IsPathExists(path)) {
                     return F.removeDir(path)
                 }
             },
             RemoveFile: async (path: string) => {
-                if (await F.exists(path)) {
+                if (await this.Resource.IsPathExists(path)) {
                     return F.removeFile(path)
                 }
             },
             Rename: async (path: string, newPath: string) => {
-                if (await F.exists(path)) {
+                if (await this.Resource.IsPathExists(path)) {
                     return F.renameFile(path, newPath)
                 }
             },
             CopyFile: async (path: string, newPath: string) => {
-                if (await F.exists(path)) {
-                    return F.copyFile(path, path)
+                if (await this.Resource.IsPathExists(path)) {
+                    return F.copyFile(path, newPath)
                 }
+            },
+            Upload: (url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>) => {
+                return U.upload(url, path, progressHandler, headers)
+            },
+            Download: (url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>) => {
+                return U.download(url, path, progressHandler, headers)
             }
         }
     }
@@ -218,6 +230,51 @@ class Renderer extends EventSystem {
             GetPrimaryScreen: () => {
                 return W.primaryMonitor()
             }
+        }
+    }
+
+    public get Store() {
+        return {
+            Create: async (name: string) => {
+                const path = await this.Resource.GetPathByName(`Data/${name}.dat`, false)
+                const store = new St.Store(path)
+                if (await this.Resource.IsPathExists(path)) {
+                    await store.load()
+                }
+                return {
+                    instance: store,
+                    Set: (key: string, value: unknown) => {
+                        return store.set(key, value)
+                    },
+                    Get: (key: string) => {
+                        return store.get(key)
+                    },
+                    Has: (key: string) => {
+                        return store.has(key)
+                    },
+                    Delete: (key: string) => {
+                        return store.delete(key)
+                    },
+                    Keys: () => {
+                        return store.keys()
+                    },
+                    Values: () => {
+                        return store.values()
+                    },
+                    Entries: () => {
+                        return store.entries()
+                    },
+                    Length: () => {
+                        return store.length()
+                    },
+                    Clear: () => {
+                        return store.clear()
+                    },
+                    Save: () => {
+                        return store.save()
+                    }
+                }
+            },
         }
     }
 

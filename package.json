@@ -12,6 +12,9 @@
     "axios": "^1.6.5",
     "pinia": "^2.1.7",
     "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
+    "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
+    "tauri-plugin-upload-api": "github:tauri-apps/tauri-plugin-upload#v1",
     "three": "^0.139.2",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"

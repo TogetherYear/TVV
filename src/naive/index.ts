@@ -4,7 +4,6 @@ import {
     NMessageProvider,
     NDialogProvider,
     NNotificationProvider,
-    NButton,
     GlobalThemeOverrides,
     darkTheme
 } from 'naive-ui'
@@ -18,7 +17,6 @@ const naive = create({
         NMessageProvider,
         NDialogProvider,
         NNotificationProvider,
-        NButton
     ]
 })
 
@@ -34,9 +32,6 @@ const themeOverrides: GlobalThemeOverrides = {
     Message: darkTheme.Message,
     Dialog: darkTheme.Dialog,
     Notification: darkTheme.Notification,
-    // Button: {
-    //     textColor: '#FF0000'
-    // }
 }
 
 export { naive, themeOverrides }

@@ -19,7 +19,11 @@ instance.Run()
 <template>
     <div class="Application">
         <HeaderBarVue></HeaderBarVue>
-        <n-button type="primary" class="Btn" @click="instance.Test()">Emit</n-button>
+        <span class="Btn">
+            <span class="Item" @click="instance.TestA()">TestA</span>
+            <span class="Item" @click="instance.TestB()">TestB</span>
+            <span class="Item" @click="instance.TestC()">TestC</span>
+        </span>
     </div>
 </template>
 

@@ -144,6 +144,11 @@ declare namespace Renderer {
         export function GetPathByName(name: string, convert?: boolean): Promise<string>
 
         /**
+         * 获取路径的元数据 不能用Tauri转换后的地址
+         */
+        export function GetPathMetadata(path: string): Promise<Record<string, unknown>>
+
+        /**
          * 从读取文件转换为字符串 不能用Tauri转换后的地址
          */
         export function ReadStringFromFile(path: string): Promise<string>
@@ -202,6 +207,16 @@ declare namespace Renderer {
          * 复制文件 不能用Tauri转换后的地址
          */
         export function CopyFile(path: string, newPath: string): Promise<void>
+
+        /**
+         * 上传文件 不能用Tauri转换后的地址
+         */
+        export function Upload(url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>): Promise<void>
+
+        /**
+         * 下载文件 不能用Tauri转换后的地址
+         */
+        export function Download(url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>): Promise<void>
     }
 
     /**
@@ -247,6 +262,28 @@ declare namespace Renderer {
          * 获取系统主屏幕
          */
         export function GetPrimaryScreen(): Promise<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number } | null>
+    }
+
+    /**
+     * 数据仓库
+     */
+    export namespace Store {
+        /**
+         * 创建仓库或加载已存在的
+         */
+        export function Create(name: string): Promise<{
+            instance: unknown;
+            Set: (key: string, value: unknown) => Promise<void>,
+            Get: (key: string) => Promise<unknown>,
+            Has: (key: string) => Promise<boolean>,
+            Delete: (key: string) => Promise<boolean>,
+            Keys: () => Promise<Array<string>>,
+            Values: () => Promise<Array<unknown>>,
+            Entries: () => Promise<Array<[string, unknown]>>,
+            Length: () => Promise<number>,
+            Clear: () => Promise<void>,
+            Save: () => Promise<void>,
+        }>
     }
 
     /**
