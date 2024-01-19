@@ -265,11 +265,11 @@ declare namespace Renderer {
     }
 
     /**
-     * 数据仓库
+     * 持久化本地数据仓库
      */
     export namespace Store {
         /**
-         * 创建仓库或加载已存在的
+         * 创建持久化本地仓库或加载已存在的
          */
         export function Create(name: string): Promise<{
             instance: unknown;
