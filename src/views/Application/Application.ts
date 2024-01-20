@@ -27,18 +27,6 @@ class Application extends AActor {
     protected Destroy() {
 
     }
-
-    public async TestA() {
-
-    }
-
-    public async TestB() {
-
-    }
-
-    public async TestC() {
-
-    }
 }
 
 export { Application }

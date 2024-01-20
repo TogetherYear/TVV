@@ -286,13 +286,36 @@ declare namespace Renderer {
         }>
     }
 
+    export enum TauriEvent {
+        Tauri = 'tauri://tauri',
+        WidgetBlur = 'tauri://blur',
+        WidgetCreate = 'tauri://window-created',
+        WidgetDestroy = 'tauri://destroyed',
+    }
+
+    export enum RendererEvent {
+        Message = 'Message',
+        SecondInstance = 'SecondInstance',
+        WidgetCreate = 'WidgetCreate',
+        WidgetDestroy = 'WidgetDestroy'
+    }
+
+    export interface IRendererSendMessage {
+        event: RendererEvent,
+        send: string,
+        extra?: Record<string, unknown>,
+        [key: string]: unknown
+    }
+
+    export type RendererEventCallback = (e: IRendererSendMessage) => void
+
     /**
      * 监听事件
      */
-    export function AddListen(key: string, scope: Object, callback: (e: { event: string, send: string }) => void, once?: boolean): void
+    export function AddListen(key: RendererEvent, scope: Object, callback: RendererEventCallback, once?: boolean): void
 
     /**
      * 取消监听事件
      */
-    export function RemoveListen(key: string, scope: Object, callback: (e: { event: string, send: string }) => void): void
+    export function RemoveListen(key: RendererEvent, scope: Object, callback: RendererEventCallback): void
 }

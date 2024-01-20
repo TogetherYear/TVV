@@ -27,7 +27,7 @@ class Tray extends AActor {
     }
 
     private ListenEvents() {
-        Renderer.Widget.Listen("tauri://blur", async () => {
+        Renderer.Widget.Listen(Renderer.TauriEvent.WidgetBlur, async () => {
             await Renderer.Widget.Hide()
         })
     }

@@ -51,7 +51,7 @@ fn OnSecondInstance(app: &AppHandle) {
     window.set_focus().unwrap();
     window
         .emit(
-            "Tauri",
+            "tauri://tauri",
             TauriSendRendererPayload {
                 event: "SecondInstance",
                 send: "",

@@ -1,7 +1,6 @@
 import * as A from "tauri-plugin-autostart-api";
 import * as C from "@tauri-apps/api/clipboard"
 import * as D from "@tauri-apps/api/dialog"
-import * as E from "@tauri-apps/api/event"
 import * as F from "@tauri-apps/api/fs";
 import * as G from "@tauri-apps/api/globalShortcut"
 import * as M from 'tauri-plugin-fs-extra-api'
@@ -13,7 +12,6 @@ import * as T from "@tauri-apps/api/tauri";
 import * as U from 'tauri-plugin-upload-api'
 import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/libs/EventSystem";
-import { DR } from "@/decorators/DR";
 
 class Renderer extends EventSystem {
     private constructor() { super() }
@@ -54,11 +52,11 @@ class Renderer extends EventSystem {
             },
             CreateWidget: (label: string, options?: W.WindowOptions) => {
                 const widget = new W.WebviewWindow(label, options)
-                widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                    this.Emit(DR.RendererEvent.Create, { event: DR.RendererEvent.Create, send: '', extra: { windowLabel: label } })
+                widget.once(this.TauriEvent.WidgetCreate, (e) => {
+                    this.Emit(this.RendererEvent.WidgetCreate, { event: this.RendererEvent.WidgetCreate, send: '', extra: { windowLabel: label } })
                 })
-                widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                    this.Emit(DR.RendererEvent.Destroy, { event: DR.RendererEvent.Destroy, send: '', extra: { windowLabel: label } })
+                widget.once(this.TauriEvent.WidgetDestroy, (e) => {
+                    this.Emit(this.RendererEvent.WidgetDestroy, { event: this.RendererEvent.WidgetDestroy, send: '', extra: { windowLabel: label } })
                 })
                 return widget
             }
@@ -278,6 +276,24 @@ class Renderer extends EventSystem {
         }
     }
 
+    public get TauriEvent() {
+        return {
+            Tauri: 'tauri://tauri',
+            WidgetBlur: 'tauri://blur',
+            WidgetCreate: 'tauri://window-created',
+            WidgetDestroy: 'tauri://destroyed',
+        }
+    }
+
+    public get RendererEvent() {
+        return {
+            Message: 'Message',
+            SecondInstance: 'SecondInstance',
+            WidgetCreate: 'WidgetCreate',
+            WidgetDestroy: 'WidgetDestroy'
+        }
+    }
+
     public async Run() {
         if (!window.Renderer) {
             //@ts-ignore
@@ -290,19 +306,19 @@ class Renderer extends EventSystem {
     }
 
     private CreateEvents() {
-        this.AddKey(DR.RendererEvent.Message)
-        this.AddKey(DR.RendererEvent.SecondInstance)
-        this.AddKey(DR.RendererEvent.Create)
-        this.AddKey(DR.RendererEvent.Destroy)
+        this.AddKey(this.RendererEvent.Message)
+        this.AddKey(this.RendererEvent.SecondInstance)
+        this.AddKey(this.RendererEvent.WidgetCreate)
+        this.AddKey(this.RendererEvent.WidgetDestroy)
     }
 
     private ListenEvents() {
-        W.appWindow.listen("Tauri", (e) => {
-            const r = e.payload as DR.RendererSendMessage
-            if (r.event == DR.RendererEvent.SecondInstance) {
-                this.Emit(DR.RendererEvent.SecondInstance, r)
+        W.appWindow.listen(this.TauriEvent.Tauri, (e) => {
+            const r = e.payload as Record<string, unknown>
+            if (r.event == this.RendererEvent.SecondInstance) {
+                this.Emit(this.RendererEvent.SecondInstance, r)
             }
-            this.Emit(DR.RendererEvent.Message, r)
+            this.Emit(this.RendererEvent.Message, r)
         })
     }
 
@@ -329,22 +345,6 @@ class Renderer extends EventSystem {
                 document.body.appendChild(script);
             }
         }
-    }
-
-    public override AddKey(key: DR.RendererEvent): void {
-        super.AddKey(key)
-    }
-
-    public override Emit(key: DR.RendererEvent, data: DR.RendererSendMessage): void {
-        super.Emit(key, data)
-    }
-
-    public override AddListen(key: DR.RendererEvent, scope: Object, callback: DR.RendererEventCallback, once?: boolean): void {
-        super.AddListen(key, scope, callback, once)
-    }
-
-    public override RemoveListen(key: DR.RendererEvent, scope: Object, callback: DR.RendererEventCallback): void {
-        super.RemoveListen(key, scope, callback)
     }
 }
 
