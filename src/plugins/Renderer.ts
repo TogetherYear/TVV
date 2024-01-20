@@ -340,7 +340,7 @@ class Renderer extends EventSystem {
             const files = await this.Resource.ReadDirFiles(await this.Resource.GetPathByName("ChildProcesses/", false))
             for (let f of files) {
                 let script = document.createElement("script");
-                script.type = "module";
+                script.type = "text/javascript";
                 script.src = await this.Resource.GetPathByName(`ChildProcesses/${f.name}`);
                 document.body.appendChild(script);
             }
