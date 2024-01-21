@@ -1,6 +1,7 @@
 import * as A from "tauri-plugin-autostart-api";
 import * as C from "@tauri-apps/api/clipboard"
 import * as D from "@tauri-apps/api/dialog"
+import * as E from "@tauri-apps/api/event"
 import * as F from "@tauri-apps/api/fs";
 import * as G from "@tauri-apps/api/globalShortcut"
 import * as M from 'tauri-plugin-fs-extra-api'
@@ -279,9 +280,9 @@ class Renderer extends EventSystem {
     public get TauriEvent() {
         return {
             Tauri: 'tauri://tauri',
-            WidgetBlur: 'tauri://blur',
-            WidgetCreate: 'tauri://window-created',
-            WidgetDestroy: 'tauri://destroyed',
+            WidgetBlur: E.TauriEvent.WINDOW_BLUR,
+            WidgetCreate: E.TauriEvent.WINDOW_CREATED,
+            WidgetDestroy: E.TauriEvent.WINDOW_DESTROYED,
         }
     }
 
