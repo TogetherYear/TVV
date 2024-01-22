@@ -30,9 +30,7 @@ class Application extends AActor {
     }
 
     private Test() {
-        setTimeout(async () => {
 
-        }, 3000);
     }
 }
 
