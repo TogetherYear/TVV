@@ -209,7 +209,7 @@ class Renderer extends EventSystem {
             IsRegistered: (shortcut: string) => {
                 return G.isRegistered(shortcut)
             },
-            Register: (shortcut: string, handler: (shortcut: string) => {}) => {
+            Register: (shortcut: string, handler: G.ShortcutHandler) => {
                 return G.register(shortcut, handler)
             },
             Unregister: (shortcut: string) => {
@@ -314,8 +314,8 @@ class Renderer extends EventSystem {
     }
 
     private ListenEvents() {
-        W.appWindow.listen(this.TauriEvent.Tauri, (e) => {
-            const r = e.payload as Record<string, unknown>
+        this.Widget.Listen<Record<string, unknown>>(this.TauriEvent.Tauri, (e) => {
+            const r = e.payload
             if (r.event == this.RendererEvent.SecondInstance) {
                 this.Emit(this.RendererEvent.SecondInstance, r)
             }

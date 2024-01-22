@@ -17,6 +17,7 @@ class Application extends AActor {
     public Run() {
         onMounted(async () => {
             await Renderer.Widget.Show()
+            this.Test()
         })
         onUnmounted(async () => {
             await Renderer.GlobalShortcut.UnregisterAll()
@@ -25,6 +26,10 @@ class Application extends AActor {
     }
 
     protected Destroy() {
+
+    }
+
+    private async Test() {
 
     }
 }

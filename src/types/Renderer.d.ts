@@ -26,7 +26,7 @@ declare namespace Renderer {
         /**
          * 调用Rust方法
          */
-        export function Invoke(cmd: string, args?: Record<string, unknown>): Promise<unknown>
+        export function Invoke(cmd: string, args?: IT.InvokeArgs): Promise<unknown>
 
         /**
          * 获取所有窗口
@@ -39,9 +39,9 @@ declare namespace Renderer {
         export function GetWidgetByLabel(label: string): unknown
 
         /**
-         * 创建新窗口
+         * 创建新窗口 返回值是窗口类 自己翻阅文档 这里不在写类型说明
          */
-        export function CreateWidget(label: string, options?: Record<string, unknown>): unknown
+        export function CreateWidget(label: IT.WindowLabel, options?: IT.WindowOptions): unknown
     }
 
     /**
@@ -51,17 +51,17 @@ declare namespace Renderer {
         /**
          * 消息框
          */
-        export function Message(message: string, options?: string | { title?: string, type?: 'info' | 'warning' | 'error', okLabel?: string }): Promise<boolean>
+        export function Message(message: string, options?: IT.MessageDialogOptions): Promise<boolean>
 
         /**
          * 询问框
          */
-        export function Ask(message: string, options?: string | { title?: string, type?: 'info' | 'warning' | 'error', okLabel?: string, cancelLabel?: string }): Promise<boolean>
+        export function Ask(message: string, options?: IT.ConfirmDialogOptions): Promise<boolean>
 
         /**
          * 确认框
          */
-        export function Confirm(message: string, options?: string | { title?: string, type?: 'info' | 'warning' | 'error', okLabel?: string, cancelLabel?: string }): Promise<boolean>
+        export function Confirm(message: string, options?: IT.ConfirmDialogOptions): Promise<boolean>
     }
 
     /**
@@ -129,9 +129,9 @@ declare namespace Renderer {
         export function SetPosition(x: number, y: number): Promise<void>
 
         /**
-         * 监听Tauri事件
+         * 监听Tauri事件 不建议你们用这个 去用我的 AddListen
          */
-        export function Listen<T>(event: string, handler: (event: { event: string, windowLabel: string, id: number, payload: T }) => void): Promise<() => void>
+        export function Listen<T>(event: string, handler: IT.EventCallback<T>): Promise<IT.UnlistenFn>
     }
 
     /**
@@ -166,7 +166,7 @@ declare namespace Renderer {
         /**
          * 将字节数组写入文件 不能用Tauri转换后的地址
          */
-        export function WriteBinaryToFile(path: string, content: Iterable<number> | ArrayLike<number> | ArrayBuffer): Promise<void>
+        export function WriteBinaryToFile(path: string, content: IT.BinaryFileContents): Promise<void>
 
         /**
          * 在文件资源管理器中打开路径 不能用Tauri转换后的地址
@@ -211,12 +211,12 @@ declare namespace Renderer {
         /**
          * 上传文件 不能用Tauri转换后的地址
          */
-        export function Upload(url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>): Promise<void>
+        export function Upload(url: string, path: string, progressHandler?: IT.ProgressHandler, headers?: Map<string, string>): Promise<void>
 
         /**
          * 下载文件 不能用Tauri转换后的地址
          */
-        export function Download(url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>): Promise<void>
+        export function Download(url: string, path: string, progressHandler?: IT.ProgressHandler, headers?: Map<string, string>): Promise<void>
     }
 
     /**
@@ -236,7 +236,7 @@ declare namespace Renderer {
         /**
          * 注册快捷键
          */
-        export function Register(shortcut: string, handler: (shortcut: string) => {}): Promise<void>
+        export function Register(shortcut: string, handler: IT.ShortcutHandler): Promise<void>
 
         /**
          * 取消快捷键
@@ -300,8 +300,52 @@ declare namespace Renderer {
         WidgetDestroy = 'WidgetDestroy'
     }
 
+    /**
+     * 监听事件
+     */
+    export function AddListen(key: RendererEvent, scope: Object, callback: IT.RendererEventCallback, once?: boolean): void
+
+    /**
+     * 取消监听事件
+     */
+    export function RemoveListen(key: RendererEvent, scope: Object, callback: IT.RendererEventCallback): void
+}
+
+declare namespace IT {
+    export interface WindowOptions {
+        url?: string,
+        center?: boolean,
+        x?: number,
+        y?: number,
+        width?: number,
+        height?: number,
+        minWidth?: number,
+        minHeight?: number,
+        maxWidth?: number,
+        maxHeight?: number,
+        resizable?: boolean,
+        title?: string,
+        fullscreen?: boolean,
+        focus?: boolean,
+        transparent?: boolean,
+        maximized?: boolean,
+        visible?: boolean,
+        decorations?: boolean,
+        alwaysOnTop?: boolean,
+        contentProtected?: boolean,
+        skipTaskbar?: boolean,
+        fileDropEnabled?: boolean,
+        tabbingIdentifier?: string,
+        userAgent?: string,
+        maximizable?: boolean,
+        minimizable?: boolean,
+        closable?: boolean
+    }
+
+    export type WindowLabel = string;
+
     export interface IRendererSendMessage {
-        event: RendererEvent,
+        event: Renderer.RendererEvent,
         send: string,
         extra?: Record<string, unknown>,
         [key: string]: unknown
@@ -309,13 +353,41 @@ declare namespace Renderer {
 
     export type RendererEventCallback = (e: IRendererSendMessage) => void
 
-    /**
-     * 监听事件
-     */
-    export function AddListen(key: RendererEvent, scope: Object, callback: RendererEventCallback, once?: boolean): void
+    export type BinaryFileContents = Iterable<number> | ArrayLike<number> | ArrayBuffer;
 
     /**
-     * 取消监听事件
+     * 调用此函数可以取消事件的监听
      */
-    export function RemoveListen(key: RendererEvent, scope: Object, callback: RendererEventCallback): void
+    export type UnlistenFn = () => void;
+
+    export interface MessageDialogOptions {
+        title?: string,
+        type?: 'info' | 'warning' | 'error',
+        okLabel?: string
+    }
+
+    export interface ConfirmDialogOptions {
+        title?: string,
+        type?: 'info' | 'warning' | 'error',
+        okLabel?: string,
+        cancelLabel?: string
+    }
+
+    export type InvokeArgs = Record<string, unknown>;
+
+    export interface Event<T> {
+        /**
+         * 自己仔细看文档 事件是如何触发的
+         */
+        event: Renderer.TauriEvent;
+        windowLabel: string;
+        id: number;
+        payload: T;
+    }
+
+    export type EventCallback<T> = (event: Event<T>) => void;
+
+    export type ProgressHandler = (progress: number, total: number) => void;
+
+    export type ShortcutHandler = (shortcut: string) => void;
 }
