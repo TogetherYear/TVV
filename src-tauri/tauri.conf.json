@@ -68,7 +68,6 @@
             },
             "externalBin": [],
             "icon": [
-                "icons/icon.png",
                 "icons/icon.ico"
             ],
             "identifier": "com.tauri.build",
@@ -140,7 +139,7 @@
             }
         ],
         "systemTray": {
-            "iconPath": "icons/icon.png",
+            "iconPath": "icons/tray.ico",
             "iconAsTemplate": true
         }
     }
