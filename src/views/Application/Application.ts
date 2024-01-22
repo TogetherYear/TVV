@@ -29,7 +29,7 @@ class Application extends AActor {
 
     }
 
-    private async Test() {
+    private Test() {
 
     }
 }

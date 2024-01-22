@@ -277,6 +277,47 @@ class Renderer extends EventSystem {
         }
     }
 
+    public get Autopilot() {
+        return {
+            GetMousePosition: () => {
+                return T.invoke("GetMousePosition")
+            },
+            SetMousePosition: (x: number, y: number) => {
+                return T.invoke("SetMousePosition", { x, y })
+            },
+            SetButtonClick: (button: number, delay: number = 100) => {
+                return T.invoke("SetButtonClick", { button, delay })
+            },
+            SetButtonToggle: (button: number, down: boolean) => {
+                return T.invoke("SetButtonToggle", { button, down })
+            },
+            SetMouseScroll: (direction: number, clicks: number) => {
+                return T.invoke("SetMouseScroll", { direction, clicks })
+            },
+            GetColorFromPosition: (x: number, y: number) => {
+                return T.invoke("GetColorFromPosition", { x, y })
+            },
+            GetCurrentPositionColor: () => {
+                return T.invoke("GetCurrentPositionColor")
+            },
+        }
+    }
+
+    public get Button() {
+        return {
+            Left: 0,
+            Middle: 1,
+            Right: 2
+        }
+    }
+
+    public get ScrollDirection() {
+        return {
+            Down: 0,
+            Up: 1,
+        }
+    }
+
     public get TauriEvent() {
         return {
             Tauri: 'tauri://tauri',

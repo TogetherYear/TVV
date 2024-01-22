@@ -41,7 +41,7 @@ declare namespace Renderer {
         /**
          * 创建新窗口 返回值是窗口类 自己翻阅文档 这里不在写类型说明
          */
-        export function CreateWidget(label: IT.WindowLabel, options?: IT.WindowOptions): unknown
+        export function CreateWidget(label: IT.WindowLabel, options?: IT.IWindowOptions): unknown
     }
 
     /**
@@ -51,17 +51,17 @@ declare namespace Renderer {
         /**
          * 消息框
          */
-        export function Message(message: string, options?: IT.MessageDialogOptions): Promise<boolean>
+        export function Message(message: string, options?: IT.IMessageDialogOptions): Promise<boolean>
 
         /**
          * 询问框
          */
-        export function Ask(message: string, options?: IT.ConfirmDialogOptions): Promise<boolean>
+        export function Ask(message: string, options?: IT.IConfirmDialogOptions): Promise<boolean>
 
         /**
          * 确认框
          */
-        export function Confirm(message: string, options?: IT.ConfirmDialogOptions): Promise<boolean>
+        export function Confirm(message: string, options?: IT.IConfirmDialogOptions): Promise<boolean>
     }
 
     /**
@@ -251,17 +251,17 @@ declare namespace Renderer {
         /**
          * 获取所有屏幕
          */
-        export function GetAllScreens(): Promise<Array<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number }>>
+        export function GetAllScreens(): Promise<Array<IT.Monitor>>
 
         /**
          * 获取当前窗口所在的屏幕
          */
-        export function GetWidgetScreen(): Promise<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number } | null>
+        export function GetWidgetScreen(): Promise<IT.Monitor | null>
 
         /**
          * 获取系统主屏幕
          */
-        export function GetPrimaryScreen(): Promise<{ name: string | null, size: { width: number, height: number }, position: { x: number, y: number }, scaleFactor: number } | null>
+        export function GetPrimaryScreen(): Promise<IT.Monitor | null>
     }
 
     /**
@@ -284,6 +284,57 @@ declare namespace Renderer {
             Clear: () => Promise<void>,
             Save: () => Promise<void>,
         }>
+    }
+
+    /**
+     * 自动化
+     */
+    export namespace Autopilot {
+        /**
+         * 获取鼠标位置
+         */
+        export function GetMousePosition(): Promise<IT.Point>
+
+        /**
+         * 设置鼠标位置
+         */
+        export function SetMousePosition(x: number, y: number): Promise<void>
+
+        /**
+         * 点击鼠标 ( 以毫秒计 默认 100 毫秒 )
+         */
+        export function SetButtonClick(button: Button, delay?: number): Promise<void>
+
+        /**
+         * 设置鼠标状态
+         */
+        export function SetButtonToggle(button: Button, down: boolean): Promise<void>
+
+        /**
+         * 滑动滚轮
+         */
+        export function SetMouseScroll(direction: ScrollDirection, clicks: number): Promise<void>
+
+        /**
+         * 获取坐标位置的颜色 仅限主屏幕内坐标
+         */
+        export function GetColorFromPosition(x: number, y: number): Promise<IT.Color>
+
+        /**
+         * 获取当前鼠标位置的颜色 仅限主屏幕内坐标
+         */
+        export function GetCurrentPositionColor(): Promise<IT.Color>
+    }
+
+    export enum Button {
+        Left = 0,
+        Middle = 1,
+        Right = 2,
+    }
+
+    export enum ScrollDirection {
+        Down = 0,
+        Up = 1,
     }
 
     export enum TauriEvent {
@@ -312,7 +363,7 @@ declare namespace Renderer {
 }
 
 declare namespace IT {
-    export interface WindowOptions {
+    export interface IWindowOptions {
         url?: string,
         center?: boolean,
         x?: number,
@@ -360,13 +411,13 @@ declare namespace IT {
      */
     export type UnlistenFn = () => void;
 
-    export interface MessageDialogOptions {
+    export interface IMessageDialogOptions {
         title?: string,
         type?: 'info' | 'warning' | 'error',
         okLabel?: string
     }
 
-    export interface ConfirmDialogOptions {
+    export interface IConfirmDialogOptions {
         title?: string,
         type?: 'info' | 'warning' | 'error',
         okLabel?: string,
@@ -375,7 +426,7 @@ declare namespace IT {
 
     export type InvokeArgs = Record<string, unknown>;
 
-    export interface Event<T> {
+    export interface IEvent<T> {
         /**
          * 自己仔细看文档 事件是如何触发的
          */
@@ -385,9 +436,28 @@ declare namespace IT {
         payload: T;
     }
 
-    export type EventCallback<T> = (event: Event<T>) => void;
+    export type EventCallback<T> = (event: IEvent<T>) => void;
 
     export type ProgressHandler = (progress: number, total: number) => void;
 
     export type ShortcutHandler = (shortcut: string) => void;
+
+    export type Color = {
+        r: number;
+        g: number;
+        b: number;
+        a: number;
+    }
+
+    export type Point = {
+        x: number,
+        y: number
+    }
+
+    export type Monitor = {
+        name: string | null;
+        size: { width: number, height: number };
+        position: { x: number, y: number };
+        scaleFactor: number;
+    }
 }
