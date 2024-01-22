@@ -289,7 +289,7 @@ declare namespace Renderer {
     /**
      * 自动化
      */
-    export namespace Autopilot {
+    export namespace Automatic {
         /**
          * 获取鼠标位置
          */

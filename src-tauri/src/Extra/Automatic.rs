@@ -2,6 +2,8 @@ use tauri::command;
 
 use autopilot::{geometry, mouse, screen};
 
+extern crate autopilot;
+
 #[command]
 pub fn GetMousePosition() -> Point {
     let t = mouse::location();
@@ -10,7 +12,7 @@ pub fn GetMousePosition() -> Point {
 
 #[command]
 pub fn SetMousePosition(x: f64, y: f64) {
-    mouse::move_to(geometry::Point::new(x, y)).unwrap()
+    mouse::move_to(geometry::Point::new(x, y)).unwrap();
 }
 
 #[command]

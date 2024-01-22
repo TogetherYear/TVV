@@ -277,7 +277,7 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Autopilot() {
+    public get Automatic() {
         return {
             GetMousePosition: () => {
                 return T.invoke("GetMousePosition")
