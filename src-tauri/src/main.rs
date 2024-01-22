@@ -20,13 +20,13 @@ fn main() {
         .plugin(tauri_plugin_upload::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(generate_handler![
-            Extra::Autopilot::GetMousePosition,
-            Extra::Autopilot::SetMousePosition,
-            Extra::Autopilot::SetButtonClick,
-            Extra::Autopilot::SetButtonToggle,
-            Extra::Autopilot::SetMouseScroll,
-            Extra::Autopilot::GetColorFromPosition,
-            Extra::Autopilot::GetCurrentPositionColor,
+            Extra::Automatic::GetMousePosition,
+            Extra::Automatic::SetMousePosition,
+            Extra::Automatic::SetButtonClick,
+            Extra::Automatic::SetButtonToggle,
+            Extra::Automatic::SetMouseScroll,
+            Extra::Automatic::GetColorFromPosition,
+            Extra::Automatic::GetCurrentPositionColor,
         ])
         .system_tray(Extra::Tray::Build())
         .on_system_tray_event(Extra::Tray::OnEvent)
