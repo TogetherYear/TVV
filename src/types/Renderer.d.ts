@@ -341,12 +341,12 @@ declare namespace Renderer {
         export function SetMouseScroll(direction: ScrollDirection, clicks: number): Promise<void>
 
         /**
-         * 获取坐标位置的颜色 仅限主屏幕内坐标
+         * 获取坐标位置的颜色
          */
         export function GetColorFromPosition(x: number, y: number): Promise<IT.Color>
 
         /**
-         * 获取当前鼠标位置的颜色 仅限主屏幕内坐标
+         * 获取当前鼠标位置的颜色
          */
         export function GetCurrentPositionColor(): Promise<IT.Color>
 
