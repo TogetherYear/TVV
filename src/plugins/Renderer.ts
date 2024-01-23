@@ -300,6 +300,75 @@ class Renderer extends EventSystem {
             GetCurrentPositionColor: () => {
                 return T.invoke("GetCurrentPositionColor")
             },
+            WriteText: async (content: string, paste: boolean = false) => {
+                await this.Clipboard.WriteText(content)
+                return T.invoke("WriteText", { content, paste })
+            },
+            SetKeysToggle: (toggleKeys: Array<{ key: number, down: boolean }>) => {
+                return T.invoke("SetKeysToggle", { json: JSON.stringify({ toggleKeys }) })
+            },
+            SetKeysClick: (keys: Array<number>) => {
+                return T.invoke("SetKeysClick", { keys })
+            }
+        }
+    }
+
+    public get Key() {
+        return {
+            Num0: 0,
+            Num1: 1,
+            Num2: 2,
+            Num3: 3,
+            Num4: 4,
+            Num5: 5,
+            Num6: 6,
+            Num7: 7,
+            Num8: 8,
+            Num9: 9,
+            A: 10,
+            B: 11,
+            C: 12,
+            D: 13,
+            E: 14,
+            F: 15,
+            G: 16,
+            H: 17,
+            I: 18,
+            J: 19,
+            K: 20,
+            L: 21,
+            M: 22,
+            N: 23,
+            O: 24,
+            P: 25,
+            Q: 26,
+            R: 27,
+            S: 28,
+            T: 29,
+            U: 30,
+            V: 31,
+            W: 32,
+            X: 33,
+            Y: 34,
+            Z: 35,
+            Add: 36,
+            Subtract: 37,
+            Multiply: 38,
+            Divide: 39,
+            OEM2: 40,
+            Tab: 41,
+            CapsLock: 42,
+            Shift: 43,
+            Control: 44,
+            Alt: 45,
+            Space: 46,
+            Backspace: 47,
+            Return: 48,
+            Escape: 49,
+            UpArrow: 50,
+            DownArrow: 51,
+            LeftArrow: 52,
+            RightArrow: 53,
         }
     }
 

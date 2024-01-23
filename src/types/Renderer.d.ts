@@ -301,7 +301,7 @@ declare namespace Renderer {
         export function SetMousePosition(x: number, y: number): Promise<void>
 
         /**
-         * 点击鼠标 ( 以毫秒计 默认 100 毫秒 )
+         * 点击鼠标 ( delay:点击时鼠标按下和松开之间的延时 以毫秒计 默认 100 毫秒 )
          */
         export function SetButtonClick(button: Button, delay?: number): Promise<void>
 
@@ -324,6 +324,78 @@ declare namespace Renderer {
          * 获取当前鼠标位置的颜色 仅限主屏幕内坐标
          */
         export function GetCurrentPositionColor(): Promise<IT.Color>
+
+        /**
+         * 写入本文 ( paste:是否用复制的方式写入 )
+         */
+        export function WriteText(content: string, paste?: boolean): Promise<void>
+
+        /**
+         * 按顺序设置按键状态
+         */
+        export function SetKeysToggle(toggleKeys: Array<IT.IToggleKey>): Promise<void>
+
+        /**
+         * 按顺序点击按键
+         */
+        export function SetKeysClick(keys: Array<Key>): Promise<void>
+    }
+
+    export enum Key {
+        Num0 = 0,
+        Num1 = 1,
+        Num2 = 2,
+        Num3 = 3,
+        Num4 = 4,
+        Num5 = 5,
+        Num6 = 6,
+        Num7 = 7,
+        Num8 = 8,
+        Num9 = 9,
+        A = 10,
+        B = 11,
+        C = 12,
+        D = 13,
+        E = 14,
+        F = 15,
+        G = 16,
+        H = 17,
+        I = 18,
+        J = 19,
+        K = 20,
+        L = 21,
+        M = 22,
+        N = 23,
+        O = 24,
+        P = 25,
+        Q = 26,
+        R = 27,
+        S = 28,
+        T = 29,
+        U = 30,
+        V = 31,
+        W = 32,
+        X = 33,
+        Y = 34,
+        Z = 35,
+        Add = 36,
+        Subtract = 37,
+        Multiply = 38,
+        Divide = 39,
+        OEM2 = 40,
+        Tab = 41,
+        CapsLock = 42,
+        Shift = 43,
+        Control = 44,
+        Alt = 45,
+        Space = 46,
+        Backspace = 47,
+        Return = 48,
+        Escape = 49,
+        UpArrow = 50,
+        DownArrow = 51,
+        LeftArrow = 52,
+        RightArrow = 53,
     }
 
     export enum Button {
@@ -459,5 +531,10 @@ declare namespace IT {
         size: { width: number, height: number };
         position: { x: number, y: number };
         scaleFactor: number;
+    }
+
+    export interface IToggleKey {
+        key: Renderer.Key,
+        down: boolean
     }
 }

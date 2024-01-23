@@ -2,7 +2,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{generate_context, generate_handler, Builder};
+use tauri::{generate_context, Builder};
 
 mod Extra;
 
@@ -19,15 +19,7 @@ fn main() {
         .plugin(tauri_plugin_fs_extra::init())
         .plugin(tauri_plugin_upload::init())
         .plugin(tauri_plugin_store::Builder::default().build())
-        .invoke_handler(generate_handler![
-            Extra::Automatic::GetMousePosition,
-            Extra::Automatic::SetMousePosition,
-            Extra::Automatic::SetButtonClick,
-            Extra::Automatic::SetButtonToggle,
-            Extra::Automatic::SetMouseScroll,
-            Extra::Automatic::GetColorFromPosition,
-            Extra::Automatic::GetCurrentPositionColor,
-        ])
+        .invoke_handler(Extra::Handler::Generate())
         .system_tray(Extra::Tray::Build())
         .on_system_tray_event(Extra::Tray::OnEvent)
         .run(generate_context!())
