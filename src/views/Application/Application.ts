@@ -30,10 +30,7 @@ class Application extends AActor {
     }
 
     private Test() {
-        setTimeout(async () => {
-            const p = await Renderer.Automatic.GetCurrentPositionColor();
-            Debug.Log(p)
-        }, 3000);
+
     }
 }
 
