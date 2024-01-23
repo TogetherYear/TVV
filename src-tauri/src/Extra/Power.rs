@@ -66,6 +66,21 @@ pub fn GetPrimaryMonitor() -> Monitor {
 }
 
 #[command]
+pub fn CaptureMonitor(id: u32, path: String) -> bool {
+    let monitors = xcap::Monitor::all().unwrap();
+    for m in monitors {
+        if m.id() == id {
+            m.capture_image()
+                .unwrap()
+                .save_with_format(path, ImageFormat::WebP)
+                .unwrap();
+            return true;
+        }
+    }
+    false
+}
+
+#[command]
 pub fn GetMousePosition() -> Point {
     let t = mouse::location();
     Point { x: t.x, y: t.y }

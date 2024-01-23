@@ -282,6 +282,11 @@ declare namespace Renderer {
          * 获取主显示器
          */
         export function GetPrimaryMonitor(): Promise<IT.Monitor>
+
+        /**
+         * 获取显示器的截屏
+         */
+        export function CaptureMonitor(id: number): Promise<string>
     }
 
     /**

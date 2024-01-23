@@ -20,5 +20,6 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Extra::Power::GetMonitorFromPoint,
         Extra::Power::GetCurrentMouseMonitor,
         Extra::Power::GetPrimaryMonitor,
+        Extra::Power::CaptureMonitor,
     ]
 }

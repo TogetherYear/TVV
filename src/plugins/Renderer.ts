@@ -246,6 +246,12 @@ class Renderer extends EventSystem {
             GetPrimaryMonitor: () => {
                 return T.invoke("GetPrimaryMonitor")
             },
+            CaptureMonitor: async (id: number) => {
+                if (await T.invoke("CaptureMonitor", { id, path: await this.CaptureTempInputPath })) {
+                    return await this.CaptureTempOutputPath
+                }
+                return ""
+            },
         }
     }
 
