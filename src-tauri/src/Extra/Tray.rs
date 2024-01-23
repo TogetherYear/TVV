@@ -1,6 +1,6 @@
 use tauri::{AppHandle, Manager, PhysicalPosition, SystemTray, SystemTrayEvent};
 
-use super::Automatic::GetMousePosition;
+use super::Power::GetMousePosition;
 
 pub fn Build() -> SystemTray {
     SystemTray::new().with_tooltip("去码头整点薯条")

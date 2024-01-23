@@ -4,15 +4,21 @@ use crate::Extra;
 
 pub fn Generate() -> impl Fn(tauri::Invoke) {
     generate_handler![
-        Extra::Automatic::GetMousePosition,
-        Extra::Automatic::SetMousePosition,
-        Extra::Automatic::SetButtonClick,
-        Extra::Automatic::SetButtonToggle,
-        Extra::Automatic::SetMouseScroll,
-        Extra::Automatic::GetColorFromPosition,
-        Extra::Automatic::GetCurrentPositionColor,
-        Extra::Automatic::WriteText,
-        Extra::Automatic::SetKeysToggle,
-        Extra::Automatic::SetKeysClick,
+        Extra::Power::GetMousePosition,
+        Extra::Power::SetMousePosition,
+        Extra::Power::SetButtonClick,
+        Extra::Power::SetButtonToggle,
+        Extra::Power::SetMouseScroll,
+        Extra::Power::GetColorFromPosition,
+        Extra::Power::GetCurrentPositionColor,
+        Extra::Power::WriteText,
+        Extra::Power::SetKeysToggle,
+        Extra::Power::SetKeysClick,
+        Extra::Power::GetAllWindows,
+        Extra::Power::CaptureWindow,
+        Extra::Power::GetAllMonitors,
+        Extra::Power::GetMonitorFromPoint,
+        Extra::Power::GetCurrentMouseMonitor,
+        Extra::Power::GetPrimaryMonitor,
     ]
 }

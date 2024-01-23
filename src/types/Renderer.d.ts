@@ -135,6 +135,21 @@ declare namespace Renderer {
     }
 
     /**
+     * 程序窗口
+     */
+    export namespace Window {
+        /**
+         * 获取电脑上所有运行的程序窗口
+         */
+        export function GetAllWindows(): Promise<Array<IT.Window>>
+
+        /**
+         * 获取程序窗口的截屏 ( 最小化的窗口不能截屏 )
+         */
+        export function CaptureWindow(id: number): Promise<string>
+    }
+
+    /**
      * 资源
      */
     export namespace Resource {
@@ -245,23 +260,28 @@ declare namespace Renderer {
     }
 
     /**
-     * 屏幕
+     * 显示器
      */
-    export namespace Screen {
+    export namespace Monitor {
         /**
-         * 获取所有屏幕
+         * 获取所有显示器
          */
-        export function GetAllScreens(): Promise<Array<IT.Monitor>>
+        export function GetAllMonitors(): Promise<Array<IT.Monitor>>
 
         /**
-         * 获取当前窗口所在的屏幕
+         * 根据点获取显示器
          */
-        export function GetWidgetScreen(): Promise<IT.Monitor | null>
+        export function GetMonitorFromPoint(x: number, y: number): Promise<IT.Monitor>
 
         /**
-         * 获取系统主屏幕
+         * 获取当前鼠标位置显示器
          */
-        export function GetPrimaryScreen(): Promise<IT.Monitor | null>
+        export function GetCurrentMouseMonitor(): Promise<IT.Monitor>
+
+        /**
+         * 获取主显示器
+         */
+        export function GetPrimaryMonitor(): Promise<IT.Monitor>
     }
 
     /**
@@ -423,6 +443,10 @@ declare namespace Renderer {
         WidgetDestroy = 'WidgetDestroy'
     }
 
+    export const CaptureTempInputPath: string
+
+    export const CaptureTempOutputPath: string
+
     /**
      * 监听事件
      */
@@ -527,14 +551,32 @@ declare namespace IT {
     }
 
     export type Monitor = {
-        name: string | null;
-        size: { width: number, height: number };
-        position: { x: number, y: number };
-        scaleFactor: number;
+        id: number,
+        name: String,
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+        rotation: number,
+        scaleFactor: number,
+        frequency: number,
+        isPrimary: boolean,
     }
 
     export interface IToggleKey {
         key: Renderer.Key,
         down: boolean
+    }
+
+    export type Window = {
+        id: number,
+        title: string,
+        appName: string,
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+        isMinimized: boolean,
+        isMaximized: boolean,
     }
 }

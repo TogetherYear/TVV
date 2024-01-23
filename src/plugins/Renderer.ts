@@ -130,6 +130,20 @@ class Renderer extends EventSystem {
         }
     }
 
+    public get Window() {
+        return {
+            GetAllWindows: () => {
+                return T.invoke("GetAllWindows")
+            },
+            CaptureWindow: async (id: number) => {
+                if (await T.invoke("CaptureWindow", { id, path: await this.CaptureTempInputPath })) {
+                    return await this.CaptureTempOutputPath
+                }
+                return ""
+            }
+        }
+    }
+
     public get Resource() {
         return {
             GetPathByName: async (name: string, convert: boolean = true) => {
@@ -218,17 +232,20 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Screen() {
+    public get Monitor() {
         return {
-            GetAllScreens: () => {
-                return W.availableMonitors()
+            GetAllMonitors: () => {
+                return T.invoke("GetAllMonitors")
             },
-            GetWidgetScreen: () => {
-                return W.currentMonitor()
+            GetMonitorFromPoint: (x: number, y: number) => {
+                return T.invoke("GetMonitorFromPoint", { x, y })
             },
-            GetPrimaryScreen: () => {
-                return W.primaryMonitor()
-            }
+            GetCurrentMouseMonitor: () => {
+                return T.invoke("GetCurrentMouseMonitor")
+            },
+            GetPrimaryMonitor: () => {
+                return T.invoke("GetPrimaryMonitor")
+            },
         }
     }
 
@@ -403,6 +420,14 @@ class Renderer extends EventSystem {
             WidgetCreate: 'WidgetCreate',
             WidgetDestroy: 'WidgetDestroy'
         }
+    }
+
+    public get CaptureTempInputPath() {
+        return this.Resource.GetPathByName('Images/CaptureTemp.webp', false)
+    }
+
+    public get CaptureTempOutputPath() {
+        return this.Resource.GetPathByName('Images/CaptureTemp.webp', true)
     }
 
     public async Run() {
