@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use tauri::command;
 
-use autopilot::{geometry, mouse, screen};
+use autopilot::{geometry, mouse};
 
 use enigo::{Enigo, KeyboardControllable};
 
@@ -119,18 +119,15 @@ pub fn SetMouseScroll(direction: u32, clicks: u32) {
 
 #[command]
 pub fn GetColorFromPosition(x: f64, y: f64) -> Color {
-    let point = geometry::Point::new(x, y);
-    match screen::is_point_visible(point) {
-        true => {
-            let t = screen::get_color(point).unwrap();
-            Color {
-                r: t.0[0],
-                g: t.0[1],
-                b: t.0[2],
-                a: t.0[3],
-            }
-        }
-        false => Color::Default(),
+    let monitor = xcap::Monitor::from_point(x as i32, y as i32).unwrap();
+    let capture = monitor.capture_image().unwrap();
+    let pixel = capture.get_pixel_checked(
+        ((x as i32) - monitor.x()) as u32,
+        ((y as i32) - monitor.y()) as u32,
+    );
+    match pixel {
+        Some(color) => Color::New(color.0[0], color.0[1], color.0[2], color.0[3]),
+        None => Color::Default(),
     }
 }
 
@@ -188,6 +185,10 @@ pub struct Color {
 }
 
 impl Color {
+    pub fn New(r: u8, g: u8, b: u8, a: u8) -> Color {
+        Color { r, g, b, a }
+    }
+
     pub fn Default() -> Color {
         Color {
             r: 0,

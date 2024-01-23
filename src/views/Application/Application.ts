@@ -31,8 +31,7 @@ class Application extends AActor {
 
     private Test() {
         setTimeout(async () => {
-            const ws = await Renderer.Monitor.GetAllMonitors()
-            const p = await Renderer.Monitor.CaptureMonitor(ws[0].id)
+            const p = await Renderer.Automatic.GetCurrentPositionColor();
             Debug.Log(p)
         }, 3000);
     }
