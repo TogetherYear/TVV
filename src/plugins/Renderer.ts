@@ -53,11 +53,11 @@ class Renderer extends EventSystem {
             },
             CreateWidget: (label: string, options?: W.WindowOptions) => {
                 const widget = new W.WebviewWindow(label, options)
-                widget.once(this.TauriEvent.WidgetCreate, (e) => {
-                    this.Emit(this.RendererEvent.WidgetCreate, { event: this.RendererEvent.WidgetCreate, send: '', extra: { windowLabel: label } })
+                widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
+                    E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, send: '', extra: { windowLabel: label } })
                 })
-                widget.once(this.TauriEvent.WidgetDestroy, (e) => {
-                    this.Emit(this.RendererEvent.WidgetDestroy, { event: this.RendererEvent.WidgetDestroy, send: '', extra: { windowLabel: label } })
+                widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
+                    E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, send: '', extra: { windowLabel: label } })
                 })
                 return widget
             }
@@ -336,6 +336,18 @@ class Renderer extends EventSystem {
         }
     }
 
+    public get Event() {
+        return {
+            Listen: E.listen,
+            Once: E.once,
+            Emit: E.emit,
+            TauriEvent: {
+                ...E.TauriEvent,
+                TAURI: "tauri://tauri"
+            }
+        }
+    }
+
     public get Key() {
         return {
             Num0: 0,
@@ -410,15 +422,6 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get TauriEvent() {
-        return {
-            Tauri: 'tauri://tauri',
-            WidgetBlur: E.TauriEvent.WINDOW_BLUR,
-            WidgetCreate: E.TauriEvent.WINDOW_CREATED,
-            WidgetDestroy: E.TauriEvent.WINDOW_DESTROYED,
-        }
-    }
-
     public get RendererEvent() {
         return {
             Message: 'Message',
@@ -455,10 +458,16 @@ class Renderer extends EventSystem {
     }
 
     private ListenEvents() {
-        this.Widget.Listen<Record<string, unknown>>(this.TauriEvent.Tauri, (e) => {
+        this.Event.Listen<Record<string, unknown>>(this.Event.TauriEvent.TAURI, (e) => {
             const r = e.payload
             if (r.event == this.RendererEvent.SecondInstance) {
                 this.Emit(this.RendererEvent.SecondInstance, r)
+            }
+            else if (r.event == this.RendererEvent.WidgetCreate) {
+                this.Emit(this.RendererEvent.WidgetCreate, r)
+            }
+            else if (r.event == this.RendererEvent.WidgetDestroy) {
+                this.Emit(this.RendererEvent.WidgetDestroy, r)
             }
             this.Emit(this.RendererEvent.Message, r)
         })
@@ -478,12 +487,13 @@ class Renderer extends EventSystem {
     }
 
     private async Process() {
-        if (location.href.split('/').slice(-1)[0] == "Application") {
-            const files = await this.Resource.ReadDirFiles(await this.Resource.GetPathByName("ChildProcesses/", false))
+        const dir = location.href.split('/').slice(-1)[0]
+        if (await this.Resource.IsPathExists(await this.Resource.GetPathByName(`ChildProcesses/${dir}`, false))) {
+            const files = await this.Resource.ReadDirFiles(await this.Resource.GetPathByName(`ChildProcesses/${dir}`, false))
             for (let f of files) {
                 let script = document.createElement("script");
                 script.type = "module";
-                script.src = await this.Resource.GetPathByName(`ChildProcesses/${f.name}`);
+                script.src = await this.Resource.GetPathByName(`ChildProcesses/${dir}/${f.name}`);
                 document.body.appendChild(script);
             }
         }

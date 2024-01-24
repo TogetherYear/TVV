@@ -129,9 +129,9 @@ declare namespace Renderer {
         export function SetPosition(x: number, y: number): Promise<void>
 
         /**
-         * 监听Tauri事件 不建议你们用这个 去用我的 AddListen
+         * 不要用 去用 AddListen
          */
-        export function Listen<T>(event: string, handler: IT.EventCallback<T>): Promise<IT.UnlistenFn>
+        export function Listen(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>
     }
 
     /**
@@ -366,6 +366,36 @@ declare namespace Renderer {
         export function SetKeysClick(keys: Array<Key>): Promise<void>
     }
 
+    /**
+     * 不要用 去用 AddListen
+     */
+    export namespace Event {
+        export function Listen(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>
+        export function Once(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>
+        export function Emit(event: TauriEvent.TAURI, payload: IT.IRendererSendMessage): Promise<IT.UnlistenFn>
+        export enum TauriEvent {
+            TAURI = "tauri://tauri",
+            WINDOW_RESIZED = "tauri://resize",
+            WINDOW_MOVED = "tauri://move",
+            WINDOW_CLOSE_REQUESTED = "tauri://close-requested",
+            WINDOW_CREATED = "tauri://window-created",
+            WINDOW_DESTROYED = "tauri://destroyed",
+            WINDOW_FOCUS = "tauri://focus",
+            WINDOW_BLUR = "tauri://blur",
+            WINDOW_SCALE_FACTOR_CHANGED = "tauri://scale-change",
+            WINDOW_THEME_CHANGED = "tauri://theme-changed",
+            WINDOW_FILE_DROP = "tauri://file-drop",
+            WINDOW_FILE_DROP_HOVER = "tauri://file-drop-hover",
+            WINDOW_FILE_DROP_CANCELLED = "tauri://file-drop-cancelled",
+            MENU = "tauri://menu",
+            CHECK_UPDATE = "tauri://update",
+            UPDATE_AVAILABLE = "tauri://update-available",
+            INSTALL_UPDATE = "tauri://update-install",
+            STATUS_UPDATE = "tauri://update-status",
+            DOWNLOAD_PROGRESS = "tauri://update-download-progress"
+        }
+    }
+
     export enum Key {
         Num0 = 0,
         Num1 = 1,
@@ -434,13 +464,6 @@ declare namespace Renderer {
         Up = 1,
     }
 
-    export enum TauriEvent {
-        Tauri = 'tauri://tauri',
-        WidgetBlur = 'tauri://blur',
-        WidgetCreate = 'tauri://window-created',
-        WidgetDestroy = 'tauri://destroyed',
-    }
-
     export enum RendererEvent {
         Message = 'Message',
         SecondInstance = 'SecondInstance',
@@ -499,8 +522,7 @@ declare namespace IT {
     export interface IRendererSendMessage {
         event: Renderer.RendererEvent,
         send: string,
-        extra?: Record<string, unknown>,
-        [key: string]: unknown
+        extra?: Record<string, unknown>
     }
 
     export type RendererEventCallback = (e: IRendererSendMessage) => void
@@ -527,17 +549,17 @@ declare namespace IT {
 
     export type InvokeArgs = Record<string, unknown>;
 
-    export interface IEvent<T> {
+    export interface IEvent {
         /**
          * 自己仔细看文档 事件是如何触发的
          */
-        event: Renderer.TauriEvent;
-        windowLabel: string;
+        event: EventName;
+        windowLabel: string | null;
         id: number;
-        payload: T;
+        payload: IRendererSendMessage | null;
     }
 
-    export type EventCallback<T> = (event: IEvent<T>) => void;
+    export type EventCallback = (event: IEvent) => void;
 
     export type ProgressHandler = (progress: number, total: number) => void;
 
@@ -584,4 +606,6 @@ declare namespace IT {
         isMinimized: boolean,
         isMaximized: boolean,
     }
+
+    export type EventName = `${Renderer.Event.TauriEvent}` | (string & Record<never, never>);
 }
