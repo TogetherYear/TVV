@@ -1,5 +1,5 @@
 class Time {
-    static GetTime(e: Date | string | number | null = null, isForce = true, l = '/', r = ':') {
+    static GetTime(e: Date | string | number | null = null, isForce = true, l = '-', r = ':') {
         let time = e ? new Date(e) : new Date()
         let year = time.getFullYear()
         let month = time.getMonth() + 1

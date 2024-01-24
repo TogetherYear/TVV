@@ -8,15 +8,14 @@
 
     .Btn {
         position: absolute;
-        width: 110px;
         height: 100%;
         top: 0;
         right: 0;
-        display: flex;
-        justify-content: space-between;
+        text-align: left;
 
-        .Item {
+        .Min {
             position: relative;
+            display: inline-block;
             height: 100%;
             top: 0;
             width: 34px;
@@ -24,10 +23,6 @@
 
             &:hover {
                 background-color: #474748;
-            }
-
-            &:nth-child(3):hover {
-                background-color: #d61425;
             }
 
             .Icon {
@@ -38,6 +33,18 @@
                 bottom: 0;
                 margin: auto;
                 height: 50%;
+            }
+        }
+
+        .Max {
+            @extend .Min;
+        }
+
+        .Close {
+            @extend .Max;
+
+            &:hover {
+                background-color: #d61425;
             }
         }
     }

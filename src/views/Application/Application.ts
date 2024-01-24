@@ -30,7 +30,9 @@ class Application extends AActor {
     }
 
     private Test() {
-
+        setTimeout(async () => {
+            // await Renderer.Extra.Code("https://www.zhihu.com/")
+        }, 3000);
     }
 }
 

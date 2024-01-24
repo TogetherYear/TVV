@@ -11,6 +11,7 @@
     "@tauri-apps/api": "^1.5.3",
     "axios": "^1.6.5",
     "pinia": "^2.1.7",
+    "qrcode": "^1.5.3",
     "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
     "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.9",
     "@types/node": "^20.11.5",
+    "@types/qrcode": "^1.5.5",
     "@types/three": "^0.139.0",
     "@vitejs/plugin-vue": "^4.6.2",
     "naive-ui": "^2.37.3",

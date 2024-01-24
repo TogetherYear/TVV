@@ -367,6 +367,21 @@ declare namespace Renderer {
     }
 
     /**
+     * 额外窗口拓展
+     */
+    export namespace Extra {
+        /**
+         * 创建二维码窗口
+         */
+        export function Code(text: string): Promise<void>
+
+        /**
+         * 获取需要展示的拓展路由 ( 内部调用 )
+         */
+        export function GetExtraUrl(route: string): string
+    }
+
+    /**
      * 不要用 去用 AddListen
      */
     export namespace Event {

@@ -18,7 +18,7 @@ instance.Run()
 
 <template>
     <div class="Application">
-        <HeaderBarVue></HeaderBarVue>
+        <HeaderBarVue :main="true"></HeaderBarVue>
     </div>
 </template>
 

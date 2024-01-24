@@ -13,6 +13,7 @@ import * as T from "@tauri-apps/api/tauri";
 import * as U from 'tauri-plugin-upload-api'
 import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/libs/EventSystem";
+import { Time } from "@/libs/Time";
 
 class Renderer extends EventSystem {
     private constructor() { super() }
@@ -332,6 +333,28 @@ class Renderer extends EventSystem {
             },
             SetKeysClick: (keys: Array<number>) => {
                 return T.invoke("SetKeysClick", { keys })
+            }
+        }
+    }
+
+    public get Extra() {
+        return {
+            Code: async (text: string) => {
+                await this.Clipboard.WriteText(text)
+                this.App.CreateWidget('Code', {
+                    url: this.Extra.GetExtraUrl('Extra/Code'),
+                    width: 300,
+                    height: 326,
+                    resizable: false,
+                    decorations: false,
+                    alwaysOnTop: true,
+                    center: true,
+                    transparent: true,
+                    visible: false
+                })
+            },
+            GetExtraUrl: (route: string) => {
+                return location.href.replace(location.href.split('/').slice(-1)[0], route)
             }
         }
     }

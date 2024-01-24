@@ -25,7 +25,19 @@ const routes: Array<RouteRecordRaw> = [
         path: '/Tray',
         name: 'Tray',
         component: () => import('@/views/Tray/Tray.vue')
-    }
+    },
+    {
+        path: '/Extra',
+        name: 'Extra',
+        component: () => import('@/views/Extra/Extra.vue'),
+        children: [
+            {
+                path: 'Code',
+                name: 'Code',
+                component: () => import('@/views/Extra/Children/Code/Code.vue')
+            }
+        ]
+    },
 ]
 
 const router = createRouter({
