@@ -83,7 +83,7 @@ pub fn CaptureMonitor(id: u32, path: String) -> bool {
 #[command]
 pub fn GetMousePosition() -> Point {
     let t = mouse::location();
-    Point { x: t.x, y: t.y }
+    Point::New(t.x, t.y)
 }
 
 #[command]
@@ -170,35 +170,6 @@ pub fn SetKeysClick(keys: Vec<u32>) {
     }
 }
 
-#[derive(Clone, serde::Serialize)]
-pub struct Point {
-    pub x: f64,
-    pub y: f64,
-}
-
-#[derive(Clone, serde::Serialize)]
-pub struct Color {
-    r: u8,
-    g: u8,
-    b: u8,
-    a: u8,
-}
-
-impl Color {
-    pub fn New(r: u8, g: u8, b: u8, a: u8) -> Color {
-        Color { r, g, b, a }
-    }
-
-    pub fn Default() -> Color {
-        Color {
-            r: 0,
-            g: 0,
-            b: 0,
-            a: 0,
-        }
-    }
-}
-
 fn TransformKey(key: u32) -> enigo::Key {
     match key {
         0 => enigo::Key::Num0,
@@ -263,6 +234,41 @@ fn TransformToggleKeysFromJson(json: String) -> Vec<ToggleKey> {
     serde_json::from_str::<ToggleKeysJson>(json.as_str())
         .unwrap()
         .toggleKeys
+}
+
+#[derive(Clone, serde::Serialize)]
+pub struct Point {
+    pub x: f64,
+    pub y: f64,
+}
+
+impl Point {
+    pub fn New(x: f64, y: f64) -> Point {
+        Point { x, y }
+    }
+}
+
+#[derive(Clone, serde::Serialize)]
+pub struct Color {
+    r: u8,
+    g: u8,
+    b: u8,
+    a: u8,
+}
+
+impl Color {
+    pub fn New(r: u8, g: u8, b: u8, a: u8) -> Color {
+        Color { r, g, b, a }
+    }
+
+    pub fn Default() -> Color {
+        Color {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 0,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
