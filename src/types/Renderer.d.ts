@@ -184,9 +184,9 @@ declare namespace Renderer {
         export function WriteBinaryToFile(path: string, content: IT.BinaryFileContents): Promise<void>
 
         /**
-         * 在文件资源管理器中打开路径 不能用Tauri转换后的地址
+         * 使用系统默认应用程序打开路径 ( 如果是文件夹 则会在文件资源管理器打开 ) 不能用Tauri转换后的地址
          */
-        export function OpenPathInFolder(path: string): Promise<void>
+        export function OpenPathDefault(path: string): Promise<void>
 
         /**
          * 判断文件是否存在 不能用Tauri转换后的地址

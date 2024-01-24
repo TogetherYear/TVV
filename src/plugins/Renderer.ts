@@ -172,7 +172,7 @@ class Renderer extends EventSystem {
                 await this.Resource.CreateDir(dir)
                 return F.writeBinaryFile(path, content)
             },
-            OpenPathInFolder: (path: string) => {
+            OpenPathDefault: (path: string) => {
                 return Sh.open(path)
             },
             IsPathExists: (path: string) => {
