@@ -387,7 +387,7 @@ declare namespace Renderer {
     export namespace Event {
         export function Listen(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>
         export function Once(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>
-        export function Emit(event: TauriEvent.TAURI, payload: IT.IRendererSendMessage): Promise<IT.UnlistenFn>
+        export function Emit(event: Renderer.Event.TauriEvent.TAURI, payload?: IT.IRendererSendMessage): Promise<void>
         export enum TauriEvent {
             TAURI = "tauri://tauri",
             WINDOW_RESIZED = "tauri://resize",
@@ -480,6 +480,10 @@ declare namespace Renderer {
     }
 
     export enum RendererEvent {
+        /**
+         * 这个是用来给 rust 用的
+         */
+        Backend = 'Backend',
         Message = 'Message',
         SecondInstance = 'SecondInstance',
         WidgetCreate = 'WidgetCreate',

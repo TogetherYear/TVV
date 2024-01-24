@@ -13,8 +13,8 @@ fn SetWindowShadow(app: &mut App, label: &str) {
 }
 
 #[derive(Clone, serde::Serialize)]
-pub struct TauriSendRendererPayload<'a> {
-    pub event: &'a str,
-    pub send: &'a str,
+pub struct TauriSendRendererPayload {
+    pub event: String,
+    pub send: String,
     pub extra: serde_json::Value,
 }

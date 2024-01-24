@@ -38,6 +38,7 @@ class Code extends AActor {
             const text = await Renderer.Clipboard.ReadText() || 'https://github.com/TogetherYear'
             await Q.toCanvas(this.canvas.value, text, {
                 width: 200,
+                margin: 2,
             })
         }
 

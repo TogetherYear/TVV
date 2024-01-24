@@ -15,8 +15,8 @@ pub fn OnSecondInstance(app: &AppHandle, _argv: Vec<String>, _cwd: String) {
     app.emit_all(
         "tauri://tauri",
         TauriSendRendererPayload {
-            event: "SecondInstance",
-            send: "",
+            event: String::from("SecondInstance"),
+            send: String::from(""),
             extra: json!({}),
         },
     )

@@ -13,7 +13,6 @@ import * as T from "@tauri-apps/api/tauri";
 import * as U from 'tauri-plugin-upload-api'
 import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/libs/EventSystem";
-import { Time } from "@/libs/Time";
 
 class Renderer extends EventSystem {
     private constructor() { super() }
@@ -341,7 +340,7 @@ class Renderer extends EventSystem {
         return {
             Code: async (text: string) => {
                 await this.Clipboard.WriteText(text)
-                this.App.CreateWidget(`Code`, {
+                this.App.CreateWidget('Extra:Code', {
                     url: this.Extra.GetExtraUrl('Extra/Code'),
                     width: 300,
                     height: 326,
@@ -447,6 +446,7 @@ class Renderer extends EventSystem {
 
     public get RendererEvent() {
         return {
+            Backend: 'Backend',
             Message: 'Message',
             SecondInstance: 'SecondInstance',
             WidgetCreate: 'WidgetCreate',
@@ -510,9 +510,10 @@ class Renderer extends EventSystem {
     }
 
     private async Process() {
-        const dir = location.href.split('/').slice(-1)[0]
-        if (await this.Resource.IsPathExists(await this.Resource.GetPathByName(`ChildProcesses/${dir}`, false))) {
-            const files = await this.Resource.ReadDirFiles(await this.Resource.GetPathByName(`ChildProcesses/${dir}`, false))
+        const dir = location.href.indexOf("Extra") != -1 ? "Extra" : location.href.split('/').slice(-1)[0]
+        const p = await this.Resource.GetPathByName(`ChildProcesses/${dir}`, false)
+        if (await this.Resource.IsPathExists(p)) {
+            const files = await this.Resource.ReadDirFiles(p)
             for (let f of files) {
                 let script = document.createElement("script");
                 script.type = "module";
