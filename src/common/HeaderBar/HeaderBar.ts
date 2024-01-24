@@ -8,7 +8,7 @@ class HeaderBar extends AActor {
 
     private isMax = ref<boolean>(false)
 
-    public async OptionClick(type: string, main: boolean) {
+    public async OnOptionClick(type: string, main: boolean) {
         if (type == 'Min') {
             await Renderer.Widget.Min()
         }
@@ -16,7 +16,7 @@ class HeaderBar extends AActor {
             this.isMax.value = !this.isMax.value
             await Renderer.Widget.Max()
         }
-        else if (type == 'Hide') {
+        else if (type == 'Close') {
             if (main) {
                 await Renderer.Widget.Hide()
             }

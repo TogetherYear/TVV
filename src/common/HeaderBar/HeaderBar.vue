@@ -27,18 +27,18 @@ instance.Run()
 <template>
     <div class="HeaderBar" :style="{ background: attribute.bgc }">
         <span class="Btn">
-            <span class="Min">
+            <span class="Min" v-if="attribute.main" @click="instance.OnOptionClick('Min', attribute.main)">
                 <img :src="minIcon" class="Icon" />
             </span>
-            <span class="Max">
+            <span class="Max" v-if="attribute.main" @click="instance.OnOptionClick('Max', attribute.main)">
                 <img :src="maxIcon" class="Icon" />
             </span>
-            <span class="Close">
+            <span class="Close" @click="instance.OnOptionClick('Close', attribute.main)">
                 <img :src="closeIcon" class="Icon" />
             </span>
         </span>
         <span class="Drag" data-tauri-drag-region v-show="!isMax"></span>
-        <span class="Drag" v-show="isMax"></span>
+        <span class="Drag" v-show="isMax && !attribute.main"></span>
     </div>
 </template>
 
