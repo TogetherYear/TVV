@@ -1,12 +1,17 @@
 use serde::{Deserialize, Serialize};
 
-use tauri::command;
+use tauri::{command, LogicalPosition};
 
 use autopilot::{geometry, mouse};
 
 use enigo::{Enigo, KeyboardControllable};
 
 use xcap::{self, image::ImageFormat};
+
+#[command]
+pub async fn InvokeTest(window: tauri::Window, x: i32, y: i32) {
+    window.set_position(LogicalPosition::new(x, y)).unwrap();
+}
 
 #[command]
 pub fn GetAllWindows() -> Vec<Window> {
