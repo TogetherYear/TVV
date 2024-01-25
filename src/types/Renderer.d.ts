@@ -376,12 +376,12 @@ declare namespace Renderer {
         export function Code(text: string): Promise<void>
 
         /**
-         * 创建图片预览窗口 格式 `${imageUrl}$${width}$${height}`
+         * 创建图片预览窗口 格式 `${imageUrl}$${width}$${height}` ( 建议 webp 格式图片 )
          */
         export function ImagePreview(url: string): Promise<void>
 
         /**
-         * 创建模型预览窗口
+         * 创建模型预览窗口 ( glb 模型 )
          */
         export function ModelPreview(url: string): Promise<void>
 
