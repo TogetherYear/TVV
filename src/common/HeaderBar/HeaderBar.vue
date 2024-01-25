@@ -3,6 +3,7 @@ import { HeaderBar } from './HeaderBar'
 import minIcon from '@/assets/mc/min.png'
 import maxIcon from '@/assets/mc/max.png'
 import closeIcon from '@/assets/mc/close.png'
+import { App } from '@/App';
 
 const attribute = withDefaults(defineProps<{
     bgc?: string,
@@ -19,6 +20,10 @@ const instance = new HeaderBar()
 
 const {
     isMax,
+} = App.Instance.InitStates()
+
+const {
+
 } = instance.InitStates()
 instance.InitHooks()
 instance.Run()

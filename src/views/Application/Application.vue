@@ -2,10 +2,15 @@
 import { provide } from 'vue';
 import { Application } from './Application';
 import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
+import { App } from '@/App';
 
 const instance = new Application()
 
 provide('instance', instance)
+
+const {
+    isMax,
+} = App.Instance.InitStates()
 
 const {
 
@@ -17,7 +22,7 @@ instance.Run()
 </script>
 
 <template>
-    <div class="Application">
+    <div :class="{ ShadowWindow: !isMax, DefaultWindow: isMax, Application: true }">
         <HeaderBarVue :main="true"></HeaderBarVue>
     </div>
 </template>

@@ -1,5 +1,5 @@
 import { EventSystem } from "./libs/EventSystem"
-import { onMounted, onUnmounted } from "vue"
+import { onMounted, onUnmounted, ref } from "vue"
 
 class App extends EventSystem {
     private constructor() { super() }
@@ -8,8 +8,12 @@ class App extends EventSystem {
 
     public static get Instance() { return this.instance }
 
+    public isMax = ref<boolean>(false)
+
     public InitStates() {
-        return {}
+        return {
+            isMax: this.isMax,
+        }
     }
 
     public InitHooks() {

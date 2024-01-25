@@ -1,16 +1,25 @@
 <script lang="ts" setup>
+import { App } from '@/App';
 import { Empty } from './Empty'
+import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
 const instance = new Empty()
+
+const {
+    isMax,
+} = App.Instance.InitStates()
 
 const {
 
 } = instance.InitStates()
+
 instance.InitHooks()
+
 instance.Run()
 </script>
 
 <template>
-    <div class="Empty">
+    <div :class="{ ShadowWindow: !isMax, DefaultWindow: isMax, Empty: true }">
+        <HeaderBarVue></HeaderBarVue>
         <span class="Title">看到我 就说明你路由错误 快去添加</span>
     </div>
 </template>

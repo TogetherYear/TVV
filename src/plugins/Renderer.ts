@@ -342,14 +342,15 @@ class Renderer extends EventSystem {
                 await this.Clipboard.WriteText(text)
                 this.App.CreateWidget('Extra:Code', {
                     url: this.Extra.GetExtraUrl('Extra/Code'),
-                    width: 300,
-                    height: 326,
+                    width: 310,
+                    height: 336,
                     resizable: false,
                     decorations: false,
                     alwaysOnTop: true,
                     center: true,
                     transparent: true,
-                    visible: false
+                    visible: false,
+                    focus: false
                 })
             },
             GetExtraUrl: (route: string) => {

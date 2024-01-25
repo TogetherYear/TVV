@@ -1,8 +1,13 @@
 <script lang="ts" setup>
 import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
 import { Extra } from './Extra';
+import { App } from '@/App';
 
 const instance = new Extra()
+
+const {
+    isMax,
+} = App.Instance.InitStates()
 
 const {
 
@@ -14,7 +19,7 @@ instance.Run()
 </script>
 
 <template>
-    <div class="Extra">
+    <div class="ShadowWindow Tray">
         <HeaderBarVue></HeaderBarVue>
         <span class="Children">
             <router-view />

@@ -1,19 +1,18 @@
-import { ref, onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { AActor } from '@/libs/AActor'
+import { App } from '@/App'
 
 class HeaderBar extends AActor {
     public constructor() {
         super()
     }
 
-    private isMax = ref<boolean>(false)
-
     public async OnOptionClick(type: string, main: boolean) {
         if (type == 'Min') {
             await Renderer.Widget.Min()
         }
         else if (type == 'Max') {
-            this.isMax.value = !this.isMax.value
+            App.Instance.isMax.value = !App.Instance.isMax.value
             await Renderer.Widget.Max()
         }
         else if (type == 'Close') {
@@ -29,7 +28,7 @@ class HeaderBar extends AActor {
 
     public InitStates() {
         return {
-            isMax: this.isMax,
+
         }
     }
 
