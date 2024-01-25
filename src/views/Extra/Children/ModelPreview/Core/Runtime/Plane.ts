@@ -1,12 +1,11 @@
-import { BoxRigidBody } from "../Components/BoxRigidBody"
 import * as THREE from 'three'
 import { Box } from "./Box"
-import { EntityPool } from "../Manager/EntityPool";
+import { EntityPool } from '../Manager/EntityPool';
+
 
 class Plane extends Box {
     public constructor() {
         super()
-        this.components.push(new BoxRigidBody(this, 0))
     }
 
     public override async Init() {

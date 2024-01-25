@@ -1,13 +1,6 @@
 import { EventSystem } from "@/libs/EventSystem";
 import * as THREE from 'three'
 import { Water } from 'three/examples/jsm/objects/Water'
-import right from '@/assets/images/right.jpg'
-import left from '@/assets/images/left.jpg'
-import top from '@/assets/images/top.jpg'
-import bottom from '@/assets/images/bottom.jpg'
-import front from '@/assets/images/front.jpg'
-import back from '@/assets/images/back.jpg'
-import normal from '@/assets/images/normal.jpg'
 import { GameLoop } from "./Gameloop";
 import { Type } from "../Type"
 
@@ -86,9 +79,10 @@ class WebGLWorld extends EventSystem {
         }
     }
 
-    private InitWater() {
+    private async InitWater() {
+        const nT = await Renderer.Resource.GetPathByName('Models/Water/normal.jpg')
         const waterGeometry = new THREE.PlaneGeometry(1000, 1000)
-        const texture = new THREE.TextureLoader().load(normal)
+        const texture = new THREE.TextureLoader().load(nT)
         texture.wrapS = THREE.RepeatWrapping
         texture.wrapT = THREE.RepeatWrapping
         this.water = new Water(waterGeometry,
@@ -115,10 +109,10 @@ class WebGLWorld extends EventSystem {
 
     private Update() {
         this.UpdateWater()
+        this.RenderWorld()
     }
 
     private UpdateWater() {
-        this.RenderWorld()
         if (this.water != null) {
             this.water.material.uniforms['time'].value += 0.5 / 60.0
         }

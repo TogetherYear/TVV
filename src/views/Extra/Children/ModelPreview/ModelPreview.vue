@@ -14,7 +14,7 @@ instance.Run()
 
 <template>
     <div class="ModelPreview">
-        <span class="View" ref="view"></span>
+        <span class="View" ref="view" id="WebGLWorld"></span>
     </div>
 </template>
 
