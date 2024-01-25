@@ -626,7 +626,7 @@ declare namespace IT {
         isMinimized: boolean,
         isMaximized: boolean,
         /**
-         * 获取截屏
+         * 获取截屏 最小化的窗口无法截取
          */
         Capture: () => Promise<string>
     }

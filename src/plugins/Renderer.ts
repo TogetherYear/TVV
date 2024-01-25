@@ -144,8 +144,11 @@ class Renderer extends EventSystem {
             TransformWindow: (window: Record<string, unknown>) => {
                 return {
                     ...window,
-                    Capture: () => {
-                        return this.Window.CaptureWindow(window.id as number)
+                    Capture: async () => {
+                        if (!window.isMinimized) {
+                            return await this.Window.CaptureWindow(window.id as number)
+                        }
+                        return ""
                     }
                 }
             }
