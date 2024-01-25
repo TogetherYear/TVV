@@ -132,14 +132,22 @@ class Renderer extends EventSystem {
 
     public get Window() {
         return {
-            GetAllWindows: () => {
-                return T.invoke("GetAllWindows")
+            GetAllWindows: async () => {
+                return (await T.invoke("GetAllWindows") as Array<Record<string, unknown>>).map(w => this.Window.TransformWindow(w))
             },
             CaptureWindow: async (id: number) => {
                 if (await T.invoke("CaptureWindow", { id, path: await this.CaptureTempInputPath })) {
                     return await this.CaptureTempOutputPath
                 }
                 return ""
+            },
+            TransformWindow: (window: Record<string, unknown>) => {
+                return {
+                    ...window,
+                    Capture: () => {
+                        return this.Window.CaptureWindow(window.id as number)
+                    }
+                }
             }
         }
     }
@@ -234,17 +242,17 @@ class Renderer extends EventSystem {
 
     public get Monitor() {
         return {
-            GetAllMonitors: () => {
-                return T.invoke("GetAllMonitors")
+            GetAllMonitors: async () => {
+                return (await T.invoke("GetAllMonitors") as Array<Record<string, unknown>>).map(m => this.Monitor.TransformMonitor(m))
             },
-            GetMonitorFromPoint: (x: number, y: number) => {
-                return T.invoke("GetMonitorFromPoint", { x, y })
+            GetMonitorFromPoint: async (x: number, y: number) => {
+                return this.Monitor.TransformMonitor(await T.invoke("GetMonitorFromPoint", { x, y }))
             },
-            GetCurrentMouseMonitor: () => {
-                return T.invoke("GetCurrentMouseMonitor")
+            GetCurrentMouseMonitor: async () => {
+                return this.Monitor.TransformMonitor(await T.invoke("GetCurrentMouseMonitor"))
             },
-            GetPrimaryMonitor: () => {
-                return T.invoke("GetPrimaryMonitor")
+            GetPrimaryMonitor: async () => {
+                return this.Monitor.TransformMonitor(await T.invoke("GetPrimaryMonitor"))
             },
             CaptureMonitor: async (id: number) => {
                 if (await T.invoke("CaptureMonitor", { id, path: await this.CaptureTempInputPath })) {
@@ -252,6 +260,14 @@ class Renderer extends EventSystem {
                 }
                 return ""
             },
+            TransformMonitor: (monitor: Record<string, unknown>) => {
+                return {
+                    ...monitor,
+                    Capture: () => {
+                        return this.Monitor.CaptureMonitor(monitor.id as number)
+                    }
+                }
+            }
         }
     }
 

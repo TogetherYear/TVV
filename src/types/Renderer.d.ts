@@ -604,6 +604,10 @@ declare namespace IT {
         scaleFactor: number,
         frequency: number,
         isPrimary: boolean,
+        /**
+         * 获取截屏
+         */
+        Capture: () => Promise<string>
     }
 
     export interface IToggleKey {
@@ -621,6 +625,10 @@ declare namespace IT {
         height: number,
         isMinimized: boolean,
         isMaximized: boolean,
+        /**
+         * 获取截屏
+         */
+        Capture: () => Promise<string>
     }
 
     export type EventName = `${Renderer.Event.TauriEvent}` | (string & Record<never, never>);
