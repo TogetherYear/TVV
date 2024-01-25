@@ -341,7 +341,7 @@ class Renderer extends EventSystem {
             Code: async (text: string) => {
                 await this.Clipboard.WriteText(text)
                 this.App.CreateWidget('Extra:Code', {
-                    url: this.Extra.GetExtraUrl('asas'),
+                    url: this.Extra.GetExtraUrl('Extra/Code'),
                     width: 310,
                     height: 336,
                     resizable: false,
