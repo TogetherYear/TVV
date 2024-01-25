@@ -35,7 +35,12 @@ const routes: Array<RouteRecordRaw> = [
                 path: 'Code',
                 name: 'Code',
                 component: () => import('@/views/Extra/Children/Code/Code.vue')
-            }
+            },
+            {
+                path: 'ImagePreview',
+                name: 'ImagePreview',
+                component: () => import('@/views/Extra/Children/ImagePreview/ImagePreview.vue')
+            },
         ]
     },
 ]

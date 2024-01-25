@@ -376,6 +376,11 @@ declare namespace Renderer {
         export function Code(text: string): Promise<void>
 
         /**
+         * 创建图片预览窗口 格式 `${imageUrl}$${width}$${height}`
+         */
+        export function ImagePreview(url: string): Promise<void>
+
+        /**
          * 获取需要展示的拓展路由 ( 内部调用 )
          */
         export function GetExtraUrl(route: string): string
@@ -487,9 +492,9 @@ declare namespace Renderer {
         WidgetEmpty = 'WidgetEmpty'
     }
 
-    export const CaptureTempInputPath: string
+    export const CaptureTempInputPath: Promise<string>
 
-    export const CaptureTempOutputPath: string
+    export const CaptureTempOutputPath: Promise<string>
 
     /**
      * 监听事件

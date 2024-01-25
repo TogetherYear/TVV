@@ -364,6 +364,25 @@ class Renderer extends EventSystem {
                     width: 310,
                     height: 336,
                     resizable: false,
+                    maximizable: false,
+                    decorations: false,
+                    alwaysOnTop: true,
+                    center: true,
+                    transparent: true,
+                    visible: false,
+                    focus: false
+                })
+            },
+            ImagePreview: async (url: string) => {
+                await this.Clipboard.WriteText(url)
+                this.App.CreateWidget('Extra:ImagePreview', {
+                    url: this.Extra.GetExtraUrl('Extra/ImagePreview'),
+                    width: 1060,
+                    height: 560,
+                    minWidth: 420,
+                    minHeight: 260,
+                    resizable: true,
+                    maximizable: false,
                     decorations: false,
                     alwaysOnTop: true,
                     center: true,

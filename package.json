@@ -10,6 +10,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1.5.3",
     "axios": "^1.6.5",
+    "leafer-ui": "^1.0.0-rc.9",
     "pinia": "^2.1.7",
     "qrcode": "^1.5.3",
     "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
