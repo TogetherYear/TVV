@@ -17,7 +17,7 @@ instance.Run()
 </script>
 
 <template>
-    <div class="DefaultWindow Tray">
+    <div class="TrayWindow Tray">
         <span class="Content">
             <span class="Title">Tray</span>
         </span>
