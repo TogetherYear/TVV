@@ -35,7 +35,7 @@ class Application extends AActor {
             // const url = await monitor.Capture()
             // await Renderer.Extra.ImagePreview(`${url}$${monitor.width}$${monitor.height}`)
 
-            await Renderer.Extra.ModelPreview(await Renderer.Resource.GetPathByName('Models/KQ/kq.glb'))
+            // await Renderer.Extra.ModelPreview(await Renderer.Resource.GetPathByName('Models/KQ/kq.glb'))
 
             // await Renderer.App.Invoke("InvokeTest", { x: 100, y: 100 })
         }, 3000);
