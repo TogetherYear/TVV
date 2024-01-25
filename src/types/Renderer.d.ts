@@ -480,14 +480,11 @@ declare namespace Renderer {
     }
 
     export enum RendererEvent {
-        /**
-         * 这个是用来给 rust 用的
-         */
-        Backend = 'Backend',
         Message = 'Message',
         SecondInstance = 'SecondInstance',
         WidgetCreate = 'WidgetCreate',
-        WidgetDestroy = 'WidgetDestroy'
+        WidgetDestroy = 'WidgetDestroy',
+        WidgetEmpty = 'WidgetEmpty'
     }
 
     export const CaptureTempInputPath: string

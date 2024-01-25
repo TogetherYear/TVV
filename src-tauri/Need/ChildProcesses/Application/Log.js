@@ -1,1 +1,0 @@
-Debug.Log(`Application 丨 Log.js 丨 Run`)

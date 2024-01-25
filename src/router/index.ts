@@ -8,12 +8,12 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/:pathMatch(.*)',
-        name: 'Empty',
-        redirect: '/404'
+        name: '404',
+        redirect: '/Empty'
     },
     {
-        path: '/404',
-        name: '404',
+        path: '/Empty',
+        name: 'Empty',
         component: () => import('@/views/Empty/Empty.vue')
     },
     {

@@ -341,7 +341,7 @@ class Renderer extends EventSystem {
             Code: async (text: string) => {
                 await this.Clipboard.WriteText(text)
                 this.App.CreateWidget('Extra:Code', {
-                    url: this.Extra.GetExtraUrl('Extra/Code'),
+                    url: this.Extra.GetExtraUrl('asas'),
                     width: 310,
                     height: 336,
                     resizable: false,
@@ -354,7 +354,7 @@ class Renderer extends EventSystem {
                 })
             },
             GetExtraUrl: (route: string) => {
-                return location.href.replace(location.href.split('/').slice(-1)[0], route)
+                return `${location.origin}/#/${route}`
             }
         }
     }
@@ -447,11 +447,11 @@ class Renderer extends EventSystem {
 
     public get RendererEvent() {
         return {
-            Backend: 'Backend',
             Message: 'Message',
             SecondInstance: 'SecondInstance',
             WidgetCreate: 'WidgetCreate',
-            WidgetDestroy: 'WidgetDestroy'
+            WidgetDestroy: 'WidgetDestroy',
+            WidgetEmpty: 'WidgetEmpty'
         }
     }
 
@@ -479,6 +479,7 @@ class Renderer extends EventSystem {
         this.AddKey(this.RendererEvent.SecondInstance)
         this.AddKey(this.RendererEvent.WidgetCreate)
         this.AddKey(this.RendererEvent.WidgetDestroy)
+        this.AddKey(this.RendererEvent.WidgetEmpty)
     }
 
     private ListenEvents() {
@@ -492,6 +493,9 @@ class Renderer extends EventSystem {
             }
             else if (r.event == this.RendererEvent.WidgetDestroy) {
                 this.Emit(this.RendererEvent.WidgetDestroy, r)
+            }
+            else if (r.event == this.RendererEvent.WidgetEmpty) {
+                this.Emit(this.RendererEvent.WidgetEmpty, r)
             }
             this.Emit(this.RendererEvent.Message, r)
         })

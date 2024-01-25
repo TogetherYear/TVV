@@ -1,1 +1,0 @@
-Debug.Log(`Application 丨 Push.js 丨 Run`)

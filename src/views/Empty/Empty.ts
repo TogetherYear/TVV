@@ -18,8 +18,9 @@ class Empty extends AActor {
     }
 
     public Run() {
-        onMounted(() => {
-
+        onMounted(async () => {
+            await Renderer.Widget.Show()
+            await this.GenerateEvent()
         })
 
         onUnmounted(() => {
@@ -29,6 +30,10 @@ class Empty extends AActor {
 
     protected Destroy() {
 
+    }
+
+    private async GenerateEvent() {
+        await Renderer.Event.Emit(Renderer.Event.TauriEvent.TAURI, { event: Renderer.RendererEvent.WidgetEmpty, send: '', extra: {} })
     }
 }
 

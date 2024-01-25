@@ -20,7 +20,7 @@ instance.Run()
 <template>
     <div :class="{ ShadowWindow: !isMax, DefaultWindow: isMax, Empty: true }">
         <HeaderBarVue></HeaderBarVue>
-        <span class="Title">看到我 就说明你路由错误 快去添加</span>
+        <span class="Title">404</span>
     </div>
 </template>
 
