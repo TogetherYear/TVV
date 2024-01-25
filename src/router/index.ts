@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
                 name: 'ImagePreview',
                 component: () => import('@/views/Extra/Children/ImagePreview/ImagePreview.vue')
             },
+            {
+                path: 'ModelPreview',
+                name: 'ModelPreview',
+                component: () => import('@/views/Extra/Children/ModelPreview/ModelPreview.vue')
+            },
         ]
     },
 ]

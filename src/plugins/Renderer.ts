@@ -391,6 +391,24 @@ class Renderer extends EventSystem {
                     focus: false
                 })
             },
+            ModelPreview: async (url: string) => {
+                await this.Clipboard.WriteText(url)
+                this.App.CreateWidget('Extra:ModelPreview', {
+                    url: this.Extra.GetExtraUrl('Extra/ModelPreview'),
+                    width: 1160,
+                    height: 760,
+                    minWidth: 420,
+                    minHeight: 260,
+                    resizable: true,
+                    maximizable: false,
+                    decorations: false,
+                    alwaysOnTop: true,
+                    center: true,
+                    transparent: true,
+                    visible: false,
+                    focus: false
+                })
+            },
             GetExtraUrl: (route: string) => {
                 return `${location.origin}/#/${route}`
             }

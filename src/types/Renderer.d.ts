@@ -381,6 +381,11 @@ declare namespace Renderer {
         export function ImagePreview(url: string): Promise<void>
 
         /**
+         * 创建模型预览窗口
+         */
+        export function ModelPreview(url: string): Promise<void>
+
+        /**
          * 获取需要展示的拓展路由 ( 内部调用 )
          */
         export function GetExtraUrl(route: string): string

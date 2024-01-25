@@ -31,8 +31,8 @@ class ImagePreview extends AActor {
     }
 
     public Run() {
-        onMounted(() => {
-            this.CreatePreview()
+        onMounted(async () => {
+            await this.CreatePreview()
         })
 
         onUnmounted(() => {
