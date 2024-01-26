@@ -386,11 +386,6 @@ declare namespace Renderer {
         export function ModelPreview(): void
 
         /**
-         * 创建桌面宠物窗口
-         */
-        export function TablePreview(url: string): Promise<void>
-
-        /**
          * 获取需要展示的拓展路由 ( 内部调用 )
          */
         export function GetExtraUrl(route: string): string

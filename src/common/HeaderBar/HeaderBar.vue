@@ -10,7 +10,7 @@ const attribute = withDefaults(defineProps<{
     /**
      * 窗口类型 
      */
-    type?: 'main' | 'tool' | 'table',
+    type?: 'main' | 'tool',
 }>(), {
     bgc: '#212121',
     type: 'tool'
@@ -47,14 +47,6 @@ instance.Run()
             <span class="Drag" v-show="isMax"></span>
         </span>
         <span v-if="attribute.type == 'tool'">
-            <span class="Btn">
-                <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
-                    <img :src="closeIcon" class="Icon" />
-                </span>
-            </span>
-            <span class="Drag" data-tauri-drag-region></span>
-        </span>
-        <span v-if="attribute.type == 'table'">
             <span class="Btn">
                 <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
                     <img :src="closeIcon" class="Icon" />

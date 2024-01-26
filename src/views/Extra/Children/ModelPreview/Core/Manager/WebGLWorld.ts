@@ -61,7 +61,7 @@ class WebGLWorld extends EventSystem {
         this.renderer.shadowMap.enabled = false
         let element = document.getElementById('WebGLWorldContainer') as HTMLSpanElement
         this.renderer.setSize(element.offsetWidth, element.offsetHeight)
-        this.renderer.setClearColor(0x333333, 1.0)
+        this.renderer.setClearColor(0x212121, 1.0)
         document.getElementById('WebGLWorldContainer')?.appendChild(this.renderer.domElement)
     }
 
@@ -79,7 +79,7 @@ class WebGLWorld extends EventSystem {
 
     private InitFog() {
         if (this.scene) {
-            this.scene.fog = new THREE.FogExp2(0x333333, 0.05)
+            this.scene.fog = new THREE.FogExp2(0x212121, 0.05)
         }
     }
 
