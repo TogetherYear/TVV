@@ -25,7 +25,9 @@ class WebGLWorld extends EventSystem {
 
     public Run() {
         this.InitScene()
+
         this.InitCamera()
+
         this.InitRenderer()
 
         this.InitDireLight()
@@ -85,16 +87,15 @@ class WebGLWorld extends EventSystem {
         const texture = new THREE.TextureLoader().load(nT)
         texture.wrapS = THREE.RepeatWrapping
         texture.wrapT = THREE.RepeatWrapping
-        this.water = new Water(waterGeometry,
-            {
-                // 这个宽度和高度越大 水面投影的边缘越光滑 默认512
-                textureWidth: 1024,
-                textureHeight: 1024,
-                waterNormals: texture,
-                waterColor: 0x001e0f,
-                distortionScale: 0.6,
-                fog: this.scene?.fog !== undefined
-            })
+        this.water = new Water(waterGeometry, {
+            // 这个宽度和高度越大 水面投影的边缘越光滑 默认512
+            textureWidth: 1024,
+            textureHeight: 1024,
+            waterNormals: texture,
+            waterColor: 0x001e0f,
+            distortionScale: 0.6,
+            fog: this.scene?.fog !== undefined
+        })
         this.water.rotation.x = -Math.PI / 2
         this.water.position.y = -3
         this.water.userData = {

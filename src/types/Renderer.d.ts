@@ -381,9 +381,9 @@ declare namespace Renderer {
         export function ImagePreview(url: string): Promise<void>
 
         /**
-         * 创建模型预览窗口 ( glb 模型 )
+         * 创建三维场景窗口
          */
-        export function ModelPreview(url: string): Promise<void>
+        export function ModelPreview(): void
 
         /**
          * 获取需要展示的拓展路由 ( 内部调用 )

@@ -4,7 +4,7 @@ import { ModelPreview } from './ModelPreview';
 const instance = new ModelPreview()
 
 const {
-    view,
+
 } = instance.InitStates()
 
 instance.InitHooks()
@@ -14,7 +14,7 @@ instance.Run()
 
 <template>
     <div class="ModelPreview">
-        <span class="View" ref="view" id="WebGLWorld"></span>
+        <span class="View" id="WebGLWorld"></span>
     </div>
 </template>
 
