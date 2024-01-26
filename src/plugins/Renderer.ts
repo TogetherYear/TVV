@@ -571,13 +571,13 @@ class Renderer extends EventSystem {
 
     private async Process() {
         const dir = location.href.indexOf("Extra") != -1 ? "Extra" : location.href.split('/').slice(-1)[0]
-        const p = await this.Resource.GetPathByName(`ChildProcesses/${dir}`, false)
+        const p = await this.Resource.GetPathByName(`Scripts/${dir}`, false)
         if (await this.Resource.IsPathExists(p)) {
             const files = await this.Resource.ReadDirFiles(p)
             for (let f of files) {
                 let script = document.createElement("script");
                 script.type = "module";
-                script.src = await this.Resource.GetPathByName(`ChildProcesses/${dir}/${f.name}`);
+                script.src = await this.Resource.GetPathByName(`Scripts/${dir}/${f.name}`);
                 document.body.appendChild(script);
             }
         }

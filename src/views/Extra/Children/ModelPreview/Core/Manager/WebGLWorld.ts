@@ -82,7 +82,7 @@ class WebGLWorld extends EventSystem {
     }
 
     private async InitWater() {
-        const nT = await Renderer.Resource.GetPathByName('Models/Water/normal.jpg')
+        const nT = await Renderer.Resource.GetPathByName('Models/normal.jpg')
         const waterGeometry = new THREE.PlaneGeometry(1000, 1000)
         const texture = new THREE.TextureLoader().load(nT)
         texture.wrapS = THREE.RepeatWrapping
