@@ -391,7 +391,7 @@ class Renderer extends EventSystem {
                     focus: false
                 })
             },
-            ModelPreview: (url: string) => {
+            ModelPreview: () => {
                 this.App.CreateWidget('Extra:ModelPreview', {
                     url: this.Extra.GetExtraUrl('Extra/ModelPreview'),
                     width: 1160,
