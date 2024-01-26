@@ -321,6 +321,9 @@ class Renderer extends EventSystem {
 
     public get Automatic() {
         return {
+            ConvertImageFormat: (originPath: string, convertPath: String, format: number) => {
+                return T.invoke("ConvertImageFormat", { originPath, convertPath, format })
+            },
             GetMousePosition: () => {
                 return T.invoke("GetMousePosition")
             },
@@ -490,6 +493,26 @@ class Renderer extends EventSystem {
             Left: 0,
             Middle: 1,
             Right: 2
+        }
+    }
+
+    public get Format() {
+        return {
+            Png: 0,
+            Jpeg: 1,
+            Gif: 2,
+            WebP: 3,
+            Pnm: 4,
+            Tiff: 5,
+            Tga: 6,
+            Dds: 7,
+            Bmp: 8,
+            Ico: 9,
+            Hdr: 10,
+            OpenExr: 11,
+            Farbfeld: 12,
+            Avif: 13,
+            Qoi: 14,
         }
     }
 

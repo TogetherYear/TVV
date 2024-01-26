@@ -1,3 +1,5 @@
+use image::ImageFormat;
+
 use serde::{Deserialize, Serialize};
 
 use tauri::{command, LogicalPosition};
@@ -6,11 +8,16 @@ use autopilot::{geometry, mouse};
 
 use enigo::{Enigo, KeyboardControllable};
 
-use xcap::{self, image::ImageFormat};
-
 #[command]
 pub async fn InvokeTest(window: tauri::Window, x: i32, y: i32) {
     window.set_position(LogicalPosition::new(x, y)).unwrap();
+}
+
+#[command]
+pub fn ConvertImageFormat(originPath: String, convertPath: String, format: u32) {
+    let r = image::open(originPath).unwrap();
+    r.save_with_format(convertPath, TransformFormat(format))
+        .unwrap();
 }
 
 #[command]
@@ -239,6 +246,27 @@ fn TransformToggleKeysFromJson(json: String) -> Vec<ToggleKey> {
     serde_json::from_str::<ToggleKeysJson>(json.as_str())
         .unwrap()
         .toggleKeys
+}
+
+fn TransformFormat(format: u32) -> ImageFormat {
+    match format {
+        0 => ImageFormat::Png,
+        1 => ImageFormat::Jpeg,
+        2 => ImageFormat::Gif,
+        3 => ImageFormat::WebP,
+        4 => ImageFormat::Pnm,
+        5 => ImageFormat::Tiff,
+        6 => ImageFormat::Tga,
+        7 => ImageFormat::Dds,
+        8 => ImageFormat::Bmp,
+        9 => ImageFormat::Ico,
+        10 => ImageFormat::Hdr,
+        11 => ImageFormat::OpenExr,
+        12 => ImageFormat::Farbfeld,
+        13 => ImageFormat::Avif,
+        14 => ImageFormat::Qoi,
+        _ => ImageFormat::WebP,
+    }
 }
 
 #[derive(Clone, serde::Serialize)]

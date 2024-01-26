@@ -316,6 +316,11 @@ declare namespace Renderer {
      */
     export namespace Automatic {
         /**
+         * 转换图片格式 不能用Tauri转换后的地址
+         */
+        export function ConvertImageFormat(originPath: string, convertPath: String, format: Format): Promise<void>
+
+        /**
          * 获取鼠标位置
          */
         export function GetMousePosition(): Promise<IT.Point>
@@ -419,6 +424,24 @@ declare namespace Renderer {
             STATUS_UPDATE = "tauri://update-status",
             DOWNLOAD_PROGRESS = "tauri://update-download-progress"
         }
+    }
+
+    export enum Format {
+        Png = 0,
+        Jpeg = 1,
+        Gif = 2,
+        WebP = 3,
+        Pnm = 4,
+        Tiff = 5,
+        Tga = 6,
+        Dds = 7,
+        Bmp = 8,
+        Ico = 9,
+        Hdr = 10,
+        OpenExr = 11,
+        Farbfeld = 12,
+        Avif = 13,
+        Qoi = 14,
     }
 
     export enum Key {
