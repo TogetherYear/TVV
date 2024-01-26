@@ -51,15 +51,23 @@ class Renderer extends EventSystem {
                 const ws = this.App.GetAllWidgets()
                 return ws.find(w => w.label == label)
             },
-            CreateWidget: (label: string, options?: W.WindowOptions) => {
-                const widget = new W.WebviewWindow(label, options)
-                widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                    E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, send: '', extra: { windowLabel: label } })
-                })
-                widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                    E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, send: '', extra: { windowLabel: label } })
-                })
-                return widget
+            CreateWidget: async (label: string, options?: W.WindowOptions) => {
+                const exist = this.App.GetWidgetByLabel(label)
+                if (exist) {
+                    await exist.show()
+                    await exist.setFocus()
+                    return exist
+                }
+                else {
+                    const widget = new W.WebviewWindow(label, options)
+                    widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
+                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, send: '', extra: { windowLabel: label } })
+                    })
+                    widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
+                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, send: '', extra: { windowLabel: label } })
+                    })
+                    return widget
+                }
             }
         }
     }

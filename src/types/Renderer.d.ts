@@ -39,9 +39,9 @@ declare namespace Renderer {
         export function GetWidgetByLabel(label: string): unknown
 
         /**
-         * 创建新窗口 返回值是窗口类 自己翻阅文档 这里不在写类型说明
+         * 创建新窗口 返回值是窗口类 如果窗口已存在则返回 并且聚焦 ( 自己翻阅文档 这里不在写类型说明 )
          */
-        export function CreateWidget(label: IT.WindowLabel, options?: IT.IWindowOptions): unknown
+        export function CreateWidget(label: IT.WindowLabel, options?: IT.IWindowOptions): Promise<unknown>
     }
 
     /**
