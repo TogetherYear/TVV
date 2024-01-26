@@ -408,6 +408,22 @@ class Renderer extends EventSystem {
                     focus: false
                 })
             },
+            TablePreview: async (url: string) => {
+                await this.Clipboard.WriteText(url)
+                this.App.CreateWidget('Extra:TablePreview', {
+                    url: this.Extra.GetExtraUrl('Extra/TablePreview'),
+                    width: 310,
+                    height: 336,
+                    resizable: false,
+                    maximizable: false,
+                    decorations: false,
+                    alwaysOnTop: true,
+                    center: true,
+                    transparent: true,
+                    visible: false,
+                    focus: false
+                })
+            },
             GetExtraUrl: (route: string) => {
                 return `${location.origin}/#/${route}`
             }

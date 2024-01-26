@@ -39,7 +39,11 @@ class InputSystem extends EventSystem {
 
     private ListenEvents() {
         GameLoop.Instance.AddListen(Type.GLEvents.Update, this, this.Update)
-        window.oncontextmenu = () => { return false }
+        window.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            e.stopImmediatePropagation()
+        })
         window.addEventListener('resize', this.OnWindowResize.bind(this), false)
         window.addEventListener('keydown', this.OnMoveKeyPress.bind(this), false)
         window.addEventListener('keyup', this.OnMoveKeyRelease.bind(this), false)
@@ -57,9 +61,10 @@ class InputSystem extends EventSystem {
         e.preventDefault()
         e.stopPropagation()
         if (WebGLWorld.Instance.scene && WebGLWorld.Instance.camera && WebGLWorld.Instance.renderer) {
-            WebGLWorld.Instance.camera.aspect = window.innerWidth / window.innerHeight
+            let element = document.getElementById('WebGLWorldContainer') as HTMLSpanElement
+            WebGLWorld.Instance.camera.aspect = element.offsetWidth / element.offsetHeight
             WebGLWorld.Instance.camera.updateProjectionMatrix()
-            WebGLWorld.Instance.renderer.setSize(window.innerWidth, window.innerHeight)
+            WebGLWorld.Instance.renderer.setSize(element.offsetWidth, element.offsetHeight)
             WebGLWorld.Instance.renderer.render(WebGLWorld.Instance.scene, WebGLWorld.Instance.camera)
         }
         this.Emit('Resize')

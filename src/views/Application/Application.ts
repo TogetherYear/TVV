@@ -31,13 +31,7 @@ class Application extends AActor {
 
     private Test() {
         setTimeout(async () => {
-            // const monitor = await Renderer.Monitor.GetCurrentMouseMonitor()
-            // const url = await monitor.Capture()
-            // await Renderer.Extra.ImagePreview(`${url}$${monitor.width}$${monitor.height}`)
 
-            // await Renderer.Extra.ModelPreview()
-
-            // await Renderer.App.Invoke("InvokeTest", { x: 100, y: 100 })
         }, 3000);
     }
 }

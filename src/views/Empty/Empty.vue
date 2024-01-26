@@ -1,12 +1,7 @@
 <script lang="ts" setup>
-import { App } from '@/App';
 import { Empty } from './Empty'
 import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
 const instance = new Empty()
-
-const {
-    isMax,
-} = App.Instance.InitStates()
 
 const {
 
@@ -18,7 +13,7 @@ instance.Run()
 </script>
 
 <template>
-    <div :class="{ ShadowWindow: !isMax, DefaultWindow: isMax, Empty: true }">
+    <div class="ShadowWindow Empty">
         <HeaderBarVue></HeaderBarVue>
         <span class="Title">404</span>
     </div>

@@ -46,7 +46,8 @@ class WebGLWorld extends EventSystem {
     }
 
     private InitCamera() {
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+        let element = document.getElementById('WebGLWorldContainer') as HTMLSpanElement
+        this.camera = new THREE.PerspectiveCamera(75, element.offsetWidth / element.offsetHeight, 0.1, 1000)
         this.camera.position.set(0, 5, 18)
         this.camera.lookAt(new THREE.Vector3(0, 0, 0))
         this.scene?.add(this.camera)
@@ -58,9 +59,10 @@ class WebGLWorld extends EventSystem {
             antialias: true
         })
         this.renderer.shadowMap.enabled = false
-        this.renderer.setSize(window.innerWidth, window.innerHeight)
+        let element = document.getElementById('WebGLWorldContainer') as HTMLSpanElement
+        this.renderer.setSize(element.offsetWidth, element.offsetHeight)
         this.renderer.setClearColor(0x333333, 1.0)
-        document.getElementById('WebGLWorld')?.appendChild(this.renderer.domElement)
+        document.getElementById('WebGLWorldContainer')?.appendChild(this.renderer.domElement)
     }
 
     private InitDireLight() {

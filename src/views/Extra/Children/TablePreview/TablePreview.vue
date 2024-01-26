@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
-import { ImagePreview } from './ImagePreview';
+import { TablePreview } from './TablePreview';
 
-const instance = new ImagePreview()
+const instance = new TablePreview()
 
 const {
     view,
@@ -14,12 +14,12 @@ instance.Run()
 </script>
 
 <template>
-    <div class="ShadowWindow ImagePreview">
-        <HeaderBarVue></HeaderBarVue>
+    <div class="TransparentWindow TablePreview">
+        <HeaderBarVue :type="'table'"></HeaderBarVue>
         <span class="ExtraView" ref="view"></span>
     </div>
 </template>
 
 <style lang="scss" scoped>
-@import "./ImagePreview.scss"
+@import "./TablePreview.scss"
 </style>

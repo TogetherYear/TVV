@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
 import { Code } from './Code';
 
 const instance = new Code()
@@ -13,8 +14,11 @@ instance.Run()
 </script>
 
 <template>
-    <div class="Code">
-        <canvas class="View" ref="canvas"></canvas>
+    <div class="ShadowWindow Code">
+        <HeaderBarVue></HeaderBarVue>
+        <span class="ExtraView">
+            <canvas ref="canvas" class="Canvas"></canvas>
+        </span>
     </div>
 </template>
 

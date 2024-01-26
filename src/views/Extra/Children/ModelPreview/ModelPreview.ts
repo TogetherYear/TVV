@@ -1,5 +1,5 @@
 import { AActor } from "@/libs/AActor"
-import { onMounted, onUnmounted, ref } from "vue"
+import { onMounted, onUnmounted } from "vue"
 import { GameLoop } from "./Core/Manager/Gameloop"
 import { WebGLWorld } from "./Core/Manager/WebGLWorld"
 import { EntityPool } from "./Core/Manager/EntityPool"

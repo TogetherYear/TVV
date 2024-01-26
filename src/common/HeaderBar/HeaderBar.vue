@@ -8,12 +8,12 @@ import { App } from '@/App';
 const attribute = withDefaults(defineProps<{
     bgc?: string,
     /**
-     * 是否为主窗口 默认 false
+     * 窗口类型 
      */
-    main?: boolean,
+    type?: 'main' | 'tool' | 'table',
 }>(), {
     bgc: '#212121',
-    main: false
+    type: 'tool'
 })
 
 const instance = new HeaderBar()
@@ -31,19 +31,37 @@ instance.Run()
 
 <template>
     <div class="HeaderBar" :style="{ background: attribute.bgc }">
-        <span class="Btn">
-            <span class="Min" v-if="attribute.main" @click="instance.OnOptionClick('Min', attribute.main)">
-                <img :src="minIcon" class="Icon" />
+        <span v-if="attribute.type == 'main'">
+            <span class="Btn">
+                <span class="Min" @click="instance.OnOptionClick('Min', attribute.type)">
+                    <img :src="minIcon" class="Icon" />
+                </span>
+                <span class="Max" @click="instance.OnOptionClick('Max', attribute.type)">
+                    <img :src="maxIcon" class="Icon" />
+                </span>
+                <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
+                    <img :src="closeIcon" class="Icon" />
+                </span>
             </span>
-            <span class="Max" v-if="attribute.main" @click="instance.OnOptionClick('Max', attribute.main)">
-                <img :src="maxIcon" class="Icon" />
-            </span>
-            <span class="Close" @click="instance.OnOptionClick('Close', attribute.main)">
-                <img :src="closeIcon" class="Icon" />
-            </span>
+            <span class="Drag" data-tauri-drag-region v-show="!isMax"></span>
+            <span class="Drag" v-show="isMax"></span>
         </span>
-        <span class="Drag" data-tauri-drag-region v-show="!isMax"></span>
-        <span class="Drag" v-show="isMax && !attribute.main"></span>
+        <span v-if="attribute.type == 'tool'">
+            <span class="Btn">
+                <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
+                    <img :src="closeIcon" class="Icon" />
+                </span>
+            </span>
+            <span class="Drag" data-tauri-drag-region></span>
+        </span>
+        <span v-if="attribute.type == 'table'">
+            <span class="Btn">
+                <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
+                    <img :src="closeIcon" class="Icon" />
+                </span>
+            </span>
+            <span class="Drag" data-tauri-drag-region></span>
+        </span>
     </div>
 </template>
 

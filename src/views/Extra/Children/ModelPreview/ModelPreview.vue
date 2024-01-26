@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
 import { ModelPreview } from './ModelPreview';
 
 const instance = new ModelPreview()
@@ -13,8 +14,9 @@ instance.Run()
 </script>
 
 <template>
-    <div class="ModelPreview">
-        <span class="View" id="WebGLWorld"></span>
+    <div class="ShadowWindow ModelPreview">
+        <HeaderBarVue></HeaderBarVue>
+        <span class="ExtraView" id="WebGLWorldContainer"></span>
     </div>
 </template>
 
