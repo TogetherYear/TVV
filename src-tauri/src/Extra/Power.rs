@@ -1,4 +1,4 @@
-use image::ImageFormat;
+use image::{imageops::FilterType, ImageFormat};
 
 use serde::{Deserialize, Serialize};
 
@@ -14,9 +14,31 @@ pub async fn InvokeTest(window: tauri::Window, x: i32, y: i32) {
 }
 
 #[command]
-pub fn ConvertImageFormat(originPath: String, convertPath: String, format: u32) {
-    let r = image::open(originPath).unwrap();
-    r.save_with_format(convertPath, TransformFormat(format))
+pub fn ConvertImageFormat(originPath: String, convertPath: String, options: String) {
+    let options = TransformImageOptionsFromJson(options);
+    let mut r = image::open(originPath).unwrap();
+    if options.width != 0
+        && options.height != 0
+        && (options.width != r.width() || options.height != r.height())
+    {
+        match options.keepAspectRatio {
+            true => {
+                r = r.resize(
+                    options.width,
+                    options.height,
+                    TransformFilter(options.filter),
+                )
+            }
+            false => {
+                r = r.resize_exact(
+                    options.width,
+                    options.height,
+                    TransformFilter(options.filter),
+                )
+            }
+        }
+    }
+    r.save_with_format(convertPath, TransformFormat(options.format))
         .unwrap();
 }
 
@@ -248,6 +270,10 @@ fn TransformToggleKeysFromJson(json: String) -> Vec<ToggleKey> {
         .toggleKeys
 }
 
+fn TransformImageOptionsFromJson(json: String) -> ImageOptions {
+    serde_json::from_str::<ImageOptions>(json.as_str()).unwrap()
+}
+
 fn TransformFormat(format: u32) -> ImageFormat {
     match format {
         0 => ImageFormat::Png,
@@ -266,6 +292,17 @@ fn TransformFormat(format: u32) -> ImageFormat {
         13 => ImageFormat::Avif,
         14 => ImageFormat::Qoi,
         _ => ImageFormat::WebP,
+    }
+}
+
+fn TransformFilter(filter: u32) -> FilterType {
+    match filter {
+        0 => FilterType::Nearest,
+        1 => FilterType::Triangle,
+        2 => FilterType::CatmullRom,
+        3 => FilterType::Gaussian,
+        4 => FilterType::Lanczos3,
+        _ => FilterType::Nearest,
     }
 }
 
@@ -388,4 +425,13 @@ impl Monitor {
             isPrimary: false,
         }
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ImageOptions {
+    format: u32,
+    keepAspectRatio: bool,
+    width: u32,
+    height: u32,
+    filter: u32,
 }

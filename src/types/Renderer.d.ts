@@ -318,7 +318,7 @@ declare namespace Renderer {
         /**
          * 转换图片格式 不能用Tauri转换后的地址
          */
-        export function ConvertImageFormat(originPath: string, convertPath: String, format: Format): Promise<void>
+        export function ConvertImageFormat(originPath: string, convertPath: string, options?: IT.ImageOptions): Promise<void>
 
         /**
          * 获取鼠标位置
@@ -442,6 +442,14 @@ declare namespace Renderer {
         Farbfeld = 12,
         Avif = 13,
         Qoi = 14,
+    }
+
+    export enum Filter {
+        Nearest = 0,
+        Triangle = 1,
+        CatmullRom = 2,
+        Gaussian = 3,
+        Lanczos3 = 4,
     }
 
     export enum Key {
@@ -662,6 +670,14 @@ declare namespace IT {
          * 获取截屏 最小化的窗口无法截取
          */
         Capture: () => Promise<string>
+    }
+
+    export type ImageOptions = {
+        format?: Renderer.Format,
+        keepAspectRatio?: boolean,
+        width?: number,
+        height?: number,
+        filter?: Renderer.Filter,
     }
 
     export type EventName = `${Renderer.Event.TauriEvent}` | (string & Record<never, never>);

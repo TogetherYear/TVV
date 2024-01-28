@@ -329,8 +329,15 @@ class Renderer extends EventSystem {
 
     public get Automatic() {
         return {
-            ConvertImageFormat: (originPath: string, convertPath: String, format: number) => {
-                return T.invoke("ConvertImageFormat", { originPath, convertPath, format })
+            ConvertImageFormat: (originPath: string, convertPath: String, options: Record<string, unknown> = {}) => {
+                const o = {
+                    format: options.format || this.Format.WebP,
+                    keepAspectRatio: options.keepAspectRatio || true,
+                    width: options.width || 0,
+                    height: options.height || 0,
+                    filter: options.filter || this.Filter.Nearest,
+                }
+                return T.invoke("ConvertImageFormat", { originPath, convertPath, options: o })
             },
             GetMousePosition: () => {
                 return T.invoke("GetMousePosition")
@@ -521,6 +528,16 @@ class Renderer extends EventSystem {
             Farbfeld: 12,
             Avif: 13,
             Qoi: 14,
+        }
+    }
+
+    public get Filter() {
+        return {
+            Nearest: 0,
+            Triangle: 1,
+            CatmullRom: 2,
+            Gaussian: 3,
+            Lanczos3: 4,
         }
     }
 
