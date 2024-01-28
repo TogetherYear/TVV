@@ -332,12 +332,12 @@ class Renderer extends EventSystem {
             ConvertImageFormat: (originPath: string, convertPath: String, options: Record<string, unknown> = {}) => {
                 const o = {
                     format: options.format || this.Format.WebP,
-                    keepAspectRatio: options.keepAspectRatio || true,
+                    keepAspectRatio: options.keepAspectRatio == false ? false : true,
                     width: options.width || 0,
                     height: options.height || 0,
                     filter: options.filter || this.Filter.Nearest,
                 }
-                return T.invoke("ConvertImageFormat", { originPath, convertPath, options: o })
+                return T.invoke("ConvertImageFormat", { originPath, convertPath, options: JSON.stringify(o) })
             },
             GetMousePosition: () => {
                 return T.invoke("GetMousePosition")

@@ -31,11 +31,7 @@ class Application extends AActor {
 
     private Test() {
         setTimeout(async () => {
-            const i = await Renderer.Resource.GetPathByName('Images/icon.ico', false)
-            const o = await Renderer.Resource.GetPathByName('Images/icon.webp', false)
-            await Renderer.Automatic.ConvertImageFormat(i, o, {
 
-            })
         }, 3000);
     }
 }
