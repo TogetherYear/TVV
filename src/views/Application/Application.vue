@@ -22,7 +22,7 @@ instance.Run()
 </script>
 
 <template>
-    <div :class="{ ShadowWindow: !isMax, DefaultWindow: isMax, Application: true }">
+    <div class="DefaultWindow Application">
         <HeaderBarVue :type="'main'"></HeaderBarVue>
     </div>
 </template>

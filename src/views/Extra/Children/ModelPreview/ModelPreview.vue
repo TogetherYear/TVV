@@ -14,7 +14,7 @@ instance.Run()
 </script>
 
 <template>
-    <div class="ShadowWindow ModelPreview">
+    <div class="DefaultWindow ModelPreview">
         <HeaderBarVue></HeaderBarVue>
         <span class="ExtraView" id="WebGLWorldContainer"></span>
     </div>

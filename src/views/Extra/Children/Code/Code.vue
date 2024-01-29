@@ -14,7 +14,7 @@ instance.Run()
 </script>
 
 <template>
-    <div class="ShadowWindow Code">
+    <div class="DefaultWindow Code">
         <HeaderBarVue></HeaderBarVue>
         <span class="ExtraView">
             <canvas ref="canvas" class="Canvas"></canvas>

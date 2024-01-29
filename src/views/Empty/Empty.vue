@@ -13,7 +13,7 @@ instance.Run()
 </script>
 
 <template>
-    <div class="ShadowWindow Empty">
+    <div class="DefaultWindow Empty">
         <HeaderBarVue></HeaderBarVue>
         <span class="Title">404</span>
     </div>

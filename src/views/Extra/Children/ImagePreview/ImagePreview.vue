@@ -14,7 +14,7 @@ instance.Run()
 </script>
 
 <template>
-    <div class="ShadowWindow ImagePreview">
+    <div class="DefaultWindow ImagePreview">
         <HeaderBarVue></HeaderBarVue>
         <span class="ExtraView" ref="view"></span>
     </div>
