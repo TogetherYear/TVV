@@ -129,6 +129,11 @@ declare namespace Renderer {
         export function SetPosition(x: number, y: number): Promise<void>
 
         /**
+         * 设置窗口阴影显示
+         */
+        export function SetWindowShadow(enable: boolean): Promise<void>
+
+        /**
          * 不要用 去用 AddListen
          */
         export function Listen(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>
