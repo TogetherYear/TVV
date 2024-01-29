@@ -115,7 +115,8 @@
                 "label": "Application",
                 "transparent": true,
                 "url": "/#/Application",
-                "visible": false
+                "visible": false,
+                "maximizable": false
             },
             {
                 "fullscreen": false,
@@ -135,7 +136,8 @@
                 "url": "/#/Tray",
                 "visible": false,
                 "alwaysOnTop": true,
-                "skipTaskbar": true
+                "skipTaskbar": true,
+                "maximizable": false
             }
         ],
         "systemTray": {
