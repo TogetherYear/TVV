@@ -115,7 +115,7 @@
                 "focus": true,
                 "label": "Application",
                 "transparent": true,
-                "url": "/#/Application",
+                "url": "/#/Extra/Simulator",
                 "visible": false,
                 "maximizable": false
             },
