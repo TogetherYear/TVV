@@ -67,18 +67,13 @@ class AppRequest extends EventSystem {
             },
             err => {
                 if (err.response?.status == AppRequest.outCode) {
-                    Dialog.destroyAll()
-                    Dialog.error({
-                        title: 'Token过期',
-                        content: '请重新登录更新Token',
-                        positiveText: '确定',
-                        closable: false,
-                        maskClosable: false,
-                        onPositiveClick: () => {
-                            this.ResetAccount()
-                            Message.error('登录凭证过期')
-                        }
+                    Noti.destroyAll()
+                    Noti.error({
+                        content: 'Api错误',
+                        meta: 'Token过期',
+                        duration: 500,
                     })
+                    // this.ResetAccount()
                 }
                 return Promise.reject(err)
             },
