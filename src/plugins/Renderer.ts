@@ -137,6 +137,9 @@ class Renderer extends EventSystem {
             SetWindowShadow: (enable: boolean) => {
                 return T.invoke("SetWindowShadow", { enable })
             },
+            SetIgnoreCursorEvents: (ignore: boolean) => {
+                return W.appWindow.setIgnoreCursorEvents(ignore)
+            },
             Listen: W.appWindow.listen.bind(W.appWindow)
         }
     }

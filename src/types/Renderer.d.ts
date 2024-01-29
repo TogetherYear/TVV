@@ -129,9 +129,14 @@ declare namespace Renderer {
         export function SetPosition(x: number, y: number): Promise<void>
 
         /**
-         * 设置窗口阴影显示
+         * 设置是否显示窗口阴影
          */
         export function SetWindowShadow(enable: boolean): Promise<void>
+
+        /**
+         * 设置是否忽略窗口鼠标事件
+         */
+        export function SetIgnoreCursorEvents(ignore: boolean): Promise<void>
 
         /**
          * 不要用 去用 AddListen
