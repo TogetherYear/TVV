@@ -401,6 +401,11 @@ declare namespace Renderer {
         export function ModelPreview(): void
 
         /**
+         * 创建自动化鼠标按键执行窗口
+         */
+        export function Simulator(): void
+
+        /**
          * 获取需要展示的拓展路由 ( 内部调用 )
          */
         export function GetExtraUrl(route: string): string

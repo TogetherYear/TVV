@@ -432,6 +432,23 @@ class Renderer extends EventSystem {
                     focus: false
                 })
             },
+            Simulator: () => {
+                this.App.CreateWidget('Extra:Simulator', {
+                    url: this.Extra.GetExtraUrl('Extra/Simulator'),
+                    width: 1060,
+                    height: 560,
+                    minWidth: 420,
+                    minHeight: 260,
+                    resizable: true,
+                    maximizable: false,
+                    decorations: false,
+                    alwaysOnTop: true,
+                    center: true,
+                    transparent: true,
+                    visible: false,
+                    focus: false
+                })
+            },
             GetExtraUrl: (route: string) => {
                 return `${location.origin}/#/${route}`
             }

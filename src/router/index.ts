@@ -45,7 +45,12 @@ const routes: Array<RouteRecordRaw> = [
                 path: 'ModelPreview',
                 name: 'ModelPreview',
                 component: () => import('@/views/Extra/Children/ModelPreview/ModelPreview.vue')
-            }
+            },
+            {
+                path: 'Simulator',
+                name: 'Simulator',
+                component: () => import('@/views/Extra/Children/Simulator/Simulator.vue')
+            },
         ]
     },
 ]

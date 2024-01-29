@@ -32,7 +32,7 @@ class Application extends AActor {
 
     private Test() {
         setTimeout(async () => {
-
+            Renderer.Extra.Simulator()
         }, 3000);
     }
 }
