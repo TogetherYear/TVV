@@ -1,5 +1,5 @@
 import { Entity } from "./Entity";
-import { Type } from "../Type";
+import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
 
@@ -9,7 +9,7 @@ class MouseDown extends Entity {
         this.Create()
     }
 
-    public get O() {
+    public override get O() {
         return this.options as Type.IIMouseDown
     }
 
@@ -18,6 +18,8 @@ class MouseDown extends Entity {
             width: 150,
             height: 36,
             cornerRadius: 3,
+            x: this.O.x || 0,
+            y: this.O.y || 0,
             cursor: 'pointer',
             fill: 'rgba(88,88,88,1.0)',
             zIndex: this.O.zIndex || 0,
@@ -47,7 +49,7 @@ class MouseDown extends Entity {
 
         this.body.add(this.delete)
 
-        this.delete.on_(L.PointerEvent.CLICK, this.OnClickDelete, this)
+        this.delete.on_(L.PointerEvent.CLICK, this.OnDelete, this)
 
         this.body.on_(L.PointerEvent.CLICK, this.OnClick, this)
 
@@ -73,42 +75,28 @@ class MouseDown extends Entity {
         }
     }
 
-    private OnStartDragging(e: L.DragEvent) {
-        e.stopDefault()
-        e.stop()
-        this.dragOrigin.x = this.body.x
-        this.dragOrigin.y = this.body.y
+    public OnStartDragging(e: L.DragEvent) {
+        super.OnStartDragging(e)
     }
 
-    private OnDragging(e: L.DragEvent) {
-        e.stopDefault()
-        e.stop()
-        this.body.x = this.dragOrigin.x + e.totalX
-        this.body.y = this.dragOrigin.y + e.totalY
+    public OnDragging(e: L.DragEvent) {
+        super.OnDragging(e)
     }
 
-    private OnClick(e: L.PointerEvent) {
-        e.stopDefault()
-        e.stop()
+    public OnClick(e: L.PointerEvent) {
+        super.OnClick(e)
     }
 
-    private OnEnter(e: L.PointerEvent) {
-        e.stopDefault()
-        e.stop()
-        this.body.fill = 'rgba(120,120,120,1.0)'
+    public OnEnter(e: L.PointerEvent) {
+        super.OnEnter(e)
     }
 
-    private OnLeave(e: L.PointerEvent) {
-        e.stopDefault()
-        e.stop()
-        this.body.fill = 'rgba(88,88,88,1.0)'
+    public OnLeave(e: L.PointerEvent) {
+        super.OnLeave(e)
     }
 
-    private OnClickDelete(e: L.PointerEvent) {
-        e.stopDefault()
-        e.stop()
-        this.O.simulator.l.remove(this.body)
-        this.O.simulator.entities = this.O.simulator.entities.filter(e => e.id != this.id)
+    public override OnDelete(e: L.PointerEvent): void {
+        super.OnDelete(e)
     }
 
 }

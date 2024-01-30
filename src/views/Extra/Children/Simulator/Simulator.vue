@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
+import PanelVue from './Components/Panel/Panel.vue'
 import { Simulator } from './Simulator';
+import { provide } from 'vue';
 
 const instance = new Simulator()
+
+provide("instance", instance)
 
 const {
     view,
@@ -16,7 +20,10 @@ instance.Run()
 <template>
     <div class="DefaultWindow Simulator">
         <HeaderBarVue></HeaderBarVue>
-        <span class="ExtraView" ref="view"></span>
+        <span class="ExtraView">
+            <span class="Canvas" ref="view"></span>
+            <PanelVue></PanelVue>
+        </span>
     </div>
 </template>
 
