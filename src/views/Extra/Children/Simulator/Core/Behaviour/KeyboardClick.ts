@@ -3,19 +3,19 @@ import { Type } from "../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
 
-class MouseDown extends Entity {
-    constructor(options: Type.IIMouseDown) {
+class KeyboardClick extends Entity {
+    constructor(options: Type.IKeyboardClick) {
         super(options)
         this.Create()
     }
 
     public get O() {
-        return this.options as Type.IIMouseDown
+        return this.options as Type.IKeyboardClick
     }
 
     private Create() {
         this.body = new L.Box({
-            width: 150,
+            width: 100,
             height: 36,
             cornerRadius: 3,
             cursor: 'pointer',
@@ -25,9 +25,9 @@ class MouseDown extends Entity {
 
         this.text = new L.Text({
             fill: 'rgba(230,230,230,1.0)',
-            text: `鼠标按下：${this.TransformButtonText(this.O.button)}`,
+            text: `按键点击`,
             lineHeight: 36,
-            width: 120,
+            width: 70,
             height: 36,
             textAlign: 'center',
             fontSize: 13,
@@ -41,7 +41,7 @@ class MouseDown extends Entity {
             width: 24,
             height: 24,
             url: deleteIcon,
-            x: 120,
+            x: 70,
             y: 6,
         })
 
@@ -62,15 +62,6 @@ class MouseDown extends Entity {
         this.O.simulator.l.add(this.body)
 
         this.O.simulator.entities.push(this)
-    }
-
-    private TransformButtonText(button: Renderer.Button) {
-        switch (button) {
-            case Renderer.Button.Left: return "左键";
-            case Renderer.Button.Middle: return "中键";
-            case Renderer.Button.Right: return "右键";
-            default: return "左键";
-        }
     }
 
     private OnStartDragging(e: L.DragEvent) {
@@ -113,4 +104,4 @@ class MouseDown extends Entity {
 
 }
 
-export { MouseDown }
+export { KeyboardClick }

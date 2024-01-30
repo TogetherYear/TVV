@@ -18,7 +18,6 @@ class MouseUp extends Entity {
             width: 150,
             height: 36,
             cornerRadius: 3,
-            overflow: 'hide',
             cursor: 'pointer',
             fill: 'rgba(88,88,88,1.0)',
             zIndex: this.O.zIndex || 0,

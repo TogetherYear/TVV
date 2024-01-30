@@ -16,6 +16,14 @@ namespace Type {
         button: Renderer.Button
     }
 
+    export interface IKeyboardClick extends IEntity {
+        keys: Array<Renderer.Key>
+    }
+
+    export interface IKeyboardToggle extends IEntity {
+        keys: Array<{ key: Renderer.Key, down: boolean }>
+    }
+
     export interface IIMouseDown extends IEntity {
         button: Renderer.Button
     }

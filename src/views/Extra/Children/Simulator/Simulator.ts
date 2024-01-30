@@ -7,6 +7,8 @@ import { MouseMove } from "./Core/Behaviour/MouseMove"
 import { MouseDown } from "./Core/Behaviour/MouseDown"
 import { MouseUp } from "./Core/Behaviour/MouseUp"
 import { WriteText } from "./Core/Behaviour/WriteText"
+import { KeyboardClick } from "./Core/Behaviour/KeyboardClick"
+import { KeyboardToggle } from "./Core/Behaviour/KeyboardToggle"
 
 class Simulator extends AActor {
     public constructor() {
@@ -79,6 +81,17 @@ class Simulator extends AActor {
             new WriteText({
                 simulator: this,
                 content: "AAA"
+            })
+
+            new KeyboardClick({
+                simulator: this,
+                keys:
+                    []
+            })
+
+            new KeyboardToggle({
+                simulator: this,
+                keys: []
             })
         }
     }
