@@ -106,6 +106,16 @@ class KeyboardToggle extends Entity {
         kt.O.simulator.isSelect.value = false
     }
 
+    public OnDeleteKey(index: number) {
+        const kt = toRaw(this)
+        kt.keys.value.splice(index, 1)
+    }
+
+    public OnCheckDown(index: number) {
+        const kt = toRaw(this)
+        kt.keys.value[index].down = !kt.keys.value[index].down
+    }
+
 }
 
 export { KeyboardToggle }

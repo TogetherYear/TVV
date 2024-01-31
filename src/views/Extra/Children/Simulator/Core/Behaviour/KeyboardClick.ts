@@ -101,6 +101,11 @@ class KeyboardClick extends Entity {
         kc.keys.value.push({ key: e.key, text: e.text })
         kc.O.simulator.isSelect.value = false
     }
+
+    public OnDeleteKey(index: number) {
+        const kc = toRaw(this)
+        kc.keys.value.splice(index, 1)
+    }
 }
 
 export { KeyboardClick }

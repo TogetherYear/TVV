@@ -2,7 +2,7 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 
 class WriteText extends Entity {
     constructor(options: Type.IWriteText) {
@@ -96,6 +96,11 @@ class WriteText extends Entity {
 
     public override OnDelete(e: L.PointerEvent): void {
         super.OnDelete(e)
+    }
+
+    public OnSwitchPaste() {
+        const wt = toRaw(this)
+        wt.paste.value = !wt.paste.value
     }
 }
 

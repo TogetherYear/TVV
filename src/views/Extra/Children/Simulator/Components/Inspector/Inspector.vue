@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { inject } from 'vue';
+import deleteIcon from "@/assets/images/delete.png"
 import { Simulator } from '../../Simulator';
 import { Type } from '../../Type';
 import { MouseClick } from '../../Core/Behaviour/MouseClick';
@@ -45,8 +46,13 @@ instance.inspector.Run()
             </span>
             <span class="Split"></span>
             <span class="KeyC"
-                v-for="k in ((currentFocus as unknown as KeyboardClick).keys as unknown as Array<{ key: number, text: string }>)"
-                :key="k.text">{{ k.text }}</span>
+                v-for="(k, i) in ((currentFocus as unknown as KeyboardClick).keys as unknown as Array<{ key: number, text: string }>)"
+                :key="k.text">
+                <span class="Current">{{ k.text }}</span>
+                <span class="Delete" @click="(currentFocus as unknown as KeyboardClick).OnDeleteKey(i)">
+                    <img :src="deleteIcon" alt="">
+                </span>
+            </span>
         </span>
         <span class="KeyboardToggle Common" v-if="currentFocus?.type == Type.ActionType.KeyboardToggle">
             <span class="Label">键盘状态</span>
@@ -61,8 +67,15 @@ instance.inspector.Run()
             </span>
             <span class="Split"></span>
             <span class="KeyT"
-                v-for="k in ((currentFocus as unknown as KeyboardToggle).keys as unknown as Array<{ key: Renderer.Key, text: string, down: boolean }>)"
-                :key="k.text">{{ k.text }}</span>
+                v-for="(k, i) in ((currentFocus as unknown as KeyboardToggle).keys as unknown as Array<{ key: Renderer.Key, text: string, down: boolean }>)"
+                :key="k.text">
+                <span class="Current">{{ k.text }}</span>
+                <span class="Down" :style="{ background: k.down ? '#dd8080' : '#444444' }"
+                    @click="(currentFocus as unknown as KeyboardToggle).OnCheckDown(i)"></span>
+                <span class="Delete" @click="(currentFocus as unknown as KeyboardToggle).OnDeleteKey(i)">
+                    <img :src="deleteIcon" alt="">
+                </span>
+            </span>
         </span>
         <span class="MouseClick Common" v-if="currentFocus?.type == Type.ActionType.MouseClick">
             <span class="Label">鼠标点击</span>
@@ -103,8 +116,11 @@ instance.inspector.Run()
         <span class="WriteText Common" v-if="currentFocus?.type == Type.ActionType.WriteText">
             <span class="Label">输入文本</span>
             <textarea name="" class="InputArea"
-                v-model="((currentFocus as unknown as WriteText).content as unknown as string)" id="" cols="30"
-                rows="10"></textarea>
+                v-model="((currentFocus as unknown as WriteText).content as unknown as string)" id="" cols="30" rows="10">
+            </textarea>
+            <span class="Label">是否为剪切板输入</span>
+            <span class="Check" @click="(currentFocus as unknown as WriteText).OnSwitchPaste()"
+                :style="{ background: (currentFocus as unknown as WriteText).paste ? '#dd8080' : '#444444' }"></span>
         </span>
     </div>
 </template>
