@@ -412,6 +412,7 @@ class Simulator extends AActor {
         this.entities.splice(0, this.entities.length)
         this.isSelect.value = false
         this.currentFocus.value = null
+        this.inspector.Hide()
         for (let a of form) {
             let entity: Entity | null = null
             switch (a.type) {
@@ -421,6 +422,7 @@ class Simulator extends AActor {
                         x: a.x,
                         y: a.y,
                     })
+                    this.delay.value = a.delay
                     break;
                 case Type.ActionType.MouseClick:
                     entity = new MouseClick({
