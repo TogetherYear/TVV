@@ -19,6 +19,7 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Extra::Power::SetKeysClick,
         Extra::Power::GetAllWindows,
         Extra::Power::CaptureWindow,
+        Extra::Power::GetWindowCurrentMonitor,
         Extra::Power::GetAllMonitors,
         Extra::Power::GetMonitorFromPoint,
         Extra::Power::GetCurrentMouseMonitor,

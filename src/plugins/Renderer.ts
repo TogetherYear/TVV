@@ -149,20 +149,17 @@ class Renderer extends EventSystem {
             GetAllWindows: async () => {
                 return (await T.invoke("GetAllWindows") as Array<Record<string, unknown>>).map(w => this.Window.TransformWindow(w))
             },
-            CaptureWindow: async (id: number) => {
-                if (await T.invoke("CaptureWindow", { id, path: await this.CaptureTempInputPath })) {
-                    return await this.CaptureTempOutputPath
-                }
-                return ""
-            },
             TransformWindow: (window: Record<string, unknown>) => {
                 return {
                     ...window,
                     Capture: async () => {
-                        if (!window.isMinimized) {
-                            return await this.Window.CaptureWindow(window.id as number)
+                        if (await T.invoke("CaptureWindow", { id: window.id, path: await this.CaptureTempInputPath })) {
+                            return await this.CaptureTempOutputPath
                         }
                         return ""
+                    },
+                    GetCurrentMonitor: async () => {
+                        return T.invoke("GetWindowCurrentMonitor", { id: window.id })
                     }
                 }
             }
@@ -271,17 +268,14 @@ class Renderer extends EventSystem {
             GetPrimaryMonitor: async () => {
                 return this.Monitor.TransformMonitor(await T.invoke("GetPrimaryMonitor"))
             },
-            CaptureMonitor: async (id: number) => {
-                if (await T.invoke("CaptureMonitor", { id, path: await this.CaptureTempInputPath })) {
-                    return await this.CaptureTempOutputPath
-                }
-                return ""
-            },
             TransformMonitor: (monitor: Record<string, unknown>) => {
                 return {
                     ...monitor,
-                    Capture: () => {
-                        return this.Monitor.CaptureMonitor(monitor.id as number)
+                    Capture: async () => {
+                        if (await T.invoke("CaptureMonitor", { id: monitor.id, path: await this.CaptureTempInputPath })) {
+                            return await this.CaptureTempOutputPath
+                        }
+                        return ""
                     }
                 }
             }

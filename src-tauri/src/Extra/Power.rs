@@ -75,6 +75,17 @@ pub fn CaptureWindow(id: u32, path: String) -> bool {
 }
 
 #[command]
+pub fn GetWindowCurrentMonitor(id: u32) -> Monitor {
+    let windows = xcap::Window::all().unwrap();
+    for w in windows {
+        if w.id() == id {
+            return Monitor::New(w.current_monitor());
+        }
+    }
+    Monitor::Default()
+}
+
+#[command]
 pub fn GetAllMonitors() -> Vec<Monitor> {
     let monitors = xcap::Monitor::all().unwrap();
     let mut ms: Vec<Monitor> = vec![];

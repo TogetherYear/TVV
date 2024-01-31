@@ -152,11 +152,6 @@ declare namespace Renderer {
          * 获取电脑上所有运行的程序窗口
          */
         export function GetAllWindows(): Promise<Array<IT.Window>>
-
-        /**
-         * 获取程序窗口的截屏 ( 最小化的窗口不能截屏 )
-         */
-        export function CaptureWindow(id: number): Promise<string>
     }
 
     /**
@@ -292,11 +287,6 @@ declare namespace Renderer {
          * 获取主显示器
          */
         export function GetPrimaryMonitor(): Promise<IT.Monitor>
-
-        /**
-         * 获取显示器的截屏
-         */
-        export function CaptureMonitor(id: number): Promise<string>
     }
 
     /**
@@ -685,6 +675,10 @@ declare namespace IT {
          * 获取截屏 最小化的窗口无法截取
          */
         Capture: () => Promise<string>
+        /**
+         * 获取所在的显示器
+         */
+        GetCurrentMonitor: () => Promise<Monitor>
     }
 
     export type ImageOptions = {
