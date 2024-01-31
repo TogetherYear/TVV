@@ -20,11 +20,11 @@ namespace Type {
     }
 
     export interface IKeyboardClick extends IEntity {
-        keys: Array<{ key: Renderer.Key, text: string }>
+        keys: Array<Renderer.Key>
     }
 
     export interface IKeyboardToggle extends IEntity {
-        keys: Array<{ key: Renderer.Key, text: string, down: boolean }>
+        keys: Array<{ key: Renderer.Key, down: boolean }>
     }
 
     export interface IIMouseDown extends IEntity {

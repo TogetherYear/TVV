@@ -7,7 +7,7 @@ import { ref, toRaw } from "vue";
 class KeyboardClick extends Entity {
     constructor(options: Type.IKeyboardClick) {
         super(options)
-        this.keys.value = this.keys.value.splice(0, this.keys.value.length, ...options.keys)
+        this.keys.value = this.keys.value.splice(0, this.keys.value.length, ...(options.keys.map(k => { return { key: k, text: options.simulator.TransformKey(k) } })))
         this.Create()
     }
 

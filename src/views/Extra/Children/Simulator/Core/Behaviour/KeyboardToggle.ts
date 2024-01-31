@@ -7,7 +7,7 @@ import { ref, toRaw } from "vue";
 class KeyboardToggle extends Entity {
     constructor(options: Type.IKeyboardToggle) {
         super(options)
-        this.keys.value = this.keys.value.splice(0, this.keys.value.length, ...options.keys)
+        this.keys.value = this.keys.value.splice(0, this.keys.value.length, ...(options.keys.map(k => { return { key: k.key, down: k.down, text: options.simulator.TransformKey(k.key) } })))
         this.Create()
     }
 
