@@ -11,7 +11,7 @@ class WriteText extends Entity {
         this.Create()
     }
 
-    public type = Type.ActionType.WriteText
+    public type = ref<Type.ActionType>(Type.ActionType.WriteText)
 
     public content = ref<string>('')
 

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import HeaderBarVue from '@/common/HeaderBar/HeaderBar.vue';
 import PanelVue from './Components/Panel/Panel.vue'
+import InspectorVue from './Components/Inspector/Inspector.vue'
 import { Simulator } from './Simulator';
 import { provide } from 'vue';
 
@@ -23,6 +24,7 @@ instance.Run()
         <span class="ExtraView">
             <span class="Canvas" ref="view"></span>
             <PanelVue></PanelVue>
+            <InspectorVue></InspectorVue>
         </span>
     </div>
 </template>

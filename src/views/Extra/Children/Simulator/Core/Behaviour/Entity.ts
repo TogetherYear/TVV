@@ -1,13 +1,14 @@
 import { Time } from "@/libs/Time";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
+import { ref } from "vue";
 
 abstract class Entity {
     constructor(options: Type.IEntity) {
         this.options = options
     }
 
-    public type = Type.ActionType.None
+    public type = ref<Type.ActionType>(Type.ActionType.None)
 
     protected options!: Type.IEntity
 
@@ -80,6 +81,11 @@ abstract class Entity {
     public OnClick(e: L.PointerEvent) {
         e.stopDefault()
         e.stop()
+        if (this.type.value != Type.ActionType.None) {
+            ///@ts-ignore
+            this.O.simulator.currentFocus.value = this
+            this.O.simulator.inspector.Show()
+        }
     }
 
     public OnDelete(e: L.PointerEvent) {
@@ -98,6 +104,8 @@ abstract class Entity {
         if (this.line) {
             this.O.simulator.l.remove(this.line)
         }
+        this.O.simulator.inspector.Hide()
+        this.O.simulator.currentFocus.value = null
     }
 
     public OnEnter(e: L.PointerEvent) {

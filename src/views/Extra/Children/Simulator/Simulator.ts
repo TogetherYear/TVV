@@ -12,6 +12,7 @@ import { MouseUp } from "./Core/Behaviour/MouseUp"
 import { KeyboardClick } from "./Core/Behaviour/KeyboardClick"
 import { KeyboardToggle } from "./Core/Behaviour/KeyboardToggle"
 import { WriteText } from "./Core/Behaviour/WriteText"
+import { Inspector } from "./Components/Inspector/Inspector"
 
 class Simulator extends AActor {
     public constructor() {
@@ -26,9 +27,14 @@ class Simulator extends AActor {
 
     public panel = new Panel(this)
 
+    public inspector = new Inspector(this)
+
+    public currentFocus = ref<Entity | null>(null)
+
     public InitStates() {
         return {
             view: this.view,
+            currentFocus: this.currentFocus,
         }
     }
 
@@ -64,7 +70,13 @@ class Simulator extends AActor {
                 x: 100,
                 y: 100
             })
+
+            this.l.on_(L.PointerEvent.CLICK, this.OnClick, this)
         }
+    }
+
+    private OnClick(e: L.PointerEvent) {
+        this.inspector.Hide()
     }
 
     public ToAddSelectAction(action: Type.ActionType, position: { x: number, y: number }) {

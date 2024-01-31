@@ -11,7 +11,7 @@ class KeyboardClick extends Entity {
         this.Create()
     }
 
-    public type = Type.ActionType.KeyboardClick
+    public type = ref<Type.ActionType>(Type.ActionType.KeyboardClick)
 
     public keys = ref<Array<Renderer.Key>>([])
 

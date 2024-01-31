@@ -11,7 +11,7 @@ class MouseClick extends Entity {
         this.Create()
     }
 
-    public type = Type.ActionType.MouseClick
+    public type = ref<Type.ActionType>(Type.ActionType.MouseClick)
 
     public button = ref<Renderer.Button>(Renderer.Button.Left)
 

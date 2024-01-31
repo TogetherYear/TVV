@@ -52,6 +52,7 @@ namespace Type {
 
     export enum ActionType {
         None = "None",
+        Main = "入口",
         MouseClick = "鼠标点击",
         MouseMove = "鼠标移到",
         MouseDown = "鼠标按下",

@@ -2,7 +2,7 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 class MouseMove extends Entity {
     constructor(options: Type.IMouseMove) {
@@ -12,7 +12,7 @@ class MouseMove extends Entity {
         this.Create()
     }
 
-    public type = Type.ActionType.MouseMove
+    public type = ref<Type.ActionType>(Type.ActionType.MouseMove)
 
     public target = reactive<{ targetX: number, targetY: number }>({
         targetX: 0,

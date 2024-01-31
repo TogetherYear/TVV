@@ -1,6 +1,7 @@
 import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
+import { ref } from "vue";
 
 class Main extends Entity {
     constructor(options: Type.IMain) {
@@ -8,7 +9,7 @@ class Main extends Entity {
         this.Create()
     }
 
-    public type = Type.ActionType.None
+    public type = ref<Type.ActionType>(Type.ActionType.Main)
 
     public override get O() {
         return this.options as Type.IMain

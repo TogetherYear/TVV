@@ -11,7 +11,7 @@ class KeyboardToggle extends Entity {
         this.Create()
     }
 
-    public type = Type.ActionType.KeyboardToggle
+    public type = ref<Type.ActionType>(Type.ActionType.KeyboardToggle)
 
     public keys = ref<Array<{ key: Renderer.Key, down: boolean }>>([])
 

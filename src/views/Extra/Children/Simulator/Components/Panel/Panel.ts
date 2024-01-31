@@ -85,13 +85,16 @@ class Panel {
 
     private TransformAction(entity: Entity) {
         return new Promise((resolve, reject) => {
-            if (entity.type == Type.ActionType.None) {
+            if (entity.type.value == Type.ActionType.Main) {
                 resolve("Action")
             }
             else {
                 setTimeout(async () => {
-                    switch (entity.type) {
+                    switch (entity.type.value) {
                         case Type.ActionType.None:
+
+                            break;
+                        case Type.ActionType.Main:
 
                             break;
                         case Type.ActionType.MouseClick:
