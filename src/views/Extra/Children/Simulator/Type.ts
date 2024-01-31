@@ -63,6 +63,50 @@ namespace Type {
         WriteText = "输入文本"
 
     }
+
+    export type Form = Array<FormItem>
+
+    export type FormItem = (Main | MouseClick | MouseMove | MouseDown | MouseUp | KeyboardClick | KeyboardToggle | WriteText) & { x: number, y: number }
+
+    export type Main = {
+        type: ActionType.Main
+    }
+
+    export type MouseClick = {
+        type: ActionType.MouseClick,
+        button: Renderer.Button
+    }
+
+    export type MouseMove = {
+        type: ActionType.MouseMove,
+        target: { x: number, y: number }
+    }
+
+    export type MouseDown = {
+        type: ActionType.MouseDown,
+        button: Renderer.Button
+    }
+
+    export type MouseUp = {
+        type: ActionType.MouseUp,
+        button: Renderer.Button
+    }
+
+    export type KeyboardClick = {
+        type: ActionType.KeyboardClick,
+        keys: Array<Renderer.Key>
+    }
+
+    export type KeyboardToggle = {
+        type: ActionType.KeyboardToggle,
+        keys: Array<{ key: Renderer.Key, down: boolean }>
+    }
+
+    export type WriteText = {
+        type: ActionType.WriteText,
+        content: string,
+        paste: boolean
+    }
 }
 
 export { Type }

@@ -252,6 +252,12 @@ class Simulator extends AActor {
         },
     ])
 
+    private audioUrl = ''
+
+    public audio!: HTMLAudioElement
+
+    public avatarUrl = ''
+
     public isSelect = ref<boolean>(false)
 
     public InitStates() {
@@ -269,7 +275,8 @@ class Simulator extends AActor {
     }
 
     public Run() {
-        onMounted(() => {
+        onMounted(async () => {
+            await this.GetDefaultResources()
             this.CreateLeafer()
         })
 
@@ -280,6 +287,14 @@ class Simulator extends AActor {
 
     protected Destroy() {
 
+    }
+
+    private async GetDefaultResources() {
+        this.audioUrl = await Renderer.Resource.GetPathByName('Musics/success.mp3')
+        this.avatarUrl = await Renderer.Resource.GetPathByName('Images/icon.ico')
+        this.audio = new Audio(this.audioUrl)
+        this.audio.loop = false
+        this.audio.volume = 1
     }
 
     private CreateLeafer() {

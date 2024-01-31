@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref } from "vue"
+import { h, onMounted, onUnmounted, ref } from "vue"
 import { Simulator } from "../../Simulator"
 import { Type } from "../../Type"
 import { Entity } from "../../Core/Behaviour/Entity"
@@ -9,6 +9,8 @@ import { KeyboardToggle } from "../../Core/Behaviour/KeyboardToggle"
 import { MouseDown } from "../../Core/Behaviour/MouseDown"
 import { MouseUp } from "../../Core/Behaviour/MouseUp"
 import { WriteText } from "../../Core/Behaviour/WriteText"
+import { Time } from "@/libs/Time"
+import AvatarVue from '../Avatar/Avatar.vue'
 
 class Panel {
     public constructor(parent: Simulator) {
@@ -68,68 +70,114 @@ class Panel {
         this.dragAction = Type.ActionType.None
     }
 
-    public OnClickRun() {
-        this.RunAutomatic(this.parent.entities[0])
-    }
-
-    public OnClickSave() {
-
-    }
-
-    private async RunAutomatic(entities: Entity) {
-        await this.TransformAction(entities)
-        if (entities.O.next) {
-            await this.RunAutomatic(entities.O.next)
+    public async OnClickRun() {
+        const form = this.TransformForm()
+        for (let a of form) {
+            await this.RunAction(a)
         }
     }
 
-    private TransformAction(entity: Entity) {
+    public async OnClickSave() {
+        const form = this.TransformForm()
+        const r = JSON.stringify(form)
+        const time = Time.GetTime(null, true, '-', '-').replaceAll(' ', '_')
+        const path = await Renderer.Resource.GetPathByName(`Simulator/${time}.json`, false)
+        Renderer.Resource.WriteStringToFile(path, r).then(res => {
+            this.parent.audio.currentTime = 0
+            this.parent.audio.play()
+            Noti.success({
+                title: "保存成功",
+                content: `${path.split('/').slice(-1)[0]}`,
+                closable: true,
+                duration: 10000,
+                avatar: () => h(AvatarVue, {
+                    url: this.parent.avatarUrl,
+                    width: 28,
+                    height: 28
+                })
+            })
+        })
+    }
+
+    private TransformForm() {
+        const form: Type.Form = []
+        this.DeepForm(this.parent.entities[0], form)
+        return form
+    }
+
+    private DeepForm(entity: Entity, form: Type.Form) {
+        switch (entity.type.value) {
+            case Type.ActionType.Main:
+                form.push({ type: Type.ActionType.Main, x: entity.body.x, y: entity.body.y })
+                break;
+            case Type.ActionType.MouseClick:
+                const mc = entity as MouseClick
+                form.push({ type: Type.ActionType.MouseClick, button: mc.button.value, x: entity.body.x, y: entity.body.y })
+                break;
+            case Type.ActionType.MouseMove:
+                const mm = entity as MouseMove
+                form.push({ type: Type.ActionType.MouseMove, target: { x: mm.target.targetX, y: mm.target.targetY }, x: entity.body.x, y: entity.body.y })
+                break;
+            case Type.ActionType.MouseDown:
+                const md = entity as MouseDown
+                form.push({ type: Type.ActionType.MouseDown, button: md.button.value, x: entity.body.x, y: entity.body.y })
+                break;
+            case Type.ActionType.MouseUp:
+                const mu = entity as MouseUp
+                form.push({ type: Type.ActionType.MouseUp, button: mu.button.value, x: entity.body.x, y: entity.body.y })
+                break;
+            case Type.ActionType.KeyboardClick:
+                const kc = entity as KeyboardClick
+                form.push({ type: Type.ActionType.KeyboardClick, keys: kc.keys.value.map(k => k.key), x: entity.body.x, y: entity.body.y })
+                break;
+            case Type.ActionType.KeyboardToggle:
+                const kt = entity as KeyboardToggle
+                form.push({ type: Type.ActionType.KeyboardToggle, keys: kt.keys.value.map(k => { return { key: k.key, down: k.down } }), x: entity.body.x, y: entity.body.y })
+                break;
+            case Type.ActionType.WriteText:
+                const wt = entity as WriteText
+                form.push({ type: Type.ActionType.WriteText, content: wt.content.value, paste: wt.paste.value, x: entity.body.x, y: entity.body.y })
+                break;
+            default: break;
+        }
+        if (entity.O.next) {
+            this.DeepForm(entity.O.next, form)
+        }
+    }
+
+    private RunAction(action: Type.FormItem) {
         return new Promise((resolve, reject) => {
-            if (entity.type.value == Type.ActionType.Main) {
+            if (action.type == Type.ActionType.Main) {
                 resolve("Action")
             }
             else {
                 setTimeout(async () => {
-                    switch (entity.type.value) {
-                        case Type.ActionType.None:
-
-                            break;
-                        case Type.ActionType.Main:
-
-                            break;
+                    switch (action.type) {
                         case Type.ActionType.MouseClick:
-                            const mc = entity as MouseClick
-                            await Renderer.Automatic.SetButtonClick(mc.button.value)
+                            await Renderer.Automatic.SetButtonClick(action.button)
                             break;
                         case Type.ActionType.MouseMove:
-                            const mm = entity as MouseMove
-                            await Renderer.Automatic.SetMousePosition(mm.target.targetX, mm.target.targetY)
+                            await Renderer.Automatic.SetMousePosition(action.target.x, action.target.y)
                             break;
                         case Type.ActionType.MouseDown:
-                            const md = entity as MouseDown
-                            await Renderer.Automatic.SetButtonToggle(md.button.value, true)
+                            await Renderer.Automatic.SetButtonToggle(action.button, true)
                             break;
                         case Type.ActionType.MouseUp:
-                            const mu = entity as MouseUp
-                            await Renderer.Automatic.SetButtonToggle(mu.button.value, false)
+                            await Renderer.Automatic.SetButtonToggle(action.button, false)
                             break;
                         case Type.ActionType.KeyboardClick:
-                            const kc = entity as KeyboardClick
-                            await Renderer.Automatic.SetKeysClick(kc.keys.value.map(k => k.key))
+                            await Renderer.Automatic.SetKeysClick(action.keys)
                             break;
                         case Type.ActionType.KeyboardToggle:
-                            const kt = entity as KeyboardToggle
-                            await Renderer.Automatic.SetKeysToggle(kt.keys.value.map(k => { return { key: k.key, down: k.down } }))
+                            await Renderer.Automatic.SetKeysToggle(action.keys)
                             break;
                         case Type.ActionType.WriteText:
-                            const wt = entity as WriteText
-                            await Renderer.Automatic.WriteText(wt.content.value, wt.paste.value)
+                            await Renderer.Automatic.WriteText(action.content, action.paste)
                             break;
-                        default:
-                            break;
+                        default: break;
                     }
                     resolve("Action")
-                }, 1000);
+                }, this.parent.delay.value);
             }
         })
 
