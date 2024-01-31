@@ -108,7 +108,7 @@ class Panel {
     private DeepForm(entity: Entity, form: Type.Form) {
         switch (entity.type.value) {
             case Type.ActionType.Main:
-                form.push({ type: Type.ActionType.Main, x: entity.body.x, y: entity.body.y })
+                form.push({ type: Type.ActionType.Main, x: entity.body.x, y: entity.body.y, delay: this.parent.delay.value })
                 break;
             case Type.ActionType.MouseClick:
                 const mc = entity as MouseClick

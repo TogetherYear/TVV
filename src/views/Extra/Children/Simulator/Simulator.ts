@@ -278,6 +278,7 @@ class Simulator extends AActor {
         onMounted(async () => {
             await this.GetDefaultResources()
             this.CreateLeafer()
+            this.ListenEvents()
         })
 
         onUnmounted(() => {
@@ -287,6 +288,14 @@ class Simulator extends AActor {
 
     protected Destroy() {
 
+    }
+
+    private ListenEvents() {
+        Renderer.Widget.Listen(Renderer.Event.TauriEvent.WINDOW_FILE_DROP, async (e) => {
+            const path: string = (e.payload as Array<string>)[0].replaceAll('\\', '/')
+            const form = JSON.parse(await Renderer.Resource.ReadStringFromFile(path))
+            this.LoadFileSimulator(form)
+        })
     }
 
     private async GetDefaultResources() {
@@ -395,6 +404,79 @@ class Simulator extends AActor {
 
     public OnClickSelectKey() {
         this.isSelect.value = !this.isSelect.value
+    }
+
+    private LoadFileSimulator(form: Type.Form) {
+        this.entities.splice(0, this.entities.length)
+        this.isSelect.value = false
+        this.currentFocus.value = null
+        for (let a of form) {
+            let entity: Entity | null = null
+            switch (a.type) {
+                case Type.ActionType.MouseClick:
+                    entity = new MouseClick({
+                        simulator: this,
+                        button: Renderer.Button.Left,
+                        x: a.x,
+                        y: a.y,
+                    })
+                    break;
+                case Type.ActionType.MouseMove:
+                    entity = new MouseMove({
+                        simulator: this,
+                        x: a.x,
+                        y: a.y,
+                        targetX: a.target.x,
+                        targetY: a.target.y
+                    })
+                    break;
+                case Type.ActionType.MouseDown:
+                    entity = new MouseDown({
+                        simulator: this,
+                        button: Renderer.Button.Left,
+                        x: a.x,
+                        y: a.y,
+                    })
+                    break;
+                case Type.ActionType.MouseUp:
+                    entity = new MouseUp({
+                        simulator: this,
+                        button: Renderer.Button.Left,
+                        x: a.x,
+                        y: a.y,
+                    })
+                    break;
+                case Type.ActionType.KeyboardClick:
+                    entity = new KeyboardClick({
+                        simulator: this,
+                        keys: a.keys,
+                        x: a.x,
+                        y: a.y,
+                    })
+                    break;
+                case Type.ActionType.KeyboardToggle:
+                    entity = new KeyboardToggle({
+                        simulator: this,
+                        keys: a.keys,
+                        x: a.x,
+                        y: a.y,
+                    })
+                    break;
+                case Type.ActionType.WriteText:
+                    entity = new WriteText({
+                        simulator: this,
+                        content: a.content
+                        x: a.x,
+                        y: a.y,
+                        paste: true
+                    })
+                    break;
+                default: break;
+            }
+            if (entity) {
+                this.ToLinkActions(entity)
+            }
+        }
     }
 }
 

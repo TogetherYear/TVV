@@ -69,7 +69,8 @@ namespace Type {
     export type FormItem = (Main | MouseClick | MouseMove | MouseDown | MouseUp | KeyboardClick | KeyboardToggle | WriteText) & { x: number, y: number }
 
     export type Main = {
-        type: ActionType.Main
+        type: ActionType.Main,
+        delay: number
     }
 
     export type MouseClick = {

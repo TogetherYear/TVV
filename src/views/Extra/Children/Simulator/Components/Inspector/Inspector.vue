@@ -30,7 +30,7 @@ instance.inspector.Run()
 <template>
     <div class="Inspector" v-show="isShow">
         <span class="Main Common" v-if="currentFocus?.type == Type.ActionType.Main">
-            <span class="Label">执行间隔</span>
+            <span class="Label">执行间隔(ms)</span>
             <input type="number" class="Input" placeholder="请输入执行间隔" max="999999999" min="100" v-model="delay" id="">
         </span>
         <span class="KeyboardClick Common" v-if="currentFocus?.type == Type.ActionType.KeyboardClick">

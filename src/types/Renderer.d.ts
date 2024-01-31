@@ -628,7 +628,7 @@ declare namespace IT {
         event: EventName;
         windowLabel: string | null;
         id: number;
-        payload: IRendererSendMessage | null;
+        payload: unknown;
     }
 
     export type EventCallback = (event: IEvent) => void;
