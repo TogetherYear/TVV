@@ -25,7 +25,10 @@ instance.panel.Run()
                 </span>
             </span>
         </span>
-        <span class="Btn"></span>
+        <span class="Btn">
+            <span class="Run" @click="instance.panel.OnClickRun()">执行</span>
+            <span class="Save" @click="instance.panel.OnClickSave()">保存</span>
+        </span>
     </div>
 </template>
 

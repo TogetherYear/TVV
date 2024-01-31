@@ -2,12 +2,18 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
+import { ref } from "vue";
 
 class MouseClick extends Entity {
     constructor(options: Type.IMouseClick) {
         super(options)
+        this.button.value = options.button
         this.Create()
     }
+
+    public type = Type.ActionType.MouseClick
+
+    public button = ref<Renderer.Button>(Renderer.Button.Left)
 
     public override get O() {
         return this.options as Type.IMouseClick

@@ -83,8 +83,8 @@ class Simulator extends AActor {
                     simulator: this,
                     x: position.x,
                     y: position.y,
-                    targetX: 10,
-                    targetY: 10
+                    targetX: 200,
+                    targetY: 200
                 })
                 break;
             case Type.ActionType.MouseDown:

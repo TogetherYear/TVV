@@ -2,12 +2,18 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
+import { ref } from "vue";
 
 class KeyboardToggle extends Entity {
     constructor(options: Type.IKeyboardToggle) {
         super(options)
+        this.keys.value = this.keys.value.splice(0, this.keys.value.length, ...options.keys)
         this.Create()
     }
+
+    public type = Type.ActionType.KeyboardToggle
+
+    public keys = ref<Array<{ key: Renderer.Key, down: boolean }>>([])
 
     public override get O() {
         return this.options as Type.IKeyboardToggle

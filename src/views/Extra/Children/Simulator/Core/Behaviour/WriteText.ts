@@ -2,12 +2,18 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
+import { ref } from "vue";
 
 class WriteText extends Entity {
     constructor(options: Type.IWriteText) {
         super(options)
+        this.content.value = options.content
         this.Create()
     }
+
+    public type = Type.ActionType.WriteText
+
+    public content = ref<string>('')
 
     public override get O() {
         return this.options as Type.IWriteText

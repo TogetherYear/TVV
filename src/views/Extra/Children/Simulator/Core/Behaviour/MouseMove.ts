@@ -2,12 +2,22 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
+import { reactive } from "vue";
 
 class MouseMove extends Entity {
     constructor(options: Type.IMouseMove) {
         super(options)
+        this.target.targetX = options.targetX
+        this.target.targetY = options.targetY
         this.Create()
     }
+
+    public type = Type.ActionType.MouseMove
+
+    public target = reactive<{ targetX: number, targetY: number }>({
+        targetX: 0,
+        targetY: 0
+    })
 
     public override get O() {
         return this.options as Type.IMouseMove

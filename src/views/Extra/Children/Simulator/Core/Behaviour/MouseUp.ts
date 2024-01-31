@@ -2,12 +2,18 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
+import { ref } from "vue";
 
 class MouseUp extends Entity {
     constructor(options: Type.IIMouseUp) {
         super(options)
+        this.button.value = options.button
         this.Create()
     }
+
+    public type = Type.ActionType.MouseUp
+
+    public button = ref<Renderer.Button>(Renderer.Button.Left)
 
     public override get O() {
         return this.options as Type.IIMouseUp

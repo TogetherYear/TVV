@@ -74,6 +74,34 @@
         height: 40px;
         left: 0;
         bottom: 0;
+        display: flex;
+        justify-content: space-around;
+
+        .Run {
+            position: relative;
+            display: inline-block;
+            width: 90px;
+            height: 30px;
+            top: 5px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            background: #444444;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.15s;
+
+            &:hover {
+                background: #666666;
+            }
+        }
+
+        .Save {
+            @extend .Run;
+
+        }
     }
 
 }

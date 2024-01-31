@@ -8,7 +8,7 @@ class Main extends Entity {
         this.Create()
     }
 
-    public type = "Main"
+    public type = Type.ActionType.None
 
     public override get O() {
         return this.options as Type.IMain

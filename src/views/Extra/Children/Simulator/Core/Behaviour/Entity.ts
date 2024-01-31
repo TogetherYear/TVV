@@ -7,7 +7,7 @@ abstract class Entity {
         this.options = options
     }
 
-    public type = "Action"
+    public type = Type.ActionType.None
 
     protected options!: Type.IEntity
 
