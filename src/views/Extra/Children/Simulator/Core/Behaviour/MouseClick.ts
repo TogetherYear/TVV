@@ -2,7 +2,7 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 
 class MouseClick extends Entity {
     constructor(options: Type.IMouseClick) {
@@ -103,6 +103,11 @@ class MouseClick extends Entity {
 
     public override OnDelete(e: L.PointerEvent): void {
         super.OnDelete(e)
+    }
+
+    public OnSwitchButton(button: Renderer.Button) {
+        const mc = toRaw(this)
+        mc.button.value = button
     }
 
 }

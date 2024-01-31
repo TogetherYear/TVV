@@ -84,6 +84,7 @@ abstract class Entity {
         if (this.type.value != Type.ActionType.None) {
             ///@ts-ignore
             this.O.simulator.currentFocus.value = this
+            this.O.simulator.isSelect.value = false
             this.O.simulator.inspector.Show()
         }
     }
@@ -105,6 +106,7 @@ abstract class Entity {
             this.O.simulator.l.remove(this.line)
         }
         this.O.simulator.inspector.Hide()
+        this.O.simulator.isSelect.value = false
         this.O.simulator.currentFocus.value = null
     }
 

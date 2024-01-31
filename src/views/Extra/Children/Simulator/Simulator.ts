@@ -1,5 +1,5 @@
 import { AActor } from "@/libs/AActor"
-import { onMounted, onUnmounted, ref } from "vue"
+import { onMounted, onUnmounted, reactive, ref } from "vue"
 import * as L from 'leafer-ui'
 import { Entity } from "./Core/Behaviour/Entity"
 import { Panel } from "./Components/Panel/Panel"
@@ -31,10 +31,236 @@ class Simulator extends AActor {
 
     public currentFocus = ref<Entity | null>(null)
 
+    public delay = ref<number>(1000)
+
+    public keys = ref<Array<{ text: string, value: number }>>([
+        {
+            text: 'Num0',
+            value: 0
+        },
+        {
+            text: 'Num1',
+            value: 1
+        },
+        {
+            text: 'Num2',
+            value: 2
+        },
+        {
+            text: 'Num3',
+            value: 3
+        },
+        {
+            text: 'Num4',
+            value: 4
+        },
+        {
+            text: 'Num5',
+            value: 5
+        },
+        {
+            text: 'Num6',
+            value: 6
+        },
+        {
+            text: 'Num7',
+            value: 7
+        },
+        {
+            text: 'Num8',
+            value: 8
+        },
+        {
+            text: 'Num9',
+            value: 9
+        },
+        {
+            text: 'A',
+            value: 10
+        },
+        {
+            text: 'B',
+            value: 11
+        },
+        {
+            text: 'C',
+            value: 12
+        },
+        {
+            text: 'D',
+            value: 13
+        },
+        {
+            text: 'E',
+            value: 14
+        },
+        {
+            text: 'F',
+            value: 15
+        },
+        {
+            text: 'G',
+            value: 16
+        },
+        {
+            text: 'H',
+            value: 17
+        },
+        {
+            text: 'I',
+            value: 18
+        },
+        {
+            text: 'J',
+            value: 19
+        },
+        {
+            text: 'K',
+            value: 20
+        },
+        {
+            text: 'L',
+            value: 21
+        },
+        {
+            text: 'M',
+            value: 22
+        },
+        {
+            text: 'N',
+            value: 23
+        },
+        {
+            text: 'O',
+            value: 24
+        },
+        {
+            text: 'P',
+            value: 25
+        },
+        {
+            text: 'Q',
+            value: 26
+        },
+        {
+            text: 'R',
+            value: 27
+        },
+        {
+            text: 'S',
+            value: 28
+        },
+        {
+            text: 'T',
+            value: 29
+        },
+        {
+            text: 'U',
+            value: 30
+        },
+        {
+            text: 'V',
+            value: 31
+        },
+        {
+            text: 'W',
+            value: 32
+        },
+        {
+            text: 'X',
+            value: 33
+        },
+        {
+            text: 'Y',
+            value: 34
+        },
+        {
+            text: 'Z',
+            value: 35
+        },
+        {
+            text: 'Add',
+            value: 36
+        },
+        {
+            text: 'Subtract',
+            value: 37
+        },
+        {
+            text: 'Multiply',
+            value: 38
+        },
+        {
+            text: 'Divide',
+            value: 39
+        },
+        {
+            text: 'OEM2',
+            value: 40
+        },
+        {
+            text: 'Tab',
+            value: 41
+        },
+        {
+            text: 'CapsLock',
+            value: 42
+        },
+        {
+            text: 'Shift',
+            value: 43
+        },
+        {
+            text: 'Control',
+            value: 44
+        },
+        {
+            text: 'Alt',
+            value: 45
+        },
+        {
+            text: 'Space',
+            value: 46
+        },
+        {
+            text: 'Backspace',
+            value: 47
+        },
+        {
+            text: 'Return',
+            value: 48
+        },
+        {
+            text: 'Escape',
+            value: 49
+        },
+        {
+            text: 'UpArrow',
+            value: 50
+        },
+        {
+            text: 'DownArrow',
+            value: 51
+        },
+        {
+            text: 'LeftArrow',
+            value: 52
+        },
+        {
+            text: 'RightArrow',
+            value: 53
+        },
+    ])
+
+    public isSelect = ref<boolean>(false)
+
     public InitStates() {
         return {
             view: this.view,
             currentFocus: this.currentFocus,
+            delay: this.delay,
+            isSelect: this.isSelect,
+            keys: this.keys,
         }
     }
 
@@ -137,6 +363,7 @@ class Simulator extends AActor {
                     content: "TSingleton",
                     x: position.x,
                     y: position.y,
+                    paste: true
                 })
                 break;
             default: break;
@@ -149,6 +376,10 @@ class Simulator extends AActor {
     private ToLinkActions(entity: Entity) {
         const start = this.entities[this.entities.length - 2]
         start.Link(entity)
+    }
+
+    public OnClickSelectKey() {
+        this.isSelect.value = !this.isSelect.value
     }
 }
 

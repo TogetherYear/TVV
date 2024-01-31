@@ -2,7 +2,7 @@ import { Entity } from "./Entity";
 import { Type } from "../../Type";
 import * as L from 'leafer-ui'
 import deleteIcon from "@/assets/images/delete.png"
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 
 class KeyboardClick extends Entity {
     constructor(options: Type.IKeyboardClick) {
@@ -13,7 +13,7 @@ class KeyboardClick extends Entity {
 
     public type = ref<Type.ActionType>(Type.ActionType.KeyboardClick)
 
-    public keys = ref<Array<Renderer.Key>>([])
+    public keys = ref<Array<{ key: Renderer.Key, text: string }>>([])
 
     public override get O() {
         return this.options as Type.IKeyboardClick
@@ -94,6 +94,12 @@ class KeyboardClick extends Entity {
 
     public override OnDelete(e: L.PointerEvent): void {
         super.OnDelete(e)
+    }
+
+    public OnAddKey(e: { key: Renderer.Key, text: string }) {
+        const kc = toRaw(this)
+        kc.keys.value.push({ key: e.key, text: e.text })
+        kc.O.simulator.isSelect.value = false
     }
 }
 

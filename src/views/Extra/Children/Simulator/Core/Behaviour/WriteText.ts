@@ -15,6 +15,8 @@ class WriteText extends Entity {
 
     public content = ref<string>('')
 
+    public paste = ref<boolean>(true)
+
     public override get O() {
         return this.options as Type.IWriteText
     }

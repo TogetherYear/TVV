@@ -99,31 +99,31 @@ class Panel {
                             break;
                         case Type.ActionType.MouseClick:
                             const mc = entity as MouseClick
-                            await Renderer.Automatic.SetButtonClick(mc.O.button)
+                            await Renderer.Automatic.SetButtonClick(mc.button.value)
                             break;
                         case Type.ActionType.MouseMove:
                             const mm = entity as MouseMove
-                            await Renderer.Automatic.SetMousePosition(mm.O.targetX, mm.O.targetY)
+                            await Renderer.Automatic.SetMousePosition(mm.target.targetX, mm.target.targetY)
                             break;
                         case Type.ActionType.MouseDown:
                             const md = entity as MouseDown
-                            await Renderer.Automatic.SetButtonToggle(md.O.button, true)
+                            await Renderer.Automatic.SetButtonToggle(md.button.value, true)
                             break;
                         case Type.ActionType.MouseUp:
                             const mu = entity as MouseUp
-                            await Renderer.Automatic.SetButtonToggle(mu.O.button, false)
+                            await Renderer.Automatic.SetButtonToggle(mu.button.value, false)
                             break;
                         case Type.ActionType.KeyboardClick:
                             const kc = entity as KeyboardClick
-                            await Renderer.Automatic.SetKeysClick(kc.O.keys)
+                            await Renderer.Automatic.SetKeysClick(kc.keys.value.map(k => k.key))
                             break;
                         case Type.ActionType.KeyboardToggle:
                             const kt = entity as KeyboardToggle
-                            await Renderer.Automatic.SetKeysToggle(kt.O.keys)
+                            await Renderer.Automatic.SetKeysToggle(kt.keys.value.map(k => { return { key: k.key, down: k.down } }))
                             break;
                         case Type.ActionType.WriteText:
                             const wt = entity as WriteText
-                            await Renderer.Automatic.WriteText(wt.O.content, true)
+                            await Renderer.Automatic.WriteText(wt.content.value, wt.paste.value)
                             break;
                         default:
                             break;
