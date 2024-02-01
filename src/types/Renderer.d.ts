@@ -159,9 +159,14 @@ declare namespace Renderer {
      */
     export namespace Resource {
         /**
-         * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.png ( convert 是否转换成 Webview 可使用的格式 默认 true)
+         * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.ico ( convert 是否转换成 Webview 可使用的格式 默认 true)
          */
         export function GetPathByName(name: string, convert?: boolean): Promise<string>
+
+        /**
+         * 通过名称获取文件路径 ( 仅限 Need 文件夹 ) 例如: Images/icon.ico ( 使用本地文件服务器 )
+         */
+        export function GetPathByNameFromHttpServe(name: string): string
 
         /**
          * 获取路径的元数据 不能用Tauri转换后的地址

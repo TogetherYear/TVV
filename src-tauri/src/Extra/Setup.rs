@@ -1,19 +1,10 @@
-use tauri::{App, GlobalWindowEvent};
+use tauri::App;
 
-pub fn Init(_app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
+use super::Serve;
+
+pub fn Init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
+    Serve::CreateServe(app);
     Ok(())
-}
-
-pub fn OnWindowEvent(e: GlobalWindowEvent) {
-    match e.event() {
-        tauri::WindowEvent::CloseRequested { api, .. } => {
-            if e.window().label() == "Application" {
-                api.prevent_close();
-                e.window().hide().unwrap();
-            }
-        }
-        _ => {}
-    }
 }
 
 #[derive(Clone, serde::Serialize)]

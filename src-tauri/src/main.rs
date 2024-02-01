@@ -20,7 +20,7 @@ fn main() {
         .plugin(tauri_plugin_upload::init())
         .plugin(tauri_plugin_store::Builder::default().build())
         .invoke_handler(Extra::Handler::Generate())
-        .on_window_event(Extra::Setup::OnWindowEvent)
+        .on_window_event(Extra::Window::OnWindowEvent)
         .system_tray(Extra::Tray::Build())
         .on_system_tray_event(Extra::Tray::OnEvent)
         .run(generate_context!())
