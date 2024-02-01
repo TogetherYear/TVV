@@ -25,5 +25,7 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Extra::Power::GetCurrentMouseMonitor,
         Extra::Power::GetPrimaryMonitor,
         Extra::Power::CaptureMonitor,
+        Extra::Power::GetWallpaper,
+        Extra::Power::SetWallpaper,
     ]
 }

@@ -292,6 +292,16 @@ declare namespace Renderer {
          * 获取主显示器
          */
         export function GetPrimaryMonitor(): Promise<IT.Monitor>
+
+        /**
+         * 获取桌面壁纸
+         */
+        export function GetWallpaper(): Promise<string>
+
+        /**
+         * 设置桌面壁纸 ( 仅限 .png ) 不能用Tauri转换后的地址
+         */
+        export function SetWallpaper(path: string, mode?: Renderer.Mode): Promise<boolean>
     }
 
     /**
@@ -434,6 +444,15 @@ declare namespace Renderer {
             STATUS_UPDATE = "tauri://update-status",
             DOWNLOAD_PROGRESS = "tauri://update-download-progress"
         }
+    }
+
+    export enum Mode {
+        Center = 0,
+        Crop = 1,
+        Fit = 2,
+        Span = 3,
+        Stretch = 4,
+        Tile = 5,
     }
 
     export enum Format {

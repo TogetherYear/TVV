@@ -156,7 +156,7 @@ class Renderer extends EventSystem {
                         if (await T.invoke("CaptureWindow", { id: window.id, path: await this.CaptureTempInputPath })) {
                             return await this.CaptureTempOutputPath
                         }
-                        return ""
+                        return Promise.resolve("")
                     },
                     GetCurrentMonitor: async () => {
                         return T.invoke("GetWindowCurrentMonitor", { id: window.id })
@@ -278,8 +278,20 @@ class Renderer extends EventSystem {
                         if (await T.invoke("CaptureMonitor", { id: monitor.id, path: await this.CaptureTempInputPath })) {
                             return await this.CaptureTempOutputPath
                         }
-                        return ""
+                        return Promise.resolve("")
                     }
+                }
+            },
+            GetWallpaper: () => {
+                return T.invoke("GetWallpaper")
+            },
+            SetWallpaper: async (path: string, mode: number = 1) => {
+                if (await this.Resource.IsPathExists(path) && path.indexOf('.png') != -1) {
+                    await T.invoke("SetWallpaper", { path, mode })
+                    return Promise.resolve(true)
+                }
+                else {
+                    return Promise.resolve(false)
                 }
             }
         }
@@ -520,6 +532,17 @@ class Renderer extends EventSystem {
             DownArrow: 51,
             LeftArrow: 52,
             RightArrow: 53,
+        }
+    }
+
+    public get Mode() {
+        return {
+            Center: 0,
+            Crop: 1,
+            Fit: 2,
+            Span: 3,
+            Stretch: 4,
+            Tile: 5,
         }
     }
 
