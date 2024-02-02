@@ -1,6 +1,4 @@
-use tauri::{command, GlobalWindowEvent};
-
-use window_shadows::set_shadow;
+use tauri::GlobalWindowEvent;
 
 pub fn OnWindowEvent(e: GlobalWindowEvent) {
     match e.event() {
@@ -12,9 +10,4 @@ pub fn OnWindowEvent(e: GlobalWindowEvent) {
         }
         _ => {}
     }
-}
-
-#[command]
-pub fn SetWindowShadow(window: tauri::Window, enable: bool) {
-    set_shadow(&window, enable).unwrap();
 }

@@ -6,6 +6,8 @@ use tauri::{generate_context, Builder};
 
 mod Extra;
 
+mod Addon;
+
 fn main() {
     Builder::default()
         .setup(Extra::Setup::Init)
@@ -19,7 +21,7 @@ fn main() {
         .plugin(tauri_plugin_fs_extra::init())
         .plugin(tauri_plugin_upload::init())
         .plugin(tauri_plugin_store::Builder::default().build())
-        .invoke_handler(Extra::Handler::Generate())
+        .invoke_handler(Addon::Generate())
         .on_window_event(Extra::Window::OnWindowEvent)
         .system_tray(Extra::Tray::Build())
         .on_system_tray_event(Extra::Tray::OnEvent)

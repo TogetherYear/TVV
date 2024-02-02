@@ -131,7 +131,7 @@ declare namespace Renderer {
         /**
          * 设置是否显示窗口阴影
          */
-        export function SetWindowShadow(enable: boolean): Promise<void>
+        export function SetShadow(enable: boolean): Promise<void>
 
         /**
          * 设置是否忽略窗口鼠标事件

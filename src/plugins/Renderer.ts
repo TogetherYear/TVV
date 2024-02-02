@@ -134,8 +134,8 @@ class Renderer extends EventSystem {
             SetPosition: (x: number, y: number) => {
                 return W.appWindow.setPosition(new W.LogicalPosition(x, y))
             },
-            SetWindowShadow: (enable: boolean) => {
-                return T.invoke("SetWindowShadow", { enable })
+            SetShadow: (enable: boolean) => {
+                return T.invoke("SetShadow", { enable })
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
                 return W.appWindow.setIgnoreCursorEvents(ignore)

@@ -2,7 +2,7 @@ use serde_json::json;
 
 use tauri::{AppHandle, Manager};
 
-use super::Setup::TauriSendRendererPayload;
+use super::TauriSendRendererPayload;
 
 pub fn OnSecondInstance(app: &AppHandle, _argv: Vec<String>, _cwd: String) {
     let window = app.get_window("Application").unwrap();
