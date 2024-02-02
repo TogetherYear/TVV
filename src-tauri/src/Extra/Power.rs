@@ -2,8 +2,6 @@ use image::{imageops::FilterType, ImageFormat};
 
 use serde::{Deserialize, Serialize};
 
-use window_shadows::set_shadow;
-
 use tauri::command;
 
 use autopilot::{geometry, mouse};
@@ -13,11 +11,6 @@ use enigo::{Enigo, KeyboardControllable};
 #[command]
 pub async fn InvokeTest() -> String {
     String::from("去码头整点薯条")
-}
-
-#[command]
-pub fn SetWindowShadow(window: tauri::Window, enable: bool) {
-    set_shadow(&window, enable).unwrap();
 }
 
 #[command]

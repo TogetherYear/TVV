@@ -5,7 +5,7 @@ use crate::Extra;
 pub fn Generate() -> impl Fn(tauri::Invoke) {
     generate_handler![
         Extra::Power::InvokeTest,
-        Extra::Power::SetWindowShadow,
+        Extra::Window::SetWindowShadow,
         Extra::Power::ConvertImageFormat,
         Extra::Power::GetMousePosition,
         Extra::Power::SetMousePosition,
