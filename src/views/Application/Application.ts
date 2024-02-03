@@ -16,7 +16,7 @@ class Application extends AActor {
 
     public Run() {
         onMounted(async () => {
-            await Renderer.Widget.SetWindowShadow(true)
+            await Renderer.Widget.SetShadow(true)
             await Renderer.Widget.Show()
             this.Test()
         })
