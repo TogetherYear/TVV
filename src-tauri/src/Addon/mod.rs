@@ -2,8 +2,10 @@ use tauri::generate_handler;
 
 pub mod Automatic;
 pub mod Image;
-pub mod Power;
+pub mod Monitor;
+pub mod Wallpaper;
 pub mod Widget;
+pub mod Window;
 
 pub fn Generate() -> impl Fn(tauri::Invoke) {
     generate_handler![
@@ -19,15 +21,15 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Automatic::WriteText,
         Automatic::SetKeysToggle,
         Automatic::SetKeysClick,
-        Power::GetAllWindows,
-        Power::CaptureWindow,
-        Power::GetWindowCurrentMonitor,
-        Power::GetAllMonitors,
-        Power::GetMonitorFromPoint,
-        Power::GetCurrentMouseMonitor,
-        Power::GetPrimaryMonitor,
-        Power::CaptureMonitor,
-        Power::GetWallpaper,
-        Power::SetWallpaper,
+        Window::GetAllWindows,
+        Window::CaptureWindow,
+        Window::GetWindowCurrentMonitor,
+        Monitor::GetAllMonitors,
+        Monitor::GetMonitorFromPoint,
+        Monitor::GetCurrentMouseMonitor,
+        Monitor::GetPrimaryMonitor,
+        Monitor::CaptureMonitor,
+        Wallpaper::GetWallpaper,
+        Wallpaper::SetWallpaper,
     ]
 }
