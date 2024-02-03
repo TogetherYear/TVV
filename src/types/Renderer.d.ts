@@ -292,7 +292,12 @@ declare namespace Renderer {
          * 获取主显示器
          */
         export function GetPrimaryMonitor(): Promise<IT.Monitor>
+    }
 
+    /**
+     * 壁纸
+     */
+    export namespace Wallpaper {
         /**
          * 获取桌面壁纸
          */
@@ -330,11 +335,6 @@ declare namespace Renderer {
      * 自动化
      */
     export namespace Automatic {
-        /**
-         * 转换图片格式 不能用Tauri转换后的地址
-         */
-        export function ConvertImageFormat(originPath: string, convertPath: string, options?: IT.ImageOptions): Promise<void>
-
         /**
          * 获取鼠标位置
          */
@@ -384,6 +384,16 @@ declare namespace Renderer {
          * 按顺序点击按键
          */
         export function SetKeysClick(keys: Array<Key>): Promise<void>
+    }
+
+    /**
+     * 图片
+     */
+    export namespace Image {
+        /**
+         * 转换图片格式 不能用Tauri转换后的地址
+         */
+        export function ConvertImageFormat(originPath: string, convertPath: string, options?: IT.ImageOptions): Promise<void>
     }
 
     /**

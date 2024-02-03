@@ -281,7 +281,12 @@ class Renderer extends EventSystem {
                         return Promise.resolve("")
                     }
                 }
-            },
+            }
+        }
+    }
+
+    public get Wallpaper() {
+        return {
             GetWallpaper: () => {
                 return T.invoke("GetWallpaper")
             },
@@ -342,7 +347,7 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Automatic() {
+    public get Image() {
         return {
             ConvertImageFormat: (originPath: string, convertPath: String, options: Record<string, unknown> = {}) => {
                 const o = {
@@ -354,6 +359,11 @@ class Renderer extends EventSystem {
                 }
                 return T.invoke("ConvertImageFormat", { originPath, convertPath, options: JSON.stringify(o) })
             },
+        }
+    }
+
+    public get Automatic() {
+        return {
             GetMousePosition: () => {
                 return T.invoke("GetMousePosition")
             },
