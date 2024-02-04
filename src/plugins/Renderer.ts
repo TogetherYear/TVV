@@ -61,10 +61,10 @@ class Renderer extends EventSystem {
                 else {
                     const widget = new W.WebviewWindow(label, options)
                     widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, send: '', extra: { windowLabel: label } })
+                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, extra: { windowLabel: label } })
                     })
                     widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, send: '', extra: { windowLabel: label } })
+                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, extra: { windowLabel: label } })
                     })
                     return widget
                 }

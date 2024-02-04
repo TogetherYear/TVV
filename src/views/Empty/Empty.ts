@@ -33,7 +33,7 @@ class Empty extends AActor {
     }
 
     private async GenerateEvent() {
-        await Renderer.Event.Emit(Renderer.Event.TauriEvent.TAURI, { event: Renderer.RendererEvent.WidgetEmpty, send: '', extra: {} })
+        await Renderer.Event.Emit(Renderer.Event.TauriEvent.TAURI, { event: Renderer.RendererEvent.WidgetEmpty, extra: {} })
     }
 }
 

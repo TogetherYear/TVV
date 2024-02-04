@@ -617,7 +617,6 @@ declare namespace IT {
 
     export interface IRendererSendMessage {
         event: Renderer.RendererEvent,
-        send: string,
         extra?: Record<string, unknown>
     }
 
