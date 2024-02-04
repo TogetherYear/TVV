@@ -1,4 +1,6 @@
 use tauri::command;
 
 #[command]
-pub fn CreateCustomServe(path: String) {}
+pub fn CreateCustomServe(_path: String) {
+    todo!();
+}

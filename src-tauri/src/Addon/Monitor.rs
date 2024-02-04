@@ -7,7 +7,7 @@ use super::Automatic::GetMousePosition;
 pub fn GetAllMonitors() -> Vec<Monitor> {
     let monitors = xcap::Monitor::all().unwrap();
     let mut ms: Vec<Monitor> = vec![];
-    for monitor in monitors {
+    for monitor in monitors.iter() {
         ms.push(Monitor::New(monitor));
     }
     ms
@@ -15,19 +15,19 @@ pub fn GetAllMonitors() -> Vec<Monitor> {
 
 #[command]
 pub fn GetMonitorFromPoint(x: i32, y: i32) -> Monitor {
-    Monitor::New(xcap::Monitor::from_point(x, y).unwrap())
+    Monitor::New(&xcap::Monitor::from_point(x, y).unwrap())
 }
 
 #[command]
 pub fn GetCurrentMouseMonitor() -> Monitor {
     let point = GetMousePosition();
-    Monitor::New(xcap::Monitor::from_point(point.x as i32, point.y as i32).unwrap())
+    Monitor::New(&xcap::Monitor::from_point(point.x as i32, point.y as i32).unwrap())
 }
 
 #[command]
 pub fn GetPrimaryMonitor() -> Monitor {
     let monitors = xcap::Monitor::all().unwrap();
-    for m in monitors {
+    for m in monitors.iter() {
         if m.is_primary() {
             return Monitor::New(m);
         }
@@ -65,7 +65,7 @@ pub struct Monitor {
 }
 
 impl Monitor {
-    pub fn New(m: xcap::Monitor) -> Monitor {
+    pub fn New(m: &xcap::Monitor) -> Monitor {
         Monitor {
             id: m.id(),
             name: m.name().to_string(),

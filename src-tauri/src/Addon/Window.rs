@@ -7,7 +7,7 @@ use super::Monitor::Monitor;
 pub fn GetAllWindows() -> Vec<Window> {
     let windows = xcap::Window::all().unwrap();
     let mut ws: Vec<Window> = vec![];
-    for window in windows {
+    for window in windows.iter() {
         ws.push(Window::New(window));
     }
     ws
@@ -31,9 +31,9 @@ pub fn CaptureWindow(id: u32, path: String) -> bool {
 #[command]
 pub fn GetWindowCurrentMonitor(id: u32) -> Monitor {
     let windows = xcap::Window::all().unwrap();
-    for w in windows {
+    for w in windows.iter() {
         if w.id() == id {
-            return Monitor::New(w.current_monitor());
+            return Monitor::New(&w.current_monitor());
         }
     }
     Monitor::Default()
@@ -53,7 +53,7 @@ pub struct Window {
 }
 
 impl Window {
-    pub fn New(w: xcap::Window) -> Window {
+    pub fn New(w: &xcap::Window) -> Window {
         Window {
             id: w.id(),
             title: w.title().to_string(),
