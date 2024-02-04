@@ -38,7 +38,7 @@ pub fn GetPrimaryMonitor() -> Monitor {
 #[command]
 pub fn CaptureMonitor(id: u32, path: String) -> bool {
     let monitors = xcap::Monitor::all().unwrap();
-    for m in monitors {
+    for m in monitors.iter() {
         if m.id() == id {
             m.capture_image()
                 .unwrap()

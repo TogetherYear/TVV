@@ -16,7 +16,7 @@ pub fn GetAllWindows() -> Vec<Window> {
 #[command]
 pub fn CaptureWindow(id: u32, path: String) -> bool {
     let windows = xcap::Window::all().unwrap();
-    for w in windows {
+    for w in windows.iter() {
         if w.id() == id && !w.is_minimized() {
             w.capture_image()
                 .unwrap()
