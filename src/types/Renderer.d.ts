@@ -306,7 +306,7 @@ declare namespace Renderer {
         /**
          * 设置桌面壁纸 ( 仅限 .png ) 不能用Tauri转换后的地址
          */
-        export function SetWallpaper(path: string, mode?: Renderer.Mode): Promise<boolean>
+        export function SetWallpaper(path: string, mode?: Renderer.WallpaperMode): Promise<boolean>
     }
 
     /**
@@ -348,12 +348,12 @@ declare namespace Renderer {
         /**
          * 点击鼠标 ( delay:点击时鼠标按下和松开之间的延时 以毫秒计 默认 100 毫秒 )
          */
-        export function SetButtonClick(button: Button, delay?: number): Promise<void>
+        export function SetButtonClick(button: MouseButton, delay?: number): Promise<void>
 
         /**
          * 设置鼠标状态
          */
-        export function SetButtonToggle(button: Button, down: boolean): Promise<void>
+        export function SetButtonToggle(button: MouseButton, down: boolean): Promise<void>
 
         /**
          * 滑动滚轮
@@ -383,7 +383,7 @@ declare namespace Renderer {
         /**
          * 按顺序点击按键
          */
-        export function SetKeysClick(keys: Array<Key>): Promise<void>
+        export function SetKeysClick(keys: Array<KeyboardKey>): Promise<void>
     }
 
     /**
@@ -456,7 +456,7 @@ declare namespace Renderer {
         }
     }
 
-    export enum Mode {
+    export enum WallpaperMode {
         Center = 0,
         Crop = 1,
         Fit = 2,
@@ -465,7 +465,7 @@ declare namespace Renderer {
         Tile = 5,
     }
 
-    export enum Format {
+    export enum ImageFormat {
         Png = 0,
         Jpeg = 1,
         Gif = 2,
@@ -483,7 +483,7 @@ declare namespace Renderer {
         Qoi = 14,
     }
 
-    export enum Filter {
+    export enum ImageFilter {
         Nearest = 0,
         Triangle = 1,
         CatmullRom = 2,
@@ -491,7 +491,7 @@ declare namespace Renderer {
         Lanczos3 = 4,
     }
 
-    export enum Key {
+    export enum KeyboardKey {
         Num0 = 0,
         Num1 = 1,
         Num2 = 2,
@@ -548,7 +548,7 @@ declare namespace Renderer {
         RightArrow = 53,
     }
 
-    export enum Button {
+    export enum MouseButton {
         Left = 0,
         Middle = 1,
         Right = 2,
@@ -690,7 +690,7 @@ declare namespace IT {
     }
 
     export interface IToggleKey {
-        key: Renderer.Key,
+        key: Renderer.KeyboardKey,
         down: boolean
     }
 
@@ -704,22 +704,19 @@ declare namespace IT {
         height: number,
         isMinimized: boolean,
         isMaximized: boolean,
+        monitor: Monitor
         /**
          * 获取截屏 最小化的窗口无法截取
          */
         Capture: () => Promise<string>
-        /**
-         * 获取所在的显示器
-         */
-        GetCurrentMonitor: () => Promise<Monitor>
     }
 
     export type ImageOptions = {
-        format?: Renderer.Format,
+        format?: Renderer.ImageFormat,
         keepAspectRatio?: boolean,
         width?: number,
         height?: number,
-        filter?: Renderer.Filter,
+        filter?: Renderer.ImageFilter,
     }
 
     export type EventName = `${Renderer.Event.TauriEvent}` | (string & Record<never, never>);

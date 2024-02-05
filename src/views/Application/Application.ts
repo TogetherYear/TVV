@@ -32,7 +32,7 @@ class Application extends AActor {
 
     private Test() {
         setTimeout(async () => {
-
+            // Debug.Log(await Renderer.Window.GetAllWindows())
         }, 3000);
     }
 }

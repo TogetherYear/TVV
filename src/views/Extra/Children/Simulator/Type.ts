@@ -16,23 +16,23 @@ namespace Type {
     }
 
     export interface IMouseClick extends IEntity {
-        button: Renderer.Button
+        button: Renderer.MouseButton
     }
 
     export interface IKeyboardClick extends IEntity {
-        keys: Array<Renderer.Key>
+        keys: Array<Renderer.KeyboardKey>
     }
 
     export interface IKeyboardToggle extends IEntity {
-        keys: Array<{ key: Renderer.Key, down: boolean }>
+        keys: Array<{ key: Renderer.KeyboardKey, down: boolean }>
     }
 
     export interface IIMouseDown extends IEntity {
-        button: Renderer.Button
+        button: Renderer.MouseButton
     }
 
     export interface IIMouseUp extends IEntity {
-        button: Renderer.Button
+        button: Renderer.MouseButton
     }
 
     export interface IWriteText extends IEntity {
@@ -75,7 +75,7 @@ namespace Type {
 
     export type MouseClick = {
         type: ActionType.MouseClick,
-        button: Renderer.Button
+        button: Renderer.MouseButton
     }
 
     export type MouseMove = {
@@ -85,22 +85,22 @@ namespace Type {
 
     export type MouseDown = {
         type: ActionType.MouseDown,
-        button: Renderer.Button
+        button: Renderer.MouseButton
     }
 
     export type MouseUp = {
         type: ActionType.MouseUp,
-        button: Renderer.Button
+        button: Renderer.MouseButton
     }
 
     export type KeyboardClick = {
         type: ActionType.KeyboardClick,
-        keys: Array<Renderer.Key>
+        keys: Array<Renderer.KeyboardKey>
     }
 
     export type KeyboardToggle = {
         type: ActionType.KeyboardToggle,
-        keys: Array<{ key: Renderer.Key, down: boolean }>
+        keys: Array<{ key: Renderer.KeyboardKey, down: boolean }>
     }
 
     export type WriteText = {

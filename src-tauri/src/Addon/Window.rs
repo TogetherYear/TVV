@@ -50,6 +50,7 @@ pub struct Window {
     pub height: u32,
     pub isMinimized: bool,
     pub isMaximized: bool,
+    pub monitor: Monitor,
 }
 
 impl Window {
@@ -64,6 +65,7 @@ impl Window {
             height: w.height(),
             isMinimized: w.is_minimized(),
             isMaximized: w.is_maximized(),
+            monitor: Monitor::New(&w.current_monitor()),
         }
     }
 }

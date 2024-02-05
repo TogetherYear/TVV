@@ -335,7 +335,7 @@ class Simulator extends AActor {
             case Type.ActionType.MouseClick:
                 entity = new MouseClick({
                     simulator: this,
-                    button: Renderer.Button.Left,
+                    button: Renderer.MouseButton.Left,
                     x: position.x,
                     y: position.y,
                 })
@@ -352,7 +352,7 @@ class Simulator extends AActor {
             case Type.ActionType.MouseDown:
                 entity = new MouseDown({
                     simulator: this,
-                    button: Renderer.Button.Left,
+                    button: Renderer.MouseButton.Left,
                     x: position.x,
                     y: position.y,
                 })
@@ -360,7 +360,7 @@ class Simulator extends AActor {
             case Type.ActionType.MouseUp:
                 entity = new MouseUp({
                     simulator: this,
-                    button: Renderer.Button.Left,
+                    button: Renderer.MouseButton.Left,
                     x: position.x,
                     y: position.y,
                 })
@@ -427,7 +427,7 @@ class Simulator extends AActor {
                 case Type.ActionType.MouseClick:
                     entity = new MouseClick({
                         simulator: this,
-                        button: Renderer.Button.Left,
+                        button: Renderer.MouseButton.Left,
                         x: a.x,
                         y: a.y,
                     })
@@ -444,7 +444,7 @@ class Simulator extends AActor {
                 case Type.ActionType.MouseDown:
                     entity = new MouseDown({
                         simulator: this,
-                        button: Renderer.Button.Left,
+                        button: Renderer.MouseButton.Left,
                         x: a.x,
                         y: a.y,
                     })
@@ -452,7 +452,7 @@ class Simulator extends AActor {
                 case Type.ActionType.MouseUp:
                     entity = new MouseUp({
                         simulator: this,
-                        button: Renderer.Button.Left,
+                        button: Renderer.MouseButton.Left,
                         x: a.x,
                         y: a.y,
                     })
@@ -490,62 +490,62 @@ class Simulator extends AActor {
         }
     }
 
-    public TransformKey(key: Renderer.Key) {
+    public TransformKey(key: Renderer.KeyboardKey) {
         switch (key) {
-            case Renderer.Key.Num0: return "Num0"
-            case Renderer.Key.Num1: return "Num0"
-            case Renderer.Key.Num2: return "Num0"
-            case Renderer.Key.Num3: return "Num0"
-            case Renderer.Key.Num4: return "Num0"
-            case Renderer.Key.Num5: return "Num0"
-            case Renderer.Key.Num6: return "Num0"
-            case Renderer.Key.Num7: return "Num0"
-            case Renderer.Key.Num8: return "Num0"
-            case Renderer.Key.Num9: return "Num0"
-            case Renderer.Key.A: return "Num0"
-            case Renderer.Key.B: return "Num0"
-            case Renderer.Key.C: return "Num0"
-            case Renderer.Key.D: return "Num0"
-            case Renderer.Key.E: return "Num0"
-            case Renderer.Key.F: return "Num0"
-            case Renderer.Key.G: return "Num0"
-            case Renderer.Key.H: return "Num0"
-            case Renderer.Key.I: return "Num0"
-            case Renderer.Key.J: return "Num0"
-            case Renderer.Key.K: return "Num0"
-            case Renderer.Key.L: return "Num0"
-            case Renderer.Key.M: return "Num0"
-            case Renderer.Key.N: return "Num0"
-            case Renderer.Key.O: return "Num0"
-            case Renderer.Key.P: return "Num0"
-            case Renderer.Key.Q: return "Num0"
-            case Renderer.Key.R: return "Num0"
-            case Renderer.Key.S: return "Num0"
-            case Renderer.Key.T: return "Num0"
-            case Renderer.Key.U: return "Num0"
-            case Renderer.Key.V: return "Num0"
-            case Renderer.Key.W: return "Num0"
-            case Renderer.Key.X: return "Num0"
-            case Renderer.Key.Y: return "Num0"
-            case Renderer.Key.Z: return "Num0"
-            case Renderer.Key.Add: return "Num0"
-            case Renderer.Key.Subtract: return "Num0"
-            case Renderer.Key.Multiply: return "Num0"
-            case Renderer.Key.Divide: return "Num0"
-            case Renderer.Key.OEM2: return "Num0"
-            case Renderer.Key.Tab: return "Num0"
-            case Renderer.Key.CapsLock: return "Num0"
-            case Renderer.Key.Shift: return "Num0"
-            case Renderer.Key.Control: return "Num0"
-            case Renderer.Key.Alt: return "Num0"
-            case Renderer.Key.Space: return "Num0"
-            case Renderer.Key.Backspace: return "Num0"
-            case Renderer.Key.Return: return "Num0"
-            case Renderer.Key.Escape: return "Num0"
-            case Renderer.Key.UpArrow: return "Num0"
-            case Renderer.Key.DownArrow: return "Num0"
-            case Renderer.Key.LeftArrow: return "Num0"
-            case Renderer.Key.RightArrow: return "Num0"
+            case Renderer.KeyboardKey.Num0: return "Num0"
+            case Renderer.KeyboardKey.Num1: return "Num0"
+            case Renderer.KeyboardKey.Num2: return "Num0"
+            case Renderer.KeyboardKey.Num3: return "Num0"
+            case Renderer.KeyboardKey.Num4: return "Num0"
+            case Renderer.KeyboardKey.Num5: return "Num0"
+            case Renderer.KeyboardKey.Num6: return "Num0"
+            case Renderer.KeyboardKey.Num7: return "Num0"
+            case Renderer.KeyboardKey.Num8: return "Num0"
+            case Renderer.KeyboardKey.Num9: return "Num0"
+            case Renderer.KeyboardKey.A: return "Num0"
+            case Renderer.KeyboardKey.B: return "Num0"
+            case Renderer.KeyboardKey.C: return "Num0"
+            case Renderer.KeyboardKey.D: return "Num0"
+            case Renderer.KeyboardKey.E: return "Num0"
+            case Renderer.KeyboardKey.F: return "Num0"
+            case Renderer.KeyboardKey.G: return "Num0"
+            case Renderer.KeyboardKey.H: return "Num0"
+            case Renderer.KeyboardKey.I: return "Num0"
+            case Renderer.KeyboardKey.J: return "Num0"
+            case Renderer.KeyboardKey.K: return "Num0"
+            case Renderer.KeyboardKey.L: return "Num0"
+            case Renderer.KeyboardKey.M: return "Num0"
+            case Renderer.KeyboardKey.N: return "Num0"
+            case Renderer.KeyboardKey.O: return "Num0"
+            case Renderer.KeyboardKey.P: return "Num0"
+            case Renderer.KeyboardKey.Q: return "Num0"
+            case Renderer.KeyboardKey.R: return "Num0"
+            case Renderer.KeyboardKey.S: return "Num0"
+            case Renderer.KeyboardKey.T: return "Num0"
+            case Renderer.KeyboardKey.U: return "Num0"
+            case Renderer.KeyboardKey.V: return "Num0"
+            case Renderer.KeyboardKey.W: return "Num0"
+            case Renderer.KeyboardKey.X: return "Num0"
+            case Renderer.KeyboardKey.Y: return "Num0"
+            case Renderer.KeyboardKey.Z: return "Num0"
+            case Renderer.KeyboardKey.Add: return "Num0"
+            case Renderer.KeyboardKey.Subtract: return "Num0"
+            case Renderer.KeyboardKey.Multiply: return "Num0"
+            case Renderer.KeyboardKey.Divide: return "Num0"
+            case Renderer.KeyboardKey.OEM2: return "Num0"
+            case Renderer.KeyboardKey.Tab: return "Num0"
+            case Renderer.KeyboardKey.CapsLock: return "Num0"
+            case Renderer.KeyboardKey.Shift: return "Num0"
+            case Renderer.KeyboardKey.Control: return "Num0"
+            case Renderer.KeyboardKey.Alt: return "Num0"
+            case Renderer.KeyboardKey.Space: return "Num0"
+            case Renderer.KeyboardKey.Backspace: return "Num0"
+            case Renderer.KeyboardKey.Return: return "Num0"
+            case Renderer.KeyboardKey.Escape: return "Num0"
+            case Renderer.KeyboardKey.UpArrow: return "Num0"
+            case Renderer.KeyboardKey.DownArrow: return "Num0"
+            case Renderer.KeyboardKey.LeftArrow: return "Num0"
+            case Renderer.KeyboardKey.RightArrow: return "Num0"
             default: return "T"
         }
     }

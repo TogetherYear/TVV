@@ -13,7 +13,7 @@ class KeyboardToggle extends Entity {
 
     public type = ref<Type.ActionType>(Type.ActionType.KeyboardToggle)
 
-    public keys = ref<Array<{ key: Renderer.Key, text: string, down: boolean }>>([])
+    public keys = ref<Array<{ key: Renderer.KeyboardKey, text: string, down: boolean }>>([])
 
     public override get O() {
         return this.options as Type.IKeyboardToggle
@@ -96,7 +96,7 @@ class KeyboardToggle extends Entity {
         super.OnDelete(e)
     }
 
-    public OnAddKey(e: { key: Renderer.Key, text: string }) {
+    public OnAddKey(e: { key: Renderer.KeyboardKey, text: string }) {
         const kt = toRaw(this)
         kt.keys.value.push({
             key: e.key,

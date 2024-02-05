@@ -13,7 +13,7 @@ class MouseUp extends Entity {
 
     public type = ref<Type.ActionType>(Type.ActionType.MouseUp)
 
-    public button = ref<Renderer.Button>(Renderer.Button.Left)
+    public button = ref<Renderer.MouseButton>(Renderer.MouseButton.Left)
 
     public override get O() {
         return this.options as Type.IIMouseUp
@@ -72,11 +72,11 @@ class MouseUp extends Entity {
         this.O.simulator.entities.push(this)
     }
 
-    private TransformButtonText(button: Renderer.Button) {
+    private TransformButtonText(button: Renderer.MouseButton) {
         switch (button) {
-            case Renderer.Button.Left: return "左键";
-            case Renderer.Button.Middle: return "中键";
-            case Renderer.Button.Right: return "右键";
+            case Renderer.MouseButton.Left: return "左键";
+            case Renderer.MouseButton.Middle: return "中键";
+            case Renderer.MouseButton.Right: return "右键";
             default: return "左键";
         }
     }
@@ -105,7 +105,7 @@ class MouseUp extends Entity {
         super.OnDelete(e)
     }
 
-    public OnSwitchButton(button: Renderer.Button) {
+    public OnSwitchButton(button: Renderer.MouseButton) {
         const mu = toRaw(this)
         mu.button.value = button
     }

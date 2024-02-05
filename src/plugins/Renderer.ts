@@ -152,15 +152,13 @@ class Renderer extends EventSystem {
             TransformWindow: (window: Record<string, unknown>) => {
                 return {
                     ...window,
+                    monitor: this.Monitor.TransformMonitor(window.monitor as Record<string, unknown>),
                     Capture: async () => {
                         if (await T.invoke("CaptureWindow", { id: window.id, path: await this.CaptureTempInputPath })) {
                             return await this.CaptureTempOutputPath
                         }
                         return Promise.resolve("")
                     },
-                    GetCurrentMonitor: async () => {
-                        return T.invoke("GetWindowCurrentMonitor", { id: window.id })
-                    }
                 }
             }
         }
@@ -351,11 +349,11 @@ class Renderer extends EventSystem {
         return {
             ConvertImageFormat: (originPath: string, convertPath: String, options: Record<string, unknown> = {}) => {
                 const o = {
-                    format: options.format || this.Format.WebP,
+                    format: options.format || this.ImageFormat.WebP,
                     keepAspectRatio: options.keepAspectRatio == false ? false : true,
                     width: options.width || 0,
                     height: options.height || 0,
-                    filter: options.filter || this.Filter.Nearest,
+                    filter: options.filter || this.ImageFilter.Nearest,
                 }
                 return T.invoke("ConvertImageFormat", { originPath, convertPath, options: JSON.stringify(o) })
             },
@@ -486,7 +484,7 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Key() {
+    public get KeyboardKey() {
         return {
             Num0: 0,
             Num1: 1,
@@ -545,7 +543,7 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Mode() {
+    public get WallpaperMode() {
         return {
             Center: 0,
             Crop: 1,
@@ -556,7 +554,7 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Button() {
+    public get MouseButton() {
         return {
             Left: 0,
             Middle: 1,
@@ -564,7 +562,7 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Format() {
+    public get ImageFormat() {
         return {
             Png: 0,
             Jpeg: 1,
@@ -584,7 +582,7 @@ class Renderer extends EventSystem {
         }
     }
 
-    public get Filter() {
+    public get ImageFilter() {
         return {
             Nearest: 0,
             Triangle: 1,
