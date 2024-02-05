@@ -32,6 +32,6 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Monitor::CaptureMonitor,
         Wallpaper::GetWallpaper,
         Wallpaper::SetWallpaper,
-        Serve::CreateCustomServe,
+        Serve::CreateCustomStaticFileServe,
     ]
 }

@@ -2,7 +2,7 @@ use std::thread;
 
 use tauri::App;
 
-pub fn CreateServe(app: &mut App) {
+pub fn CreateStaticFileServe(app: &mut App) {
     let path = format!(
         "{}{}",
         app.path_resolver()
