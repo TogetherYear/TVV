@@ -406,9 +406,9 @@ declare namespace Renderer {
         export function Code(text: string): Promise<void>
 
         /**
-         * 创建图片预览窗口 格式 `${imageUrl}$${width}$${height}` ( 建议 webp 格式图片 )
+         * 创建图片预览窗口 ( 建议 webp 格式图片 )
          */
-        export function ImagePreview(url: string): Promise<void>
+        export function ImagePreview(url: string, width: number, height: number): Promise<void>
 
         /**
          * 创建三维场景窗口

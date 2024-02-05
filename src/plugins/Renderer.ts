@@ -416,8 +416,8 @@ class Renderer extends EventSystem {
                     focus: false
                 })
             },
-            ImagePreview: async (url: string) => {
-                await this.Clipboard.WriteText(url)
+            ImagePreview: async (url: string, width: number, height: number) => {
+                await this.Clipboard.WriteText(`${url}$${width}$${height}`)
                 this.App.CreateWidget('Extra:ImagePreview', {
                     url: this.Extra.GetExtraUrl('Extra/ImagePreview'),
                     width: 1060,
