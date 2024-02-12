@@ -167,7 +167,7 @@ class Renderer extends EventSystem {
     public get Resource() {
         return {
             GetPathByName: async (name: string, convert: boolean = true) => {
-                const base = (await Pa.join(await Pa.resourceDir(), '/Need/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/')
+                const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/')
                 const path = convert ? T.convertFileSrc(base) : base
                 return path
             },

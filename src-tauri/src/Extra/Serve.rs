@@ -13,7 +13,7 @@ pub fn CreateStaticFileServe(app: &mut App) {
             .replace("\\\\?\\", "")
             .replace("//", "/")
             .replace("\\", "/"),
-        "/Need/"
+        "/Extra/"
     );
     thread::Builder::new()
         .name(String::from("HttpServe"))
