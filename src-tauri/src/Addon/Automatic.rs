@@ -2,19 +2,21 @@ use serde::{Deserialize, Serialize};
 
 use tauri::command;
 
-use autopilot::{geometry, mouse};
+use autopilot::mouse;
 
-use enigo::{Enigo, KeyboardControllable};
+use enigo::{Enigo, KeyboardControllable, MouseControllable};
 
 #[command]
 pub fn GetMousePosition() -> Point {
-    let t = mouse::location();
-    Point::New(t.x, t.y)
+    let e = Enigo::new();
+    let t = e.mouse_location();
+    Point::New(t.0, t.1)
 }
 
 #[command]
-pub fn SetMousePosition(x: f64, y: f64) {
-    mouse::move_to(geometry::Point::new(x, y)).unwrap();
+pub fn SetMousePosition(x: i32, y: i32) {
+    let mut e = Enigo::new();
+    e.mouse_move_to(x, y);
 }
 
 #[command]
@@ -44,8 +46,8 @@ pub fn SetMouseScroll(direction: u32, clicks: u32) {
 }
 
 #[command]
-pub fn GetColorFromPosition(x: f64, y: f64) -> Color {
-    let monitor = xcap::Monitor::from_point(x as i32, y as i32).unwrap();
+pub fn GetColorFromPosition(x: i32, y: i32) -> Color {
+    let monitor = xcap::Monitor::from_point(x, y).unwrap();
     let capture = monitor.capture_image().unwrap();
     let pixel = capture.get_pixel_checked(
         ((x as i32) - monitor.x()) as u32,
@@ -59,8 +61,9 @@ pub fn GetColorFromPosition(x: f64, y: f64) -> Color {
 
 #[command]
 pub fn GetCurrentPositionColor() -> Color {
-    let point = mouse::location();
-    GetColorFromPosition(point.x, point.y)
+    let e = Enigo::new();
+    let point = e.mouse_location();
+    GetColorFromPosition(point.0, point.1)
 }
 
 #[command]
@@ -164,12 +167,12 @@ fn TransformToggleKeysFromJson(json: String) -> Vec<ToggleKey> {
 
 #[derive(Clone, serde::Serialize)]
 pub struct Point {
-    pub x: f64,
-    pub y: f64,
+    pub x: i32,
+    pub y: i32,
 }
 
 impl Point {
-    pub fn New(x: f64, y: f64) -> Point {
+    pub fn New(x: i32, y: i32) -> Point {
         Point { x, y }
     }
 }
