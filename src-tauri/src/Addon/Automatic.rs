@@ -2,8 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use tauri::command;
 
-use autopilot::mouse;
-
 use enigo::{Enigo, KeyboardControllable, MouseControllable};
 
 #[command]
@@ -20,28 +18,35 @@ pub fn SetMousePosition(x: i32, y: i32) {
 }
 
 #[command]
-pub fn SetButtonClick(button: u32, delay: u64) {
+pub fn SetButtonClick(button: u32) {
+    let mut e = Enigo::new();
     match button {
-        0 => mouse::click(mouse::Button::Left, Some(delay)),
-        1 => mouse::click(mouse::Button::Middle, Some(delay)),
-        _ => mouse::click(mouse::Button::Right, Some(delay)),
+        0 => e.mouse_click(enigo::MouseButton::Left),
+        1 => e.mouse_click(enigo::MouseButton::Middle),
+        _ => e.mouse_click(enigo::MouseButton::Right),
     }
 }
 
 #[command]
 pub fn SetButtonToggle(button: u32, down: bool) {
-    match button {
-        0 => mouse::toggle(mouse::Button::Left, down),
-        1 => mouse::toggle(mouse::Button::Middle, down),
-        _ => mouse::toggle(mouse::Button::Right, down),
+    let mut e = Enigo::new();
+    let target = match button {
+        0 => enigo::MouseButton::Left,
+        1 => enigo::MouseButton::Middle,
+        _ => enigo::MouseButton::Right,
+    };
+    match down {
+        true => e.mouse_down(target),
+        false => e.mouse_up(target),
     }
 }
 
 #[command]
-pub fn SetMouseScroll(direction: u32, clicks: u32) {
+pub fn SetMouseScroll(direction: u32, clicks: i32) {
+    let mut e = Enigo::new();
     match direction {
-        0 => mouse::scroll(mouse::ScrollDirection::Down, clicks),
-        _ => mouse::scroll(mouse::ScrollDirection::Up, clicks),
+        0 => e.mouse_scroll_y(clicks),
+        _ => e.mouse_scroll_y(-clicks),
     }
 }
 

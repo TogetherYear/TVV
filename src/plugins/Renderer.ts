@@ -368,8 +368,8 @@ class Renderer extends EventSystem {
             SetMousePosition: (x: number, y: number) => {
                 return T.invoke("SetMousePosition", { x, y })
             },
-            SetButtonClick: (button: number, delay: number = 100) => {
-                return T.invoke("SetButtonClick", { button, delay })
+            SetButtonClick: (button: number) => {
+                return T.invoke("SetButtonClick", { button })
             },
             SetButtonToggle: (button: number, down: boolean) => {
                 return T.invoke("SetButtonToggle", { button, down })

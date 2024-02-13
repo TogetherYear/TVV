@@ -346,9 +346,9 @@ declare namespace Renderer {
         export function SetMousePosition(x: number, y: number): Promise<void>
 
         /**
-         * 点击鼠标 ( delay:点击时鼠标按下和松开之间的延时 以毫秒计 默认 100 毫秒 )
+         * 点击鼠标
          */
-        export function SetButtonClick(button: MouseButton, delay?: number): Promise<void>
+        export function SetButtonClick(button: MouseButton): Promise<void>
 
         /**
          * 设置鼠标状态
