@@ -164,6 +164,16 @@ declare namespace Renderer {
         export function GetPathByName(name: string, convert?: boolean): Promise<string>
 
         /**
+         * 获取桌面目录
+         */
+        export function GetDesktopDir(): Promise<String>
+
+        /**
+         * 选择文件资源管理器目录
+         */
+        export function SelectDir(title?: string, defaultPath?: string): Promise<string | null>
+
+        /**
          * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( 使用本地文件服务器 )
          */
         export function GetPathByNameFromHttpServe(name: string): string

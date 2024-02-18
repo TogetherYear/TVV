@@ -171,6 +171,17 @@ class Renderer extends EventSystem {
                 const path = convert ? T.convertFileSrc(base) : base
                 return path
             },
+            GetDesktopDir: () => {
+                return Pa.desktopDir()
+            },
+            SelectDir: async (title?: string, defaultPath?: string) => {
+                return D.open({
+                    title: title,
+                    multiple: false,
+                    defaultPath: defaultPath || await Pa.resourceDir(),
+                    directory: true
+                })
+            },
             GetPathByNameFromHttpServe: (name: string) => {
                 return `http://localhost:8676/${name}`
             },
