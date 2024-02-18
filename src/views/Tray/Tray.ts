@@ -14,8 +14,8 @@ class Tray extends AActor {
 
     public Run() {
         this.ListenEvents()
-        onMounted(() => {
-
+        onMounted(async () => {
+            await Renderer.Widget.Hide()
         })
         onUnmounted(() => {
             this.Destroy()
