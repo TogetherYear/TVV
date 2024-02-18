@@ -1,3 +1,4 @@
+pub mod App;
 pub mod Serve;
 pub mod Setup;
 pub mod Singleton;

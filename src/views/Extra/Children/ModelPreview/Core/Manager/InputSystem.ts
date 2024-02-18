@@ -42,7 +42,6 @@ class InputSystem extends EventSystem {
         window.addEventListener('contextmenu', (e) => {
             e.preventDefault()
             e.stopPropagation()
-            e.stopImmediatePropagation()
         })
         window.addEventListener('resize', this.OnWindowResize.bind(this), false)
         window.addEventListener('keydown', this.OnMoveKeyPress.bind(this), false)

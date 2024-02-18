@@ -637,6 +637,7 @@ class Renderer extends EventSystem {
         this.ListenEvents()
         await this.Limit()
         await this.Process()
+        await this.State()
     }
 
     private CreateEvents() {
@@ -672,8 +673,6 @@ class Renderer extends EventSystem {
         if (!json.debug) {
             window.addEventListener('contextmenu', (e) => {
                 e.preventDefault()
-                e.stopPropagation()
-                e.stopImmediatePropagation()
             })
         }
 
@@ -690,6 +689,14 @@ class Renderer extends EventSystem {
                 script.src = await this.Resource.GetPathByName(`Scripts/${dir}/${f.name}`);
                 document.body.appendChild(script);
             }
+        }
+    }
+
+    private async State() {
+        if (W.appWindow.label == "Application") {
+            W.appWindow.onCloseRequested((e) => {
+                e.preventDefault()
+            })
         }
     }
 }

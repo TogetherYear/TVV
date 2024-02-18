@@ -25,6 +25,7 @@ fn main() {
         .on_window_event(Extra::Window::OnWindowEvent)
         .system_tray(Extra::Tray::Build())
         .on_system_tray_event(Extra::Tray::OnEvent)
-        .run(generate_context!())
-        .expect("Error while running tauri application");
+        .build(generate_context!())
+        .expect("error while building tauri application")
+        .run(Extra::App::Run);
 }
