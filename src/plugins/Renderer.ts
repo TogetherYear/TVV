@@ -695,6 +695,7 @@ class Renderer extends EventSystem {
     private async State() {
         if (W.appWindow.label == "Application") {
             W.appWindow.onCloseRequested((e) => {
+                W.appWindow.hide()
                 e.preventDefault()
             })
         }
