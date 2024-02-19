@@ -13,6 +13,7 @@ import * as T from "@tauri-apps/api/tauri";
 import * as U from 'tauri-plugin-upload-api'
 import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/libs/EventSystem";
+import { Time } from "@/libs/Time";
 
 class Renderer extends EventSystem {
     private constructor() { super() }
@@ -154,8 +155,9 @@ class Renderer extends EventSystem {
                     ...window,
                     monitor: this.Monitor.TransformMonitor(window.monitor as Record<string, unknown>),
                     Capture: async () => {
-                        if (await T.invoke("CaptureWindow", { id: window.id, path: await this.CaptureTempInputPath })) {
-                            return await this.CaptureTempOutputPath
+                        const time = Time.GetTime(null, true, '-', '-').replaceAll(' ', '_')
+                        if (await T.invoke("CaptureWindow", { id: window.id, path: await this.Resource.GetPathByName(`Images/Capture-${time}.webp`, false) })) {
+                            return await this.Resource.GetPathByName(`Images/Capture-${time}.webp`, true)
                         }
                         return Promise.resolve("")
                     },
@@ -284,8 +286,9 @@ class Renderer extends EventSystem {
                 return {
                     ...monitor,
                     Capture: async () => {
-                        if (await T.invoke("CaptureMonitor", { id: monitor.id, path: await this.CaptureTempInputPath })) {
-                            return await this.CaptureTempOutputPath
+                        const time = Time.GetTime(null, true, '-', '-').replaceAll(' ', '_')
+                        if (await T.invoke("CaptureMonitor", { id: monitor.id, path: await this.Resource.GetPathByName(`Images/Capture-${time}.webp`, false) })) {
+                            return await this.Resource.GetPathByName(`Images/Capture-${time}.webp`, false)
                         }
                         return Promise.resolve("")
                     }
@@ -618,14 +621,6 @@ class Renderer extends EventSystem {
             WidgetDestroy: 'WidgetDestroy',
             WidgetEmpty: 'WidgetEmpty'
         }
-    }
-
-    public get CaptureTempInputPath() {
-        return this.Resource.GetPathByName('Images/CaptureTemp.webp', false)
-    }
-
-    public get CaptureTempOutputPath() {
-        return this.Resource.GetPathByName('Images/CaptureTemp.webp', true)
     }
 
     public async Run() {

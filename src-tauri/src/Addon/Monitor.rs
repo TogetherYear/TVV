@@ -40,10 +40,8 @@ pub fn CaptureMonitor(id: u32, path: String) -> bool {
     let monitors = xcap::Monitor::all().unwrap();
     for m in monitors.iter() {
         if m.id() == id {
-            m.capture_image()
-                .unwrap()
-                .save_with_format(path, ImageFormat::WebP)
-                .unwrap();
+            let buffer = m.capture_image().unwrap();
+            buffer.save_with_format(path, ImageFormat::WebP).unwrap();
             return true;
         }
     }

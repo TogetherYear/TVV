@@ -18,10 +18,8 @@ pub fn CaptureWindow(id: u32, path: String) -> bool {
     let windows = xcap::Window::all().unwrap();
     for w in windows.iter() {
         if w.id() == id && !w.is_minimized() {
-            w.capture_image()
-                .unwrap()
-                .save_with_format(path, ImageFormat::WebP)
-                .unwrap();
+            let buffer = w.capture_image().unwrap();
+            buffer.save_with_format(path, ImageFormat::WebP).unwrap();
             return true;
         }
     }
