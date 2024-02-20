@@ -369,8 +369,8 @@ class Renderer extends EventSystem {
                     height: options.height || 0,
                     filter: options.filter || this.ImageFilter.Nearest,
                 }
-                return T.invoke("ConvertImageFormat", { originPath, convertPath, options: JSON.stringify(o) })
-            },
+                return T.invoke("ConvertImageFormat", { originPath, convertPath, options: o })
+            }
         }
     }
 
@@ -402,7 +402,7 @@ class Renderer extends EventSystem {
                 return T.invoke("WriteText", { content, paste })
             },
             SetKeysToggle: (toggleKeys: Array<{ key: number, down: boolean }>) => {
-                return T.invoke("SetKeysToggle", { json: JSON.stringify({ toggleKeys }) })
+                return T.invoke("SetKeysToggle", { toggleKeys })
             },
             SetKeysClick: (keys: Array<number>) => {
                 return T.invoke("SetKeysClick", { keys })

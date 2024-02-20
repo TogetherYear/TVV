@@ -85,9 +85,8 @@ pub fn WriteText(content: String, paste: bool) {
 }
 
 #[command]
-pub fn SetKeysToggle(json: String) {
+pub fn SetKeysToggle(toggleKeys: Vec<ToggleKey>) {
     let mut e = Enigo::new();
-    let toggleKeys = TransformToggleKeysFromJson(json);
     for toggleKey in toggleKeys {
         match toggleKey.down {
             true => e.key_down(TransformKey(toggleKey.key)),
@@ -164,12 +163,6 @@ fn TransformKey(key: u32) -> enigo::Key {
     }
 }
 
-fn TransformToggleKeysFromJson(json: String) -> Vec<ToggleKey> {
-    serde_json::from_str::<ToggleKeysJson>(json.as_str())
-        .unwrap()
-        .toggleKeys
-}
-
 #[derive(Clone, serde::Serialize)]
 pub struct Point {
     pub x: i32,
@@ -203,11 +196,6 @@ impl Color {
             a: 0,
         }
     }
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct ToggleKeysJson {
-    toggleKeys: Vec<ToggleKey>,
 }
 
 #[derive(Serialize, Deserialize)]

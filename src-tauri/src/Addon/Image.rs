@@ -1,10 +1,10 @@
-use image::{imageops::FilterType, ImageFormat};
+use image::imageops::FilterType;
 use serde::{Deserialize, Serialize};
+use std::cmp;
 use tauri::command;
 
 #[command]
-pub fn ConvertImageFormat(originPath: String, convertPath: String, options: String) {
-    let options = TransformImageOptionsFromJson(options);
+pub fn ConvertImageFormat(originPath: String, convertPath: String, options: ImageOptions) {
     let mut r = image::open(originPath).unwrap();
     if options.width != 0
         && options.height != 0
@@ -29,10 +29,6 @@ pub fn ConvertImageFormat(originPath: String, convertPath: String, options: Stri
     }
     r.save_with_format(convertPath, TransformFormat(options.format))
         .unwrap();
-}
-
-fn TransformImageOptionsFromJson(json: String) -> ImageOptions {
-    serde_json::from_str::<ImageOptions>(json.as_str()).unwrap()
 }
 
 fn TransformFormat(format: u32) -> ImageFormat {
