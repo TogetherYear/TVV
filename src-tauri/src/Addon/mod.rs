@@ -1,3 +1,4 @@
+use crate::Extra::Tray;
 use tauri::generate_handler;
 
 pub mod Automatic;
@@ -33,5 +34,7 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Wallpaper::GetWallpaper,
         Wallpaper::SetWallpaper,
         Serve::CreateCustomStaticFileServe,
+        Tray::SetTrayIcon,
+        Tray::SetTrayTooltip,
     ]
 }

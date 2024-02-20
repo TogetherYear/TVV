@@ -22,6 +22,8 @@ class Renderer extends EventSystem {
 
     public static get Instance() { return this.instance }
 
+    private flashTimer: NodeJS.Timeout | null = null
+
     public get App() {
         return {
             IsAutostart: () => {
@@ -483,6 +485,37 @@ class Renderer extends EventSystem {
             GetExtraUrl: (route: string) => {
                 return `${location.origin}/#/${route}`
             }
+        }
+    }
+
+    public get Tray() {
+        return {
+            SetTrayIcon: (icon: string) => {
+                return T.invoke("SetTrayIcon", { icon })
+            },
+            SetTrayTooltip: (tooltip: string) => {
+                return T.invoke("SetTrayTooltip", { tooltip })
+            },
+            Flash: async (icon: string) => {
+                let show = true
+                const emptyIcon = await this.Resource.GetPathByName("Images/empty.ico", false)
+                this.flashTimer = setInterval(() => {
+                    if (show) {
+                        T.invoke("SetTrayIcon", { icon: emptyIcon })
+                    }
+                    else {
+                        T.invoke("SetTrayIcon", { icon })
+                    }
+                    show = !show
+                }, 700)
+            },
+            StopFlash: (icon: string) => {
+                if (this.flashTimer) {
+                    clearInterval(this.flashTimer)
+                    this.flashTimer = null
+                }
+                return T.invoke("SetTrayIcon", { icon })
+            },
         }
     }
 

@@ -1,6 +1,6 @@
-use tauri::{AppHandle, Manager, PhysicalPosition, SystemTray, SystemTrayEvent};
-
 use crate::Addon::Automatic::GetMousePosition;
+use image;
+use tauri::{command, AppHandle, Icon, Manager, PhysicalPosition, SystemTray, SystemTrayEvent};
 
 pub fn Build() -> SystemTray {
     SystemTray::new().with_tooltip("去码头整点薯条")
@@ -41,4 +41,25 @@ pub fn OnEvent(app: &AppHandle, event: SystemTrayEvent) {
         }
         _ => {}
     }
+}
+
+#[command]
+pub fn SetTrayIcon(icon: String, app_handle: tauri::AppHandle) {
+    let r = image::open(icon).unwrap();
+    app_handle
+        .tray_handle()
+        .set_icon(Icon::Rgba {
+            rgba: r.as_rgba8().unwrap().to_vec(),
+            width: r.width(),
+            height: r.height(),
+        })
+        .unwrap();
+}
+
+#[command]
+pub fn SetTrayTooltip(tooltip: String, app_handle: tauri::AppHandle) {
+    app_handle
+        .tray_handle()
+        .set_tooltip(tooltip.as_str())
+        .unwrap();
 }

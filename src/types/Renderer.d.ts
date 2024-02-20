@@ -397,6 +397,31 @@ declare namespace Renderer {
     }
 
     /**
+     * 系统托盘
+     */
+    export namespace Tray {
+        /**
+         * 修改托盘图标 不能用Tauri转换后的地址
+         */
+        export function SetTrayIcon(icon: string): Promise<void>
+
+        /**
+         * 修改托盘提示文字
+         */
+        export function SetTrayTooltip(tooltip: string): Promise<void>
+
+        /**
+         * 托盘开始闪烁 不能用Tauri转换后的地址
+         */
+        export function Flash(icon: string): Promise<void>
+
+        /**
+         * 托盘停止闪烁 不能用Tauri转换后的地址
+         */
+        export function StopFlash(icon: string): Promise<void>
+    }
+
+    /**
      * 图片
      */
     export namespace Image {
