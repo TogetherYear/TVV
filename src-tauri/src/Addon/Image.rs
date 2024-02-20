@@ -1,6 +1,5 @@
-use image::imageops::FilterType;
+use image::{imageops::FilterType, ImageFormat};
 use serde::{Deserialize, Serialize};
-use std::cmp;
 use tauri::command;
 
 #[command]
