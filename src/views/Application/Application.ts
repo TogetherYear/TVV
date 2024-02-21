@@ -33,12 +33,6 @@ class Application extends AActor {
     private Test() {
         setTimeout(async () => {
             // Debug.Log(await Renderer.Window.GetAllWindows())
-            const icon = await Renderer.Resource.GetPathByName("Images/new.ico", false)
-            Renderer.Tray.Flash(icon)
-
-            setTimeout(() => {
-                Renderer.Tray.StopFlash(icon)
-            }, 20000);
         }, 3000);
     }
 }
