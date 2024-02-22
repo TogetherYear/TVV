@@ -276,6 +276,7 @@ class Simulator extends AActor {
 
     public Run() {
         onMounted(async () => {
+            await Renderer.Widget.SetShadow(true)
             await this.GetDefaultResources()
             this.CreateLeafer()
             this.ListenEvents()

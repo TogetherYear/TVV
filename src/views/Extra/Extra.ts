@@ -18,7 +18,6 @@ class Extra extends AActor {
 
     public Run() {
         onMounted(async () => {
-            await Renderer.Widget.SetShadow(true)
             await Renderer.Widget.Show()
         })
 

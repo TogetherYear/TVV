@@ -32,6 +32,7 @@ class ImagePreview extends AActor {
 
     public Run() {
         onMounted(async () => {
+            await Renderer.Widget.SetShadow(true)
             await this.CreatePreview()
         })
 

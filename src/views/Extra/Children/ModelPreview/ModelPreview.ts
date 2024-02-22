@@ -23,7 +23,8 @@ class ModelPreview extends AActor {
     }
 
     public Run() {
-        onMounted(() => {
+        onMounted(async () => {
+            await Renderer.Widget.SetShadow(true)
             this.Generate()
         })
 
