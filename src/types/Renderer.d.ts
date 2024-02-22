@@ -169,9 +169,9 @@ declare namespace Renderer {
         export function GetDesktopDir(): Promise<String>
 
         /**
-         * 选择文件资源管理器目录
+         * 从文件资源管理器选择资源
          */
-        export function SelectDir(title?: string, defaultPath?: string): Promise<string | null>
+        export function SelectResources(options?: IT.DirOptions): Promise<Array<string> | string | null>
 
         /**
          * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( 使用本地文件服务器 )
@@ -694,6 +694,17 @@ declare namespace IT {
     export type ProgressHandler = (progress: number, total: number) => void;
 
     export type ShortcutHandler = (shortcut: string) => void;
+
+    export type DirOptions = {
+        title?: string,
+        multiple?: boolean,
+        defaultPath?: string,
+        directory?: boolean,
+        filters?: Array<{
+            name: string,
+            extensions: Array<string>
+        }>
+    }
 
     export type Color = {
         r: number;

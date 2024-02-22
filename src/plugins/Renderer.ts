@@ -178,12 +178,13 @@ class Renderer extends EventSystem {
             GetDesktopDir: () => {
                 return Pa.desktopDir()
             },
-            SelectDir: async (title?: string, defaultPath?: string) => {
+            SelectResources: async (options: Record<string, unknown> = {}) => {
                 return D.open({
-                    title: title,
-                    multiple: false,
-                    defaultPath: defaultPath || await Pa.resourceDir(),
-                    directory: true
+                    title: (options.title as string) || undefined,
+                    multiple: (options.multiple as boolean) || false,
+                    defaultPath: (options.defaultPath as string) || await Pa.resourceDir(),
+                    directory: (options.directory as boolean) || false,
+                    filters: (options.filters as Array<D.DialogFilter>) || undefined
                 })
             },
             GetPathByNameFromHttpServe: (name: string) => {
