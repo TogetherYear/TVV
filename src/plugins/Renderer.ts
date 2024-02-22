@@ -187,6 +187,13 @@ class Renderer extends EventSystem {
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 })
             },
+            SaveResources: async (options: Record<string, unknown>) => {
+                return D.save({
+                    title: (options.title as string) || undefined,
+                    defaultPath: (options.defaultPath as string) || await Pa.resourceDir(),
+                    filters: (options.filters as Array<D.DialogFilter>) || undefined
+                })
+            },
             GetPathByNameFromHttpServe: (name: string) => {
                 return `http://localhost:8676/${name}`
             },
