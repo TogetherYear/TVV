@@ -22,12 +22,8 @@ export default defineConfig({
         minify: 'esbuild',
         sourcemap: false
     },
-    optimizeDeps: {
-        include: ['axios']
-    },
     base: './',
     envDir: './env',
-    envPrefix: ['VITE_', 'TAURI_'],
     server: {
         port: 6768,
         strictPort: true,

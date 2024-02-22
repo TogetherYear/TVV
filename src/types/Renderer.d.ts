@@ -437,36 +437,6 @@ declare namespace Renderer {
     }
 
     /**
-     * 额外窗口拓展
-     */
-    export namespace Extra {
-        /**
-         * 创建二维码窗口
-         */
-        export function Code(text: string): Promise<void>
-
-        /**
-         * 创建图片预览窗口 ( 建议 webp 格式图片 )
-         */
-        export function ImagePreview(url: string, width: number, height: number): Promise<void>
-
-        /**
-         * 创建三维场景窗口
-         */
-        export function ModelPreview(): void
-
-        /**
-         * 创建自动化鼠标按键执行窗口
-         */
-        export function Simulator(): void
-
-        /**
-         * 获取需要展示的拓展路由 ( 内部调用 )
-         */
-        export function GetExtraUrl(route: string): string
-    }
-
-    /**
      * 不要用 去用 AddListen
      */
     export namespace Event {

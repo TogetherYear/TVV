@@ -26,33 +26,6 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Tray',
         component: () => import('@/views/Tray/Tray.vue')
     },
-    {
-        path: '/Extra',
-        name: 'Extra',
-        component: () => import('@/views/Extra/Extra.vue'),
-        children: [
-            {
-                path: 'Code',
-                name: 'Code',
-                component: () => import('@/views/Extra/Children/Code/Code.vue')
-            },
-            {
-                path: 'ImagePreview',
-                name: 'ImagePreview',
-                component: () => import('@/views/Extra/Children/ImagePreview/ImagePreview.vue')
-            },
-            {
-                path: 'ModelPreview',
-                name: 'ModelPreview',
-                component: () => import('@/views/Extra/Children/ModelPreview/ModelPreview.vue')
-            },
-            {
-                path: 'Simulator',
-                name: 'Simulator',
-                component: () => import('@/views/Extra/Children/Simulator/Simulator.vue')
-            },
-        ]
-    },
 ]
 
 const router = createRouter({
