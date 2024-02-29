@@ -14,13 +14,11 @@
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
     "tauri-plugin-upload-api": "github:tauri-apps/tauri-plugin-upload#v1",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5",
-    "three": "^0.139.0"
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.9",
     "@types/node": "^20.11.5",
-    "@types/three": "^0.139.0",
     "@vitejs/plugin-vue": "^4.6.2",
     "naive-ui": "^2.37.3",
     "sass": "^1.70.0",
