@@ -2,7 +2,7 @@
 import { HeaderBar } from './HeaderBar'
 import minIcon from '@/assets/mc/min.png'
 import maxIcon from '@/assets/mc/max.png'
-import closeIcon from '@/assets/mc/close.png'
+import hideIcon from '@/assets/mc/hide.png'
 import { App } from '@/App';
 
 const attribute = withDefaults(defineProps<{
@@ -40,7 +40,7 @@ instance.Run()
                     <img :src="maxIcon" class="Icon" />
                 </span>
                 <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
-                    <img :src="closeIcon" class="Icon" />
+                    <img :src="hideIcon" class="Icon" />
                 </span>
             </span>
             <span class="Drag" data-tauri-drag-region v-show="!isMax"></span>
@@ -49,7 +49,7 @@ instance.Run()
         <span v-if="attribute.type == 'tool'">
             <span class="Btn">
                 <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
-                    <img :src="closeIcon" class="Icon" />
+                    <img :src="hideIcon" class="Icon" />
                 </span>
             </span>
             <span class="Drag" data-tauri-drag-region></span>
