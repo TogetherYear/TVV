@@ -1,27 +1,29 @@
+type Callback = (e?: Record<string, unknown>) => void
+
 class EventSystem extends Object {
     constructor() { super() }
 
     /**
      * 长久监听
      */
-    private continue: Array<{ key: string, callbacks: Array<{ scope: Object, callback: Function }> }> = []
+    private continue: Array<{ key: string, callbacks: Array<{ scope: Object, callback: Callback }> }> = []
 
     /**
      * 临时监听
      */
-    private temporary: Array<{ key: string, callbacks: Array<{ scope: Object, callback: Function }> }> = []
+    private temporary: Array<{ key: string, callbacks: Array<{ scope: Object, callback: Callback }> }> = []
 
     /**
      * 返回长久事件集合
      */
-    public get C(): Array<{ key: string, callbacks: Array<{ scope: Object, callback: Function }> }> {
+    public get C(): Array<{ key: string, callbacks: Array<{ scope: Object, callback: Callback }> }> {
         return this.continue
     }
 
     /**
      * 返回临时事件集合
      */
-    public get T(): Array<{ key: string, callbacks: Array<{ scope: Object, callback: Function }> }> {
+    public get T(): Array<{ key: string, callbacks: Array<{ scope: Object, callback: Callback }> }> {
         return this.temporary
     }
 
@@ -61,7 +63,7 @@ class EventSystem extends Object {
      * @param once [ false ] 是否只监听一次
      * @description 添加监听
      */
-    public AddListen(key: string, scope: Object, callback: Function, once: boolean = false) {
+    public AddListen(key: string, scope: Object, callback: Callback, once: boolean = false) {
         if (once) {
             let tc = this.temporary.find(ti => ti.key === key)
             if (tc) {
@@ -86,7 +88,7 @@ class EventSystem extends Object {
      * @param callback 执行函数
      * @description 删除监听
      */
-    public RemoveListen(key: string, scope: Object, callback: Function) {
+    public RemoveListen(key: string, scope: Object, callback: Callback) {
         let cc = this.continue.find(ci => ci.key === key)
         let tc = this.temporary.find(ti => ti.key === key)
         if (cc && tc) {
