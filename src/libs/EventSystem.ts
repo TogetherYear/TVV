@@ -1,4 +1,4 @@
-type Callback = (e: Record<string, unknown>) => void
+type Callback = (e: Record<string, unknown> | unknown | any) => void
 
 class EventSystem extends Object {
     constructor() { super() }
