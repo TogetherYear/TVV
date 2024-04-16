@@ -627,7 +627,6 @@ class Renderer extends EventSystem {
             }
             this.Emit(this.RendererEvent.Message, r)
         })
-
         this.Event.Listen<Array<string>>(this.Event.TauriEvent.WINDOW_FILE_DROP, async (e) => {
             this.Emit(this.RendererEvent.FileDrop, {
                 event: this.RendererEvent.FileDrop,
@@ -655,7 +654,7 @@ class Renderer extends EventSystem {
     }
 
     private async Process() {
-        const dir = location.href.split('/').slice(-1)[0]
+        const dir = this.GetHrefDir()
         const p = await this.Resource.GetPathByName(`Scripts/${dir}`, false)
         if (await this.Resource.IsPathExists(p)) {
             const files = await this.Resource.ReadDirFiles(p)
@@ -667,6 +666,19 @@ class Renderer extends EventSystem {
                     document.body.appendChild(script);
                 }
             }
+        }
+    }
+
+    private GetHrefDir() {
+        const href = location.href
+        if (href.indexOf("Application") != -1) {
+            return 'Application'
+        }
+        else if (href.indexOf("Tray") != -1) {
+            return 'Tray'
+        }
+        else {
+            return 'Application'
         }
     }
 
