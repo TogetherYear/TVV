@@ -574,7 +574,8 @@ declare namespace Renderer {
         SecondInstance = 'SecondInstance',
         WidgetCreate = 'WidgetCreate',
         WidgetDestroy = 'WidgetDestroy',
-        WidgetEmpty = 'WidgetEmpty'
+        WidgetEmpty = 'WidgetEmpty',
+        FileDrop = 'FileDrop',
     }
 
     export const CaptureTempInputPath: Promise<string>

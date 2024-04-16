@@ -584,7 +584,8 @@ class Renderer extends EventSystem {
             SecondInstance: 'SecondInstance',
             WidgetCreate: 'WidgetCreate',
             WidgetDestroy: 'WidgetDestroy',
-            WidgetEmpty: 'WidgetEmpty'
+            WidgetEmpty: 'WidgetEmpty',
+            FileDrop: 'FileDrop',
         }
     }
 
@@ -606,6 +607,7 @@ class Renderer extends EventSystem {
         this.AddKey(this.RendererEvent.WidgetCreate)
         this.AddKey(this.RendererEvent.WidgetDestroy)
         this.AddKey(this.RendererEvent.WidgetEmpty)
+        this.AddKey(this.RendererEvent.FileDrop)
     }
 
     private ListenEvents() {
@@ -624,6 +626,20 @@ class Renderer extends EventSystem {
                 this.Emit(this.RendererEvent.WidgetEmpty, r)
             }
             this.Emit(this.RendererEvent.Message, r)
+        })
+
+        this.Event.Listen<Array<string>>(this.Event.TauriEvent.WINDOW_FILE_DROP, async (e) => {
+            this.Emit(this.RendererEvent.FileDrop, {
+                event: this.RendererEvent.FileDrop,
+                extra: {
+                    files: await Promise.all(e.payload.map(async (c) => {
+                        return {
+                            ...await this.Resource.GetPathMetadata(c),
+                            path: c
+                        }
+                    }))
+                }
+            })
         })
     }
 
