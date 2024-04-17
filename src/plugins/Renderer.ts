@@ -137,6 +137,9 @@ class Renderer extends EventSystem {
             SetPosition: (x: number, y: number) => {
                 return W.appWindow.setPosition(new W.LogicalPosition(x, y))
             },
+            GetPosition: () => {
+                return W.appWindow.innerPosition()
+            },
             SetShadow: (enable: boolean) => {
                 return T.invoke("SetShadow", { enable })
             },
@@ -174,6 +177,9 @@ class Renderer extends EventSystem {
                 const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/')
                 const path = convert ? T.convertFileSrc(base) : base
                 return path
+            },
+            ConvertFileSrcToTauri: (path: string) => {
+                return T.convertFileSrc(path)
             },
             GetDesktopDir: () => {
                 return Pa.desktopDir()

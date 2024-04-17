@@ -129,6 +129,11 @@ declare namespace Renderer {
         export function SetPosition(x: number, y: number): Promise<void>
 
         /**
+         * 获取窗口位置
+         */
+        export function GetPosition(): Promise<IT.Point>
+
+        /**
          * 设置是否显示窗口阴影
          */
         export function SetShadow(enable: boolean): Promise<void>
@@ -162,6 +167,11 @@ declare namespace Renderer {
          * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( convert 是否转换成 Webview 可使用的格式 默认 true)
          */
         export function GetPathByName(name: string, convert?: boolean): Promise<string>
+
+        /**
+         * 将真实文件地址转换为 Webview 可使用的地址
+         */
+        export function ConvertFileSrcToTauri(path: string): string
 
         /**
          * 获取桌面目录
