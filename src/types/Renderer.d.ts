@@ -181,12 +181,12 @@ declare namespace Renderer {
         /**
          * 从文件资源管理器选择资源
          */
-        export function SelectResources(options?: IT.SelectOptions): Promise<Array<string> | string | null>
+        export function GetSelectResources(options?: IT.SelectOptions): Promise<Array<string> | string | null>
 
         /**
          * 从文件资源管理器选择保存资源路径
          */
-        export function SaveResources(options?: IT.SaveOptions): Promise<string | null>
+        export function GetSaveResources(options?: IT.SaveOptions): Promise<string | null>
 
         /**
          * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( 使用本地文件服务器 )
