@@ -589,10 +589,6 @@ declare namespace Renderer {
         Resize = 'Resize',
     }
 
-    export const CaptureTempInputPath: Promise<string>
-
-    export const CaptureTempOutputPath: Promise<string>
-
     /**
      * 监听事件
      */
