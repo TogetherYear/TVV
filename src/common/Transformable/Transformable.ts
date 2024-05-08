@@ -1,5 +1,5 @@
 
-import { AActor } from "@render/libs/AActor"
+import { AActor } from "@/libs/AActor"
 import { onMounted, onUnmounted, ref } from "vue"
 
 class Transformable extends AActor {
