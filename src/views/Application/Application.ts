@@ -18,7 +18,6 @@ class Application extends AActor {
         onMounted(async () => {
             await Renderer.Widget.SetShadow(true)
             await Renderer.Widget.Show()
-            this.Test()
         })
         onUnmounted(async () => {
             await Renderer.GlobalShortcut.UnregisterAll()
@@ -28,12 +27,6 @@ class Application extends AActor {
 
     protected Destroy() {
 
-    }
-
-    private Test() {
-        setTimeout(async () => {
-            // Debug.Log(await Renderer.Window.GetAllWindows())
-        }, 3000);
     }
 }
 
