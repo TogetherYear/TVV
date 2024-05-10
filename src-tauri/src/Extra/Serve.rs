@@ -1,5 +1,6 @@
+use actix_files as fs;
+use actix_web::{middleware, App as AApp, HttpServer};
 use std::thread;
-
 use tauri::App;
 
 pub fn CreateStaticFileServe(app: &mut App) {
@@ -17,12 +18,30 @@ pub fn CreateStaticFileServe(app: &mut App) {
     );
     thread::Builder::new()
         .name(String::from("HttpServe"))
-        .spawn(move || {
-            file_serve::ServerBuilder::new(&path)
-                .port(8676)
-                .build()
-                .serve()
-                .unwrap();
-        })
+        .spawn(move || ActixServer(path))
         .unwrap();
+}
+
+#[actix_web::main]
+async fn ActixServer(path: String) -> std::io::Result<()> {
+    HttpServer::new(move || {
+        AApp::new()
+            .wrap(
+                middleware::DefaultHeaders::new()
+                    .add(("Access-Control-Allow-Origin", "*"))
+                    .add((
+                        "Access-Control-Allow-Methods",
+                        "Access-Control-Allow-Methods",
+                    ))
+                    .add(("Access-Control-Allow-Headers", "Content-Type"))
+                    .add(("Access-Control-Allow-Credentials", "true"))
+                    .add(("Cross-Origin-Embedder-Policy", "require-corp"))
+                    .add(("Cross-Origin-Opener-Policy", "same-origin")),
+            )
+            .service(fs::Files::new("/", path.as_str()))
+    })
+    .bind(("127.0.0.1", 8676))
+    .unwrap()
+    .run()
+    .await
 }

@@ -196,7 +196,7 @@ declare namespace Renderer {
         /**
          * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( 使用本地文件服务器 )
          */
-        export function GetPathByNameFromHttpServe(name: string): string
+        export function GetFileServerPathByName(name: string): string
 
         /**
          * 获取路径的元数据 不能用Tauri转换后的地址

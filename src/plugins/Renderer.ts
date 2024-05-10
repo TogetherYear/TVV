@@ -203,7 +203,7 @@ class Renderer extends EventSystem {
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 })
             },
-            GetPathByNameFromHttpServe: (name: string) => {
+            GetFileServerPathByName: (name: string) => {
                 return `http://localhost:8676/${name}`
             },
             GetPathMetadata: (path: string) => {
