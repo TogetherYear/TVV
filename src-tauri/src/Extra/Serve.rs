@@ -29,10 +29,7 @@ async fn ActixServer(path: String) -> std::io::Result<()> {
             .wrap(
                 middleware::DefaultHeaders::new()
                     .add(("Access-Control-Allow-Origin", "*"))
-                    .add((
-                        "Access-Control-Allow-Methods",
-                        "Access-Control-Allow-Methods",
-                    ))
+                    .add(("Access-Control-Allow-Methods", "GET,POST"))
                     .add(("Access-Control-Allow-Headers", "Content-Type"))
                     .add(("Access-Control-Allow-Credentials", "true"))
                     .add(("Cross-Origin-Embedder-Policy", "require-corp"))
