@@ -3,7 +3,7 @@ use actix_web::{middleware, App as AApp, HttpServer};
 use std::thread;
 use tauri::App;
 
-pub fn CreateStaticFileServe(app: &mut App) {
+pub fn CreateStaticFileServer(app: &mut App) {
     let path = format!(
         "{}{}",
         app.path_resolver()
@@ -17,7 +17,7 @@ pub fn CreateStaticFileServe(app: &mut App) {
         "/Extra/"
     );
     thread::Builder::new()
-        .name(String::from("HttpServe"))
+        .name(String::from("StaticFileServer"))
         .spawn(move || ActixServer(path))
         .unwrap();
 }
