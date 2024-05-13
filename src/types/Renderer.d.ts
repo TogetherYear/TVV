@@ -291,7 +291,7 @@ declare namespace Renderer {
         /**
          * 注册快捷键
          */
-        export function Register(shortcut: string, handler: IT.ShortcutHandler): Promise<void>
+        export function Register(shortcut: string, handler: IT.ShortcutHandler): Promise<boolean>
 
         /**
          * 取消快捷键

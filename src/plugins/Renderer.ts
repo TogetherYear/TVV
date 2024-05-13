@@ -285,8 +285,13 @@ class Renderer extends EventSystem {
             IsRegistered: (shortcut: string) => {
                 return G.isRegistered(shortcut)
             },
-            Register: (shortcut: string, handler: G.ShortcutHandler) => {
-                return G.register(shortcut, handler)
+            Register: async (shortcut: string, handler: G.ShortcutHandler) => {
+                const current = await this.GlobalShortcut.IsRegistered(shortcut)
+                if (current) {
+                    return false
+                }
+                await G.register(shortcut, handler)
+                return true
             },
             Unregister: (shortcut: string) => {
                 return G.unregister(shortcut)
