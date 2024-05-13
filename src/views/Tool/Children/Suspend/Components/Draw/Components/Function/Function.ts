@@ -201,7 +201,7 @@ class Function {
     }
 
     private async ToSave() {
-        const path = await Renderer.Resource.GetPathByName(`Images/Revise_${Time.GetTime(null, true, '-', '-')}.webp`, false)
+        const path = await Renderer.Resource.GetPathByName(`Images/Suspend_${Time.GetTime(null, true, '-', '-')}.webp`, false)
         const result = await Renderer.Resource.GetSaveResources({
             title: "选择保存图片路径",
             defaultPath: path,
