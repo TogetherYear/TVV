@@ -24,6 +24,13 @@ class Renderer extends EventSystem {
 
     private flashTimer: NodeJS.Timeout | null = null
 
+    private toolFlag = {
+        suspend: {
+            ing: false,
+            widgets: new Map<string, W.WebviewWindow>()
+        },
+    }
+
     public get App() {
         return {
             IsAutostart: () => {
@@ -389,6 +396,9 @@ class Renderer extends EventSystem {
                     filter: options.filter || this.ImageFilter.Nearest,
                 }
                 return T.invoke("ConvertImageFormat", { originPath, convertPath, options: o })
+            },
+            SaveFileFromBase64: async (base64: string, path: string) => {
+                return T.invoke("SaveFileFromBase64", { base64, path })
             }
         }
     }
@@ -595,7 +605,43 @@ class Renderer extends EventSystem {
             WidgetDestroy: 'WidgetDestroy',
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
-            Resize: 'Resize',
+            Suspend: 'Suspend',
+        }
+    }
+
+    public get Tool() {
+        return {
+            CreateSuspendScreenshotWidget: async () => {
+                if (!this.toolFlag.suspend.ing) {
+                    this.toolFlag.suspend.ing = true
+                    const id = `${(new Date()).getTime()}`
+                    const widget = await this.App.CreateWidget(id, {
+                        decorations: false,
+                        width: 500,
+                        height: 500,
+                        center: true,
+                        transparent: true,
+                        visible: false,
+                        resizable: false,
+                        alwaysOnTop: true,
+                        skipTaskbar: true,
+                        url: this.Tool.GetExtraUrl('Tool/Suspend')
+                    })
+                    widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
+                        this.toolFlag.suspend.widgets.set(id, widget)
+                    })
+                    widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
+                        this.toolFlag.suspend.widgets.delete(id)
+                    })
+                    return widget
+                }
+                else {
+                    return null
+                }
+            },
+            GetExtraUrl: (route: string) => {
+                return `${location.origin}/#/${route}`
+            }
         }
     }
 
@@ -618,7 +664,7 @@ class Renderer extends EventSystem {
         this.AddKey(this.RendererEvent.WidgetDestroy)
         this.AddKey(this.RendererEvent.WidgetEmpty)
         this.AddKey(this.RendererEvent.FileDrop)
-        this.AddKey(this.RendererEvent.Resize)
+        this.AddKey(this.RendererEvent.Suspend)
     }
 
     private ListenEvents() {
@@ -635,6 +681,10 @@ class Renderer extends EventSystem {
             }
             else if (r.event == this.RendererEvent.WidgetEmpty) {
                 this.Emit(this.RendererEvent.WidgetEmpty, r)
+            }
+            else if (r.event == this.RendererEvent.Suspend) {
+                this.toolFlag.suspend.ing = false
+                this.Emit(this.RendererEvent.Suspend, r)
             }
             this.Emit(this.RendererEvent.Message, r)
         })
@@ -709,13 +759,6 @@ class Renderer extends EventSystem {
                 else {
                     localStorage.setItem("width", `${e.payload.width}`)
                     localStorage.setItem("height", `${e.payload.height}`)
-                    this.Emit(this.RendererEvent.Resize, {
-                        event: this.RendererEvent.Resize,
-                        extra: {
-                            width: e.payload.width,
-                            height: e.payload.height,
-                        }
-                    })
                 }
             })
         }
