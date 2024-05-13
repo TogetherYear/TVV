@@ -764,17 +764,11 @@ class Renderer extends EventSystem {
                 W.appWindow.hide()
                 e.preventDefault()
             })
-            let isStart = true
+            await this.Widget.SetSize(parseInt(localStorage.getItem("width") || '1000'), parseInt(localStorage.getItem("height") || '560'))
+            await this.Widget.Center()
             W.appWindow.onResized(async (e) => {
-                if (isStart) {
-                    isStart = false
-                    await this.Widget.SetSize(parseInt(localStorage.getItem("width") || '1000'), parseInt(localStorage.getItem("height") || '560'))
-                    await this.Widget.Center()
-                }
-                else {
-                    localStorage.setItem("width", `${e.payload.width}`)
-                    localStorage.setItem("height", `${e.payload.height}`)
-                }
+                localStorage.setItem("width", `${e.payload.width}`)
+                localStorage.setItem("height", `${e.payload.height}`)
             })
         }
     }
