@@ -601,7 +601,7 @@ declare namespace Renderer {
         WidgetEmpty = 'WidgetEmpty',
         FileDrop = 'FileDrop',
         Suspend = 'Suspend',
-        Theme = 'Theme',
+        ThemeUpdate = 'ThemeUpdate',
     }
 
     /**

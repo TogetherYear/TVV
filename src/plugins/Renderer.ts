@@ -611,7 +611,7 @@ class Renderer extends EventSystem {
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
             Suspend: 'Suspend',
-            Theme: 'Theme'
+            ThemeUpdate: 'ThemeUpdate'
         }
     }
 
@@ -671,7 +671,7 @@ class Renderer extends EventSystem {
         this.AddKey(this.RendererEvent.WidgetEmpty)
         this.AddKey(this.RendererEvent.FileDrop)
         this.AddKey(this.RendererEvent.Suspend)
-        this.AddKey(this.RendererEvent.Theme)
+        this.AddKey(this.RendererEvent.ThemeUpdate)
     }
 
     private ListenEvents() {
@@ -709,8 +709,8 @@ class Renderer extends EventSystem {
             })
         })
         this.Event.Listen<string>(this.Event.TauriEvent.WINDOW_THEME_CHANGED, (e) => {
-            this.Emit(this.RendererEvent.Theme, {
-                event: this.RendererEvent.Theme,
+            this.Emit(this.RendererEvent.ThemeUpdate, {
+                event: this.RendererEvent.ThemeUpdate,
                 extra: {
                     current: e.payload
                 }
