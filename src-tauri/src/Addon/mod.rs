@@ -4,7 +4,6 @@ use tauri::generate_handler;
 pub mod Automatic;
 pub mod Image;
 pub mod Monitor;
-pub mod Serve;
 pub mod Wallpaper;
 pub mod Widget;
 pub mod Window;
@@ -34,7 +33,6 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Monitor::CaptureMonitor,
         Wallpaper::GetWallpaper,
         Wallpaper::SetWallpaper,
-        Serve::CreateCustomStaticFileServe,
         Tray::SetTrayIcon,
         Tray::SetTrayTooltip,
     ]

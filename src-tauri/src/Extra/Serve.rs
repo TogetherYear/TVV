@@ -1,9 +1,9 @@
 use actix_files as fs;
-use actix_web::{middleware, App as AApp, HttpServer};
+use actix_web::{get, middleware, App as AApp, HttpResponse, HttpServer};
 use std::thread;
 use tauri::App;
 
-pub fn CreateStaticFileServer(app: &mut App) {
+pub fn CreateLocalServer(app: &mut App) {
     let path = format!(
         "{}{}",
         app.path_resolver()
@@ -17,7 +17,7 @@ pub fn CreateStaticFileServer(app: &mut App) {
         "/Extra/"
     );
     thread::Builder::new()
-        .name(String::from("StaticFileServer"))
+        .name(String::from("LocalServer"))
         .spawn(move || ActixServer(path))
         .unwrap();
 }
@@ -35,10 +35,16 @@ async fn ActixServer(path: String) -> std::io::Result<()> {
                     .add(("Cross-Origin-Embedder-Policy", "require-corp"))
                     .add(("Cross-Origin-Opener-Policy", "same-origin")),
             )
-            .service(fs::Files::new("/", path.as_str()))
+            .service(fs::Files::new("/Static", path.as_str()))
+            .service(Test)
     })
     .bind(("127.0.0.1", 8676))
     .unwrap()
     .run()
     .await
+}
+
+#[get("/Test")]
+async fn Test() -> HttpResponse {
+    HttpResponse::Ok().body("Test")
 }
