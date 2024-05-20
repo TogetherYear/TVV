@@ -126,7 +126,7 @@ class Draw {
         for (let m of ms) {
             this.target.monitor.push({
                 ...m,
-                url: await m.Capture('')
+                url: await m.Capture(`Images/${m.id}.webp`)
             })
         }
         this.target.window = await Renderer.Window.GetAllWindows()

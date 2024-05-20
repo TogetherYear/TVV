@@ -737,7 +737,7 @@ declare namespace IT {
         frequency: number,
         isPrimary: boolean,
         /**
-         * 获取截屏 path填写的是Extra文件夹下 需要图片后缀 如果path不填 则传回为 webp 格式的 base64 
+         * 获取截屏 path填写的是Extra文件夹下 需要图片后缀 如果path不填 则传回为 webp 格式的 base64 ( 测试发现直接返回的 base64 会有颜色变谈问题 )
          */
         Capture: (path?: string) => Promise<string>
     }
@@ -759,7 +759,7 @@ declare namespace IT {
         isMaximized: boolean,
         monitor: Monitor
         /**
-         * 获取截屏 最小化的窗口无法截取 path填写的是Extra文件夹下 需要图片后缀 如果path不填 则传回为 webp 格式的 base64
+         * 获取截屏 最小化的窗口无法截取 path填写的是Extra文件夹下 需要图片后缀 如果path不填 则传回为 webp 格式的 base64 ( 测试发现直接返回的 base64 会有颜色变谈问题 )
          */
         Capture: (path?: string) => Promise<string>
     }
