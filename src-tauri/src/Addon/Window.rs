@@ -1,4 +1,6 @@
+use base64::{engine::general_purpose, Engine};
 use tauri::command;
+use webp::Encoder;
 
 use super::Monitor::Monitor;
 
@@ -13,16 +15,23 @@ pub fn GetAllWindows() -> Vec<Window> {
 }
 
 #[command]
-pub fn CaptureWindow(id: u32, path: String) -> bool {
+pub fn CaptureWindow(id: u32, path: String) -> String {
     let windows = xcap::Window::all().unwrap();
     for w in windows.iter() {
         if w.id() == id && !w.is_minimized() {
             let buffer = w.capture_image().unwrap();
-            buffer.save(path).unwrap();
-            return true;
+            if path.as_str() != "" {
+                buffer.save(path).unwrap();
+                break;
+            } else {
+                let webp = Encoder::from_rgba(&buffer, w.width(), w.height());
+                let memory = webp.encode(100.0);
+                let target = general_purpose::STANDARD.encode(&*memory);
+                return format!("data:image/webp;base64,{}", target);
+            }
         }
     }
-    false
+    String::from("")
 }
 
 #[command]

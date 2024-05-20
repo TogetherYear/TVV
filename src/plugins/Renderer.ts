@@ -169,12 +169,16 @@ class Renderer extends EventSystem {
                 return {
                     ...window,
                     monitor: this.Monitor.TransformMonitor(window.monitor as Record<string, unknown>),
-                    Capture: async (path?: string) => {
-                        const time = Time.GetTime(null, true, '-', '-').replaceAll(' ', '_')
-                        if (await T.invoke("CaptureWindow", { id: window.id, path: await this.Resource.GetPathByName(path || `Images/Capture-${time}.webp`, false) })) {
-                            return await this.Resource.GetPathByName(path || `Images/Capture-${time}.webp`, true)
+                    Capture: async (path = '') => {
+                        if (path != '') {
+                            const target = await this.Resource.GetPathByName(path, false)
+                            await T.invoke("CaptureWindow", { id: window.id, path: target })
+                            return this.Resource.ConvertFileSrcToTauri(target)
                         }
-                        return Promise.resolve("")
+                        else {
+                            const result = await T.invoke("CaptureWindow", { id: window.id, path: '' })
+                            return result
+                        }
                     },
                 }
             }
@@ -316,12 +320,16 @@ class Renderer extends EventSystem {
             TransformMonitor: (monitor: Record<string, unknown>) => {
                 return {
                     ...monitor,
-                    Capture: async (path?: string) => {
-                        const time = Time.GetTime(null, true, '-', '-').replaceAll(' ', '_')
-                        if (await T.invoke("CaptureMonitor", { id: monitor.id, path: await this.Resource.GetPathByName(path || `Images/Capture-${time}.webp`, false) })) {
-                            return await this.Resource.GetPathByName(path || `Images/Capture-${time}.webp`, true)
+                    Capture: async (path = '') => {
+                        if (path != '') {
+                            const target = await this.Resource.GetPathByName(path, false)
+                            await T.invoke("CaptureMonitor", { id: monitor.id, path: target })
+                            return this.Resource.ConvertFileSrcToTauri(target)
                         }
-                        return Promise.resolve("")
+                        else {
+                            const result = await T.invoke("CaptureMonitor", { id: monitor.id, path: '' })
+                            return result
+                        }
                     }
                 }
             }
