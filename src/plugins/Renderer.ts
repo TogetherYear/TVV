@@ -169,16 +169,10 @@ class Renderer extends EventSystem {
                 return {
                     ...window,
                     monitor: this.Monitor.TransformMonitor(window.monitor as Record<string, unknown>),
-                    Capture: async (path = '') => {
-                        if (path != '') {
-                            const target = await this.Resource.GetPathByName(path, false)
-                            await T.invoke("CaptureWindow", { id: window.id, path: target })
-                            return this.Resource.ConvertFileSrcToTauri(target)
-                        }
-                        else {
-                            const result = await T.invoke("CaptureWindow", { id: window.id, path: '' })
-                            return result
-                        }
+                    Capture: async (path: string) => {
+                        const target = await this.Resource.GetPathByName(path, false)
+                        await T.invoke("CaptureWindow", { id: window.id, path: target })
+                        return this.Resource.ConvertFileSrcToTauri(target)
                     },
                 }
             }
@@ -320,16 +314,10 @@ class Renderer extends EventSystem {
             TransformMonitor: (monitor: Record<string, unknown>) => {
                 return {
                     ...monitor,
-                    Capture: async (path = '') => {
-                        if (path != '') {
-                            const target = await this.Resource.GetPathByName(path, false)
-                            await T.invoke("CaptureMonitor", { id: monitor.id, path: target })
-                            return this.Resource.ConvertFileSrcToTauri(target)
-                        }
-                        else {
-                            const result = await T.invoke("CaptureMonitor", { id: monitor.id, path: '' })
-                            return result
-                        }
+                    Capture: async (path: string) => {
+                        const target = await this.Resource.GetPathByName(path, false)
+                        await T.invoke("CaptureMonitor", { id: monitor.id, path: target })
+                        return this.Resource.ConvertFileSrcToTauri(target)
                     }
                 }
             }

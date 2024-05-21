@@ -1,6 +1,4 @@
-use base64::{engine::general_purpose, Engine};
 use tauri::command;
-use webp::Encoder;
 
 use super::Automatic::GetMousePosition;
 
@@ -37,23 +35,15 @@ pub fn GetPrimaryMonitor() -> Monitor {
 }
 
 #[command]
-pub fn CaptureMonitor(id: u32, path: String) -> String {
+pub fn CaptureMonitor(id: u32, path: String) {
     let monitors = xcap::Monitor::all().unwrap();
     for m in monitors.iter() {
         if m.id() == id {
             let buffer = m.capture_image().unwrap();
-            if path.as_str() != "" {
-                buffer.save(path).unwrap();
-                break;
-            } else {
-                let webp = Encoder::from_rgba(&buffer, m.width(), m.height());
-                let memory = webp.encode(100.0);
-                let target = general_purpose::STANDARD.encode(&*memory);
-                return format!("data:image/webp;base64,{}", target);
-            }
+            buffer.save(path).unwrap();
+            return;
         }
     }
-    String::from("")
 }
 
 #[derive(Clone, serde::Serialize)]

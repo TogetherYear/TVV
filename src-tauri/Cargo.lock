@@ -302,7 +302,6 @@ dependencies = [
  "tauri-plugin-store",
  "tauri-plugin-upload",
  "wallpaper",
- "webp",
  "window-shadows",
  "xcap",
 ]
@@ -2603,16 +2602,6 @@ dependencies = [
  "bitflags 2.4.2",
  "libc",
  "redox_syscall 0.4.1",
-]
-
-[[package]]
-name = "libwebp-sys"
-version = "0.9.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "829b6b604f31ed6d2bccbac841fe0788de93dbd87e4eb1ba2c4adfe8c012a838"
-dependencies = [
- "cc",
- "glob",
 ]
 
 [[package]]
@@ -5424,16 +5413,6 @@ dependencies = [
  "pkg-config",
  "soup2-sys",
  "system-deps 6.2.0",
-]
-
-[[package]]
-name = "webp"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f53152f51fb5af0c08484c33d16cca96175881d1f3dec068c23b31a158c2d99"
-dependencies = [
- "image 0.25.1",
- "libwebp-sys",
 ]
 
 [[package]]
