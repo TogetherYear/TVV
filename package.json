@@ -10,6 +10,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1.5.3",
     "leafer-ui": "^1.0.0-rc.21",
+    "live2d-render": "^0.0.4",
     "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
     "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",

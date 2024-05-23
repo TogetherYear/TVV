@@ -25,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
                 path: 'Suspend',
                 name: 'Suspend',
                 component: () => import('@/views/Tool/Children/Suspend/Suspend.vue'),
+            },
+            {
+                path: 'Live2D',
+                name: 'Live2D',
+                component: () => import('@/views/Tool/Children/Live2D/Live2D.vue'),
             }
         ]
     },

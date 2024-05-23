@@ -641,6 +641,29 @@ class Renderer extends EventSystem {
                     return null
                 }
             },
+            CreateLive2DWidget: async (modelJson = 'Example/tt.model3.json') => {
+                const id = `${(new Date()).getTime()}`
+                const widget = await this.App.CreateWidget(id, {
+                    decorations: false,
+                    width: 180,
+                    height: 360,
+                    center: false,
+                    transparent: true,
+                    visible: false,
+                    resizable: true,
+                    alwaysOnTop: true,
+                    skipTaskbar: true,
+                    maximizable: false,
+                    url: this.Tool.GetExtraUrl(`Tool/Live2D?modelJson=${modelJson}`)
+                })
+                widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
+                    this.toolFlag.suspend.widgets.set(id, widget)
+                })
+                widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
+                    this.toolFlag.suspend.widgets.delete(id)
+                })
+                return widget
+            },
             GetExtraUrl: (route: string) => {
                 return `${location.origin}/#/${route}`
             }

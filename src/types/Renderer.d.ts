@@ -488,6 +488,8 @@ declare namespace Renderer {
 
     export namespace Tool {
         export function CreateSuspendScreenshotWidget(): Promise<unknown>
+
+        export function CreateLive2DWidget(modelJson?: string): Promise<unknown>
     }
 
     export enum WallpaperMode {
