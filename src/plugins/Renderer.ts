@@ -650,7 +650,7 @@ class Renderer extends EventSystem {
                     center: false,
                     transparent: true,
                     visible: false,
-                    resizable: true,
+                    resizable: false,
                     alwaysOnTop: true,
                     skipTaskbar: true,
                     maximizable: false,
