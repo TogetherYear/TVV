@@ -7,8 +7,6 @@ class Live2D {
 
     }
 
-    private intoDrag = false
-
     public InitStates() {
         return {
 
