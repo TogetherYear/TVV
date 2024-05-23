@@ -112,7 +112,7 @@
                 "width": 1000,
                 "minWidth": 550,
                 "decorations": false,
-                "focus": true,
+                "focus": false,
                 "label": "Application",
                 "transparent": true,
                 "url": "/#/Application",
