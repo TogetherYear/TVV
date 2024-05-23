@@ -2,8 +2,13 @@
 import { Live2D } from './Live2D';
 
 const instance = new Live2D()
-instance.InitStates()
+
+const {
+
+} = instance.InitStates()
+
 instance.InitHooks()
+
 instance.Run()
 </script>
 
