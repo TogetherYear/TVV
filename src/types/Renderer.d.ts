@@ -486,12 +486,6 @@ declare namespace Renderer {
         }
     }
 
-    export namespace Tool {
-        export function CreateSuspendScreenshotWidget(): Promise<unknown>
-
-        export function CreateLive2DWidget(modelJson?: string): Promise<unknown>
-    }
-
     export enum WallpaperMode {
         Center = 0,
         Crop = 1,
@@ -602,7 +596,6 @@ declare namespace Renderer {
         WidgetDestroy = 'WidgetDestroy',
         WidgetEmpty = 'WidgetEmpty',
         FileDrop = 'FileDrop',
-        Suspend = 'Suspend',
         ThemeUpdate = 'ThemeUpdate',
     }
 

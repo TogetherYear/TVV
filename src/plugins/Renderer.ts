@@ -13,7 +13,6 @@ import * as T from "@tauri-apps/api/tauri";
 import * as U from 'tauri-plugin-upload-api'
 import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/libs/EventSystem";
-import { Time } from "@/libs/Time";
 
 class Renderer extends EventSystem {
     private constructor() { super() }
@@ -23,13 +22,6 @@ class Renderer extends EventSystem {
     public static get Instance() { return this.instance }
 
     private flashTimer: NodeJS.Timeout | null = null
-
-    private toolFlag = {
-        suspend: {
-            ing: false,
-            widgets: new Map<string, W.WebviewWindow>()
-        },
-    }
 
     public get App() {
         return {
@@ -606,67 +598,7 @@ class Renderer extends EventSystem {
             WidgetDestroy: 'WidgetDestroy',
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
-            Suspend: 'Suspend',
             ThemeUpdate: 'ThemeUpdate'
-        }
-    }
-
-    public get Tool() {
-        return {
-            CreateSuspendScreenshotWidget: async () => {
-                if (!this.toolFlag.suspend.ing) {
-                    this.toolFlag.suspend.ing = true
-                    const id = `${(new Date()).getTime()}`
-                    const widget = await this.App.CreateWidget(id, {
-                        decorations: false,
-                        width: 500,
-                        height: 500,
-                        center: true,
-                        transparent: true,
-                        visible: false,
-                        resizable: false,
-                        alwaysOnTop: true,
-                        skipTaskbar: true,
-                        url: this.Tool.GetExtraUrl('Tool/Suspend')
-                    })
-                    widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                        this.toolFlag.suspend.widgets.set(id, widget)
-                    })
-                    widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                        this.toolFlag.suspend.widgets.delete(id)
-                    })
-                    return widget
-                }
-                else {
-                    return null
-                }
-            },
-            CreateLive2DWidget: async (modelJson = 'Example/tt.model3.json') => {
-                const id = `${(new Date()).getTime()}`
-                const widget = await this.App.CreateWidget(id, {
-                    decorations: false,
-                    width: 180,
-                    height: 360,
-                    center: false,
-                    transparent: true,
-                    visible: false,
-                    resizable: false,
-                    alwaysOnTop: true,
-                    skipTaskbar: true,
-                    maximizable: false,
-                    url: this.Tool.GetExtraUrl(`Tool/Live2D?modelJson=${modelJson}`)
-                })
-                widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                    this.toolFlag.suspend.widgets.set(id, widget)
-                })
-                widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                    this.toolFlag.suspend.widgets.delete(id)
-                })
-                return widget
-            },
-            GetExtraUrl: (route: string) => {
-                return `${location.origin}/#/${route}`
-            }
         }
     }
 
@@ -689,7 +621,6 @@ class Renderer extends EventSystem {
         this.AddKey(this.RendererEvent.WidgetDestroy)
         this.AddKey(this.RendererEvent.WidgetEmpty)
         this.AddKey(this.RendererEvent.FileDrop)
-        this.AddKey(this.RendererEvent.Suspend)
         this.AddKey(this.RendererEvent.ThemeUpdate)
     }
 
@@ -707,10 +638,6 @@ class Renderer extends EventSystem {
             }
             else if (r.event == this.RendererEvent.WidgetEmpty) {
                 this.Emit(this.RendererEvent.WidgetEmpty, r)
-            }
-            else if (r.event == this.RendererEvent.Suspend) {
-                this.toolFlag.suspend.ing = false
-                this.Emit(this.RendererEvent.Suspend, r)
             }
             this.Emit(this.RendererEvent.Message, r)
         })
