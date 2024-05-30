@@ -1,5 +1,5 @@
 {
-  "name": "Application",
+  "name": "v3-ts-tauri",
   "version": "0.0.0",
   "scripts": {
     "tauri": "tauri",
