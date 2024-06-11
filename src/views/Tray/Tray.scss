@@ -1,4 +1,15 @@
 .Tray {
+    position: absolute;
+    width: 100%;
+    height: 300px;
+    left: 0;
+    top: 0;
+    background-color: #212121;
+    box-sizing: border-box;
+    border: 1px solid #333333;
+    border-radius: 5px;
+    overflow: hidden;
+
     .Content {
         position: absolute;
         width: 100%;
