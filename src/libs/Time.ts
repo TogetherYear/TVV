@@ -35,6 +35,15 @@ class Time {
     static GenerateRandomColor() {
         return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).substr(-6);
     }
+
+    static Sleep(time: number): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const timer = setTimeout(() => {
+                clearTimeout(timer)
+                resolve(true)
+            }, time);
+        })
+    }
 }
 
 export { Time }
