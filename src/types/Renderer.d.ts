@@ -264,11 +264,6 @@ declare namespace Renderer {
         export function CopyFile(path: string, newPath: string): Promise<void>
 
         /**
-         * 上传文件 不能用Tauri转换后的地址
-         */
-        export function Upload(url: string, path: string, progressHandler?: IT.ProgressHandler, headers?: Map<string, string>): Promise<void>
-
-        /**
          * 下载文件 不能用Tauri转换后的地址
          */
         export function Download(url: string, path: string, progressHandler?: IT.ProgressHandler, headers?: Map<string, string>): Promise<void>

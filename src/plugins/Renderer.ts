@@ -258,9 +258,6 @@ class Renderer extends EventSystem {
                     return F.copyFile(path, newPath)
                 }
             },
-            Upload: (url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>) => {
-                return U.upload(url, path, progressHandler, headers)
-            },
             Download: (url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>) => {
                 return U.download(url, path, progressHandler, headers)
             }
