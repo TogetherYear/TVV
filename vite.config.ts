@@ -20,7 +20,18 @@ export default defineConfig({
     build: {
         target: ['esnext'],
         minify: 'esbuild',
-        sourcemap: false
+        sourcemap: false,
+        emptyOutDir: true,
+        assetsDir: 'Source',
+        rollupOptions: {
+            output: {
+                manualChunks: (id: string) => {
+                    if (id.includes('node_modules')) {
+                        return 'vendor'
+                    }
+                }
+            }
+        }
     },
     base: './',
     envDir: './env',
