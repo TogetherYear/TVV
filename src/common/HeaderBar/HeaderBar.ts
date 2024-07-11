@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted } from 'vue'
-import { AActor } from '@/libs/AActor'
+import { AActor } from '@/Libs/AActor'
 import { App } from '@/App'
 
 class HeaderBar extends AActor {

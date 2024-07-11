@@ -1,4 +1,4 @@
-import { EventSystem } from "../libs/EventSystem"
+import { EventSystem } from "../Libs/EventSystem"
 import { useDialog, useMessage, useNotification } from "naive-ui"
 import { NotificationApiInjection } from "naive-ui/es/notification/src/NotificationProvider"
 import { DialogApiInjection } from "naive-ui/lib/dialog/src/DialogProvider"

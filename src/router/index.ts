@@ -14,17 +14,17 @@ const routes: Array<RouteRecordRaw> = [
     {
         path: '/Empty',
         name: 'Empty',
-        component: () => import('@/views/Empty/Empty.vue')
+        component: () => import('@/Views/Empty/Empty.vue')
     },
     {
         path: '/Application',
         name: 'Application',
-        component: () => import('@/views/Application/Application.vue')
+        component: () => import('@/Views/Application/Application.vue')
     },
     {
         path: '/Tray',
         name: 'Tray',
-        component: () => import('@/views/Tray/Tray.vue')
+        component: () => import('@/Views/Tray/Tray.vue')
     },
 ]
 

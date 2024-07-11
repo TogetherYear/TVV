@@ -1,4 +1,4 @@
-import { EventSystem } from "./libs/EventSystem"
+import { EventSystem } from "./Libs/EventSystem"
 import { onMounted, onUnmounted, ref } from "vue"
 
 class App extends EventSystem {

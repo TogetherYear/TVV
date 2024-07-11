@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { HeaderBar } from './HeaderBar'
-import minIcon from '@/assets/mc/min.png'
-import maxIcon from '@/assets/mc/max.png'
-import hideIcon from '@/assets/mc/hide.png'
+import minIcon from '@/Assets/MC/min.png'
+import maxIcon from '@/Assets/MC/max.png'
+import hideIcon from '@/Assets/MC/hide.png'
 import { App } from '@/App';
 
 const attribute = withDefaults(defineProps<{

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import PreloadVue from './preload/Preload.vue';
+import PreloadVue from './Preload/Preload.vue';
 import { zhCN, dateZhCN } from 'naive-ui'
-import { themeOverrides } from './naive/index'
+import { themeOverrides } from './Naive/index'
 import { App } from './App'
 
 const {

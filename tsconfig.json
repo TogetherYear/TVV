@@ -17,14 +17,14 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "Src/*"
       ]
     },
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
+    "Src/**/*.ts",
+    "Src/**/*.d.ts",
+    "Src/**/*.tsx",
+    "Src/**/*.vue"
   ]
 }

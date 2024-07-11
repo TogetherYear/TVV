@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted } from "vue"
-import { AActor } from "@/libs/AActor"
+import { AActor } from "@/Libs/AActor"
 
 class Application extends AActor {
     public constructor() { super() }

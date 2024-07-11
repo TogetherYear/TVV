@@ -1,4 +1,4 @@
-import { AActor } from "@/libs/AActor"
+import { AActor } from "@/Libs/AActor"
 import { onMounted, onUnmounted } from "vue"
 
 class Empty extends AActor {

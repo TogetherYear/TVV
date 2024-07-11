@@ -1,4 +1,4 @@
-import { EventSystem } from "@/libs/EventSystem"
+import { EventSystem } from "@/Libs/EventSystem"
 
 interface IObserver {
     dom: HTMLElement,

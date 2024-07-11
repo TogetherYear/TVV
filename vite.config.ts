@@ -14,7 +14,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': path.resolve('src')
+            '@': path.resolve('Src')
         }
     },
     build: {
@@ -27,14 +27,16 @@ export default defineConfig({
             output: {
                 manualChunks: (id: string) => {
                     if (id.includes('node_modules')) {
-                        return 'vendor'
+                        return 'Vendor'
                     }
                 }
             }
         }
     },
     base: './',
-    envDir: './env',
+    envDir: './Env',
+    root: path.join(__dirname, ''),
+    publicDir: 'Public',
     server: {
         port: 6768,
         strictPort: true,

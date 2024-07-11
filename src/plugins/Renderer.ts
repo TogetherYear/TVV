@@ -12,7 +12,7 @@ import * as St from 'tauri-plugin-store-api'
 import * as T from "@tauri-apps/api/tauri";
 import * as U from 'tauri-plugin-upload-api'
 import * as W from "@tauri-apps/api/window"
-import { EventSystem } from "@/libs/EventSystem";
+import { EventSystem } from "@/Libs/EventSystem";
 
 class Renderer extends EventSystem {
     private constructor() { super() }
