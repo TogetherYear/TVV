@@ -15,12 +15,6 @@ import * as W from "@tauri-apps/api/window"
 import { EventSystem } from "@/Libs/EventSystem";
 
 class Renderer extends EventSystem {
-    private constructor() { super() }
-
-    private static instance = new Renderer()
-
-    public static get Instance() { return this.instance }
-
     private flashTimer: NodeJS.Timeout | null = null
 
     public get App() {
@@ -717,4 +711,6 @@ class Renderer extends EventSystem {
     }
 }
 
-export { Renderer }
+const RendererInstance = new Renderer()
+
+export { RendererInstance as Renderer }

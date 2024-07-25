@@ -12,7 +12,7 @@ class HeaderBar extends AActor {
             await Renderer.Widget.Min()
         }
         else if (btn == 'Max') {
-            App.Instance.isMax.value = !App.Instance.isMax.value
+            App.isMax.value = !App.isMax.value
             await Renderer.Widget.Max()
         }
         else if (btn == 'Close') {

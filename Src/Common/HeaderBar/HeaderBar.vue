@@ -20,7 +20,7 @@ const instance = new HeaderBar()
 
 const {
     isMax,
-} = App.Instance.InitStates()
+} = App.InitStates()
 
 const {
 

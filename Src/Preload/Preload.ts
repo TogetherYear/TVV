@@ -5,12 +5,6 @@ import { DialogApiInjection } from "naive-ui/lib/dialog/src/DialogProvider"
 import { MessageApiInjection } from "naive-ui/lib/message/src/MessageProvider"
 
 class Preload extends EventSystem {
-    private constructor() { super() }
-
-    private static instance: Preload = new Preload()
-
-    public static get Instance() { return this.instance }
-
     private message: MessageApiInjection | null = null
 
     private dialog: DialogApiInjection | null = null
@@ -37,4 +31,6 @@ class Preload extends EventSystem {
     }
 }
 
-export { Preload }
+const PreloadInstance = new Preload()
+
+export { PreloadInstance as Preload }

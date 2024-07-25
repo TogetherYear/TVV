@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Preload } from './Preload';
 
-Preload.Instance.Run()
+Preload.Run()
 </script>
 
 <template>

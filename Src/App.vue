@@ -6,9 +6,9 @@ import { App } from './App'
 
 const {
 
-} = App.Instance.InitStates()
-App.Instance.InitHooks()
-App.Instance.Run()
+} = App.InitStates()
+App.InitHooks()
+App.Run()
 </script>
 
 <template>
