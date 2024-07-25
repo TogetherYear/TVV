@@ -5,29 +5,21 @@ import { DialogApiInjection } from "naive-ui/lib/dialog/src/DialogProvider"
 import { MessageApiInjection } from "naive-ui/lib/message/src/MessageProvider"
 
 class Preload extends EventSystem {
-    private message: MessageApiInjection | null = null
+    public message!: MessageApiInjection;
 
-    private dialog: DialogApiInjection | null = null
+    public dialog!: DialogApiInjection;
 
-    private notification: NotificationApiInjection | null = null
+    public notification!: NotificationApiInjection;
 
     public Run() {
         this.CreateNaive()
     }
 
     private CreateNaive() {
-        if (!window.Message) {
-            this.message = useMessage();
-            (window as any).Message = this.message
-        }
-        if (!window.Dialog) {
-            this.dialog = useDialog();
-            (window as any).Dialog = this.dialog
-        }
-        if (!window.Noti) {
-            this.notification = useNotification();
-            (window as any).Noti = this.notification
-        }
+        this.message = useMessage();
+        this.dialog = useDialog();
+        this.notification = useNotification();
+
     }
 }
 
