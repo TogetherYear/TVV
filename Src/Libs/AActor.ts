@@ -7,9 +7,9 @@ abstract class AActor extends EventSystem {
 
     public abstract InitHooks(): void
 
-    public abstract Run(...args: Array<unknown>): void
+    public abstract Run(): void
 
-    protected abstract Destroy(...args: Array<unknown>): void
+    protected abstract Destroy(): void
 }
 
 export { AActor }
