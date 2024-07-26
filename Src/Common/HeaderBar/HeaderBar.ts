@@ -1,54 +1,42 @@
-import { onMounted, onUnmounted } from 'vue'
-import { AActor } from '@/Libs/AActor'
-import { App } from '@/App'
+import { onMounted, onUnmounted } from 'vue';
+import { AActor } from '@/Libs/AActor';
+import { App } from '@/App';
 
 class HeaderBar extends AActor {
     public constructor() {
-        super()
+        super();
     }
 
     public async OnOptionClick(btn: string, type: string) {
         if (btn == 'Min') {
-            await Renderer.Widget.Min()
-        }
-        else if (btn == 'Max') {
-            App.isMax.value = !App.isMax.value
-            await Renderer.Widget.Max()
-        }
-        else if (btn == 'Close') {
+            await Renderer.Widget.Min();
+        } else if (btn == 'Max') {
+            App.isMax.value = !App.isMax.value;
+            await Renderer.Widget.Max();
+        } else if (btn == 'Close') {
             if (type == 'main') {
-                await Renderer.Widget.Hide()
+                await Renderer.Widget.Hide();
+            } else {
+                await Renderer.Widget.Close();
             }
-            else {
-                await Renderer.Widget.Close()
-            }
-
         }
     }
 
     public InitStates() {
-        return {
-
-        }
+        return {};
     }
 
-    public InitHooks() {
-
-    }
+    public InitHooks() {}
 
     public Run() {
-        onMounted(() => {
-
-        })
+        onMounted(() => {});
 
         onUnmounted(() => {
-            this.Destroy()
-        })
+            this.Destroy();
+        });
     }
 
-    protected Destroy() {
-
-    }
+    protected Destroy() {}
 }
 
-export { HeaderBar }
+export { HeaderBar };

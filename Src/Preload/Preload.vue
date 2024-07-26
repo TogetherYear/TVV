@@ -1,15 +1,13 @@
 <script lang="ts" setup>
 import { Preload } from './Preload';
 
-Preload.Run()
+Preload.Run();
 </script>
 
 <template>
-    <div class="Preload">
-
-    </div>
+    <div class="Preload"></div>
 </template>
 
 <style lang="scss" scoped>
-@import "./Preload.scss";
+@import './Preload.scss';
 </style>

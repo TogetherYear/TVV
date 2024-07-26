@@ -1,34 +1,28 @@
-import { EventSystem } from "./Libs/EventSystem"
-import { onMounted, onUnmounted, ref } from "vue"
+import { EventSystem } from './Libs/EventSystem';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 class App extends EventSystem {
-    public isMax = ref<boolean>(false)
+    public isMax = ref<boolean>(false);
 
     public InitStates() {
         return {
-            isMax: this.isMax,
-        }
+            isMax: this.isMax
+        };
     }
 
-    public InitHooks() {
-
-    }
+    public InitHooks() {}
 
     public Run() {
-        onMounted(() => {
-
-        })
+        onMounted(() => {});
 
         onUnmounted(() => {
-            this.Destroy()
-        })
+            this.Destroy();
+        });
     }
 
-    protected Destroy() {
-
-    }
+    protected Destroy() {}
 }
 
-const AppInstance = new App()
+const AppInstance = new App();
 
-export { AppInstance as App }
+export { AppInstance as App };

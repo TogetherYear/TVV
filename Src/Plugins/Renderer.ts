@@ -1,372 +1,368 @@
-import * as A from "tauri-plugin-autostart-api";
-import * as C from "@tauri-apps/api/clipboard"
-import * as D from "@tauri-apps/api/dialog"
-import * as E from "@tauri-apps/api/event"
-import * as F from "@tauri-apps/api/fs";
-import * as G from "@tauri-apps/api/globalShortcut"
-import * as M from 'tauri-plugin-fs-extra-api'
-import * as Pa from "@tauri-apps/api/path";
-import * as Pr from '@tauri-apps/api/process'
-import * as Sh from "@tauri-apps/api/shell"
-import * as St from 'tauri-plugin-store-api'
-import * as T from "@tauri-apps/api/tauri";
-import * as U from 'tauri-plugin-upload-api'
-import * as W from "@tauri-apps/api/window"
-import { EventSystem } from "@/Libs/EventSystem";
+import * as A from 'tauri-plugin-autostart-api';
+import * as C from '@tauri-apps/api/clipboard';
+import * as D from '@tauri-apps/api/dialog';
+import * as E from '@tauri-apps/api/event';
+import * as F from '@tauri-apps/api/fs';
+import * as G from '@tauri-apps/api/globalShortcut';
+import * as M from 'tauri-plugin-fs-extra-api';
+import * as Pa from '@tauri-apps/api/path';
+import * as Pr from '@tauri-apps/api/process';
+import * as Sh from '@tauri-apps/api/shell';
+import * as St from 'tauri-plugin-store-api';
+import * as T from '@tauri-apps/api/tauri';
+import * as U from 'tauri-plugin-upload-api';
+import * as W from '@tauri-apps/api/window';
+import { EventSystem } from '@/Libs/EventSystem';
 
 class Renderer extends EventSystem {
-    private flashTimer: NodeJS.Timeout | null = null
+    private flashTimer: NodeJS.Timeout | null = null;
 
     public get App() {
         return {
             IsAutostart: () => {
-                return A.isEnabled()
+                return A.isEnabled();
             },
             SetAutostart: async (b: boolean) => {
-                const current = await this.App.IsAutostart()
+                const current = await this.App.IsAutostart();
                 if (current && !b) {
-                    return A.disable()
-                }
-                else if (!current && b) {
-                    return A.enable()
+                    return A.disable();
+                } else if (!current && b) {
+                    return A.enable();
                 }
             },
             Close: () => {
-                return Pr.exit(0)
+                return Pr.exit(0);
             },
             Relaunch: () => {
-                return Pr.relaunch()
+                return Pr.relaunch();
             },
             Invoke: (cmd: string, args?: T.InvokeArgs) => {
-                return T.invoke(cmd, args)
+                return T.invoke(cmd, args);
             },
             GetAllWidgets: () => {
-                return W.getAll()
+                return W.getAll();
             },
             GetWidgetByLabel: (label: string) => {
-                const ws = this.App.GetAllWidgets()
-                return ws.find(w => w.label == label)
+                const ws = this.App.GetAllWidgets();
+                return ws.find((w) => w.label == label);
             },
             CreateWidget: async (label: string, options?: W.WindowOptions) => {
-                const exist = this.App.GetWidgetByLabel(label)
+                const exist = this.App.GetWidgetByLabel(label);
                 if (exist) {
-                    await exist.show()
-                    await exist.setFocus()
-                    return exist
-                }
-                else {
-                    const widget = new W.WebviewWindow(label, options)
+                    await exist.show();
+                    await exist.setFocus();
+                    return exist;
+                } else {
+                    const widget = new W.WebviewWindow(label, options);
                     widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, extra: { windowLabel: label } })
-                    })
+                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, extra: { windowLabel: label } });
+                    });
                     widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, extra: { windowLabel: label } })
-                    })
-                    return widget
+                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, extra: { windowLabel: label } });
+                    });
+                    return widget;
                 }
             }
-        }
+        };
     }
 
     public get Dialog() {
         return {
             Message: (message: string, options?: string | D.MessageDialogOptions) => {
-                return D.message(message, options)
+                return D.message(message, options);
             },
             Ask: (message: string, options?: string | D.ConfirmDialogOptions) => {
-                return D.ask(message, options)
+                return D.ask(message, options);
             },
             Confirm: (message: string, options?: string | D.ConfirmDialogOptions) => {
-                return D.confirm(message, options)
+                return D.confirm(message, options);
             }
-        }
+        };
     }
 
     public get Clipboard() {
         return {
             WriteText: (text: string) => {
-                return C.writeText(text)
+                return C.writeText(text);
             },
             ReadText: () => {
-                return C.readText()
-            },
-        }
+                return C.readText();
+            }
+        };
     }
 
     public get Widget() {
         return {
             Min: () => {
-                return W.appWindow.minimize()
+                return W.appWindow.minimize();
             },
             Max: async () => {
                 if (await W.appWindow.isFullscreen()) {
-                    await W.appWindow.setFullscreen(false)
-                    return W.appWindow.setResizable(true)
-                }
-                else {
-                    await W.appWindow.setFullscreen(true)
-                    return W.appWindow.setResizable(false)
+                    await W.appWindow.setFullscreen(false);
+                    return W.appWindow.setResizable(true);
+                } else {
+                    await W.appWindow.setFullscreen(true);
+                    return W.appWindow.setResizable(false);
                 }
             },
             Hide: () => {
-                return W.appWindow.hide()
+                return W.appWindow.hide();
             },
             Close: () => {
-                return W.appWindow.close()
+                return W.appWindow.close();
             },
             Show: async () => {
-                await W.appWindow.show()
-                return W.appWindow.setFocus()
+                await W.appWindow.show();
+                return W.appWindow.setFocus();
             },
             Center: () => {
-                return W.appWindow.center()
+                return W.appWindow.center();
             },
             SetAlwaysOnTop: (b: boolean) => {
-                return W.appWindow.setAlwaysOnTop(b)
+                return W.appWindow.setAlwaysOnTop(b);
             },
             SetSize: (w: number, h: number) => {
-                return W.appWindow.setSize(new W.LogicalSize(w, h))
+                return W.appWindow.setSize(new W.LogicalSize(w, h));
             },
             GetSize: () => {
-                return W.appWindow.innerSize()
+                return W.appWindow.innerSize();
             },
             SetPosition: (x: number, y: number) => {
-                return W.appWindow.setPosition(new W.LogicalPosition(x, y))
+                return W.appWindow.setPosition(new W.LogicalPosition(x, y));
             },
             GetPosition: () => {
-                return W.appWindow.innerPosition()
+                return W.appWindow.innerPosition();
             },
             SetShadow: (enable: boolean) => {
-                return T.invoke("SetShadow", { enable })
+                return T.invoke('SetShadow', { enable });
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
-                return W.appWindow.setIgnoreCursorEvents(ignore)
+                return W.appWindow.setIgnoreCursorEvents(ignore);
             },
             Listen: W.appWindow.listen.bind(W.appWindow)
-        }
+        };
     }
 
     public get Window() {
         return {
             GetAllWindows: async () => {
-                return (await T.invoke("GetAllWindows") as Array<Record<string, unknown>>).map(w => this.Window.TransformWindow(w))
+                return ((await T.invoke('GetAllWindows')) as Array<Record<string, unknown>>).map((w) => this.Window.TransformWindow(w));
             },
             TransformWindow: (window: Record<string, unknown>) => {
                 return {
                     ...window,
                     monitor: this.Monitor.TransformMonitor(window.monitor as Record<string, unknown>),
                     Capture: async (path: string) => {
-                        const target = await this.Resource.GetPathByName(path, false)
-                        await T.invoke("CaptureWindow", { id: window.id, path: target })
-                        return this.Resource.ConvertFileSrcToTauri(target)
-                    },
-                }
+                        const target = await this.Resource.GetPathByName(path, false);
+                        await T.invoke('CaptureWindow', { id: window.id, path: target });
+                        return this.Resource.ConvertFileSrcToTauri(target);
+                    }
+                };
             }
-        }
+        };
     }
 
     public get Resource() {
         return {
             GetPathByName: async (name: string, convert: boolean = true) => {
-                const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/')
-                const path = convert ? T.convertFileSrc(base) : base
-                return path
+                const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
+                const path = convert ? T.convertFileSrc(base) : base;
+                return path;
             },
             ConvertFileSrcToTauri: (path: string) => {
-                return T.convertFileSrc(path)
+                return T.convertFileSrc(path);
             },
             GetDesktopDir: () => {
-                return Pa.desktopDir()
+                return Pa.desktopDir();
             },
             GetSelectResources: async (options: Record<string, unknown> = {}) => {
                 return D.open({
                     title: (options.title as string) || undefined,
                     multiple: (options.multiple as boolean) || false,
-                    defaultPath: (options.defaultPath as string) || await Pa.resourceDir(),
+                    defaultPath: (options.defaultPath as string) || (await Pa.resourceDir()),
                     directory: (options.directory as boolean) || false,
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
-                })
+                });
             },
             GetSaveResources: async (options: Record<string, unknown>) => {
                 return D.save({
                     title: (options.title as string) || undefined,
-                    defaultPath: (options.defaultPath as string) || await Pa.resourceDir(),
+                    defaultPath: (options.defaultPath as string) || (await Pa.resourceDir()),
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
-                })
+                });
             },
             GetFileByNameFromLocalServer: (name: string) => {
-                return `http://localhost:8676/Static/${name}`
+                return `http://localhost:8676/Static/${name}`;
             },
             GetPathMetadata: (path: string) => {
-                return M.metadata(path)
+                return M.metadata(path);
             },
             ReadStringFromFile: (path: string) => {
-                return F.readTextFile(path)
+                return F.readTextFile(path);
             },
             WriteStringToFile: async (path: string, content: string) => {
-                const file = path.split('/').slice(-1)[0]
-                const dir = path.replace(file, '')
-                await this.Resource.CreateDir(dir)
-                return F.writeTextFile(path, content)
+                const file = path.split('/').slice(-1)[0];
+                const dir = path.replace(file, '');
+                await this.Resource.CreateDir(dir);
+                return F.writeTextFile(path, content);
             },
             ReadBinaryFromFile: (path: string) => {
-                return F.readBinaryFile(path)
+                return F.readBinaryFile(path);
             },
             WriteBinaryToFile: async (path: string, content: F.BinaryFileContents) => {
-                const file = path.split('/').slice(-1)[0]
-                const dir = path.replace(file, '')
-                await this.Resource.CreateDir(dir)
-                return F.writeBinaryFile(path, content)
+                const file = path.split('/').slice(-1)[0];
+                const dir = path.replace(file, '');
+                await this.Resource.CreateDir(dir);
+                return F.writeBinaryFile(path, content);
             },
             OpenPathDefault: (path: string) => {
-                return Sh.open(path)
+                return Sh.open(path);
             },
             IsPathExists: (path: string) => {
-                return F.exists(path)
+                return F.exists(path);
             },
             ReadDirFiles: (path: string) => {
-                return F.readDir(path)
+                return F.readDir(path);
             },
             CreateDir: async (path: string) => {
                 if (!(await this.Resource.IsPathExists(path))) {
-                    return F.createDir(path)
+                    return F.createDir(path);
                 }
             },
             RemoveDir: async (path: string) => {
                 if (await this.Resource.IsPathExists(path)) {
-                    return F.removeDir(path)
+                    return F.removeDir(path);
                 }
             },
             RemoveFile: async (path: string) => {
                 if (await this.Resource.IsPathExists(path)) {
-                    return F.removeFile(path)
+                    return F.removeFile(path);
                 }
             },
             Rename: async (path: string, newPath: string) => {
                 if (await this.Resource.IsPathExists(path)) {
-                    return F.renameFile(path, newPath)
+                    return F.renameFile(path, newPath);
                 }
             },
             CopyFile: async (path: string, newPath: string) => {
                 if (await this.Resource.IsPathExists(path)) {
-                    return F.copyFile(path, newPath)
+                    return F.copyFile(path, newPath);
                 }
             },
             Download: (url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>) => {
-                return U.download(url, path, progressHandler, headers)
+                return U.download(url, path, progressHandler, headers);
             }
-        }
+        };
     }
 
     public get GlobalShortcut() {
         return {
             UnregisterAll: () => {
-                return G.unregisterAll()
+                return G.unregisterAll();
             },
             IsRegistered: (shortcut: string) => {
-                return G.isRegistered(shortcut)
+                return G.isRegistered(shortcut);
             },
             Register: async (shortcut: string, handler: G.ShortcutHandler) => {
-                const current = await this.GlobalShortcut.IsRegistered(shortcut)
+                const current = await this.GlobalShortcut.IsRegistered(shortcut);
                 if (current) {
-                    return false
+                    return false;
                 }
-                await G.register(shortcut, handler)
-                return true
+                await G.register(shortcut, handler);
+                return true;
             },
             Unregister: (shortcut: string) => {
-                return G.unregister(shortcut)
-            },
-        }
+                return G.unregister(shortcut);
+            }
+        };
     }
 
     public get Monitor() {
         return {
             GetAllMonitors: async () => {
-                return (await T.invoke("GetAllMonitors") as Array<Record<string, unknown>>).map(m => this.Monitor.TransformMonitor(m))
+                return ((await T.invoke('GetAllMonitors')) as Array<Record<string, unknown>>).map((m) => this.Monitor.TransformMonitor(m));
             },
             GetMonitorFromPoint: async (x: number, y: number) => {
-                return this.Monitor.TransformMonitor(await T.invoke("GetMonitorFromPoint", { x, y }))
+                return this.Monitor.TransformMonitor(await T.invoke('GetMonitorFromPoint', { x, y }));
             },
             GetCurrentMouseMonitor: async () => {
-                return this.Monitor.TransformMonitor(await T.invoke("GetCurrentMouseMonitor"))
+                return this.Monitor.TransformMonitor(await T.invoke('GetCurrentMouseMonitor'));
             },
             GetPrimaryMonitor: async () => {
-                return this.Monitor.TransformMonitor(await T.invoke("GetPrimaryMonitor"))
+                return this.Monitor.TransformMonitor(await T.invoke('GetPrimaryMonitor'));
             },
             TransformMonitor: (monitor: Record<string, unknown>) => {
                 return {
                     ...monitor,
                     Capture: async (path: string) => {
-                        const target = await this.Resource.GetPathByName(path, false)
-                        await T.invoke("CaptureMonitor", { id: monitor.id, path: target })
-                        return this.Resource.ConvertFileSrcToTauri(target)
+                        const target = await this.Resource.GetPathByName(path, false);
+                        await T.invoke('CaptureMonitor', { id: monitor.id, path: target });
+                        return this.Resource.ConvertFileSrcToTauri(target);
                     }
-                }
+                };
             }
-        }
+        };
     }
 
     public get Wallpaper() {
         return {
             GetWallpaper: () => {
-                return T.invoke("GetWallpaper")
+                return T.invoke('GetWallpaper');
             },
             SetWallpaper: async (path: string, mode: number = 1) => {
-                if (await this.Resource.IsPathExists(path) && path.indexOf('.png') != -1) {
-                    await T.invoke("SetWallpaper", { path, mode })
-                    return Promise.resolve(true)
-                }
-                else {
-                    return Promise.resolve(false)
+                if ((await this.Resource.IsPathExists(path)) && path.indexOf('.png') != -1) {
+                    await T.invoke('SetWallpaper', { path, mode });
+                    return Promise.resolve(true);
+                } else {
+                    return Promise.resolve(false);
                 }
             }
-        }
+        };
     }
 
     public get Store() {
         return {
             Create: async (name: string) => {
-                const path = await this.Resource.GetPathByName(`Data/${name}.dat`, false)
-                const store = new St.Store(path)
+                const path = await this.Resource.GetPathByName(`Data/${name}.dat`, false);
+                const store = new St.Store(path);
                 if (await this.Resource.IsPathExists(path)) {
-                    await store.load()
+                    await store.load();
                 }
                 return {
                     instance: store,
                     Set: (key: string, value: unknown) => {
-                        return store.set(key, value)
+                        return store.set(key, value);
                     },
                     Get: (key: string) => {
-                        return store.get(key)
+                        return store.get(key);
                     },
                     Has: (key: string) => {
-                        return store.has(key)
+                        return store.has(key);
                     },
                     Delete: (key: string) => {
-                        return store.delete(key)
+                        return store.delete(key);
                     },
                     Keys: () => {
-                        return store.keys()
+                        return store.keys();
                     },
                     Values: () => {
-                        return store.values()
+                        return store.values();
                     },
                     Entries: () => {
-                        return store.entries()
+                        return store.entries();
                     },
                     Length: () => {
-                        return store.length()
+                        return store.length();
                     },
                     Clear: () => {
-                        return store.clear()
+                        return store.clear();
                     },
                     Save: () => {
-                        return store.save()
+                        return store.save();
                     }
-                }
-            },
-        }
+                };
+            }
+        };
     }
 
     public get Image() {
@@ -377,81 +373,80 @@ class Renderer extends EventSystem {
                     keepAspectRatio: options.keepAspectRatio == false ? false : true,
                     width: options.width || 0,
                     height: options.height || 0,
-                    filter: options.filter || this.ImageFilter.Nearest,
-                }
-                return T.invoke("ConvertImageFormat", { originPath, convertPath, options: o })
+                    filter: options.filter || this.ImageFilter.Nearest
+                };
+                return T.invoke('ConvertImageFormat', { originPath, convertPath, options: o });
             },
             SaveFileFromBase64: async (base64: string, path: string) => {
-                return T.invoke("SaveFileFromBase64", { base64, path })
+                return T.invoke('SaveFileFromBase64', { base64, path });
             }
-        }
+        };
     }
 
     public get Automatic() {
         return {
             GetMousePosition: () => {
-                return T.invoke("GetMousePosition")
+                return T.invoke('GetMousePosition');
             },
             SetMousePosition: (x: number, y: number) => {
-                return T.invoke("SetMousePosition", { x, y })
+                return T.invoke('SetMousePosition', { x, y });
             },
             SetButtonClick: (button: number) => {
-                return T.invoke("SetButtonClick", { button })
+                return T.invoke('SetButtonClick', { button });
             },
             SetButtonToggle: (button: number, down: boolean) => {
-                return T.invoke("SetButtonToggle", { button, down })
+                return T.invoke('SetButtonToggle', { button, down });
             },
             SetMouseScroll: (direction: number, clicks: number) => {
-                return T.invoke("SetMouseScroll", { direction, clicks })
+                return T.invoke('SetMouseScroll', { direction, clicks });
             },
             GetColorFromPosition: (x: number, y: number) => {
-                return T.invoke("GetColorFromPosition", { x, y })
+                return T.invoke('GetColorFromPosition', { x, y });
             },
             GetCurrentPositionColor: () => {
-                return T.invoke("GetCurrentPositionColor")
+                return T.invoke('GetCurrentPositionColor');
             },
             WriteText: async (content: string, paste: boolean = false) => {
-                await this.Clipboard.WriteText(content)
-                return T.invoke("WriteText", { content, paste })
+                await this.Clipboard.WriteText(content);
+                return T.invoke('WriteText', { content, paste });
             },
-            SetKeysToggle: (toggleKeys: Array<{ key: number, down: boolean }>) => {
-                return T.invoke("SetKeysToggle", { toggleKeys })
+            SetKeysToggle: (toggleKeys: Array<{ key: number; down: boolean }>) => {
+                return T.invoke('SetKeysToggle', { toggleKeys });
             },
             SetKeysClick: (keys: Array<number>) => {
-                return T.invoke("SetKeysClick", { keys })
+                return T.invoke('SetKeysClick', { keys });
             }
-        }
+        };
     }
 
     public get Tray() {
         return {
             SetTrayIcon: (icon: string) => {
-                return T.invoke("SetTrayIcon", { icon })
+                return T.invoke('SetTrayIcon', { icon });
             },
             SetTrayTooltip: (tooltip: string) => {
-                return T.invoke("SetTrayTooltip", { tooltip })
+                return T.invoke('SetTrayTooltip', { tooltip });
             },
             Flash: async (icon: string) => {
-                let show = true
-                const emptyIcon = await this.Resource.GetPathByName("Images/empty.ico", false)
+                let show = true;
+                const emptyIcon = await this.Resource.GetPathByName('Images/empty.ico', false);
                 this.flashTimer = setInterval(() => {
                     if (show) {
-                        T.invoke("SetTrayIcon", { icon: emptyIcon })
+                        T.invoke('SetTrayIcon', { icon: emptyIcon });
+                    } else {
+                        T.invoke('SetTrayIcon', { icon });
                     }
-                    else {
-                        T.invoke("SetTrayIcon", { icon })
-                    }
-                    show = !show
-                }, 700)
+                    show = !show;
+                }, 700);
             },
             StopFlash: (icon: string) => {
                 if (this.flashTimer) {
-                    clearInterval(this.flashTimer)
-                    this.flashTimer = null
+                    clearInterval(this.flashTimer);
+                    this.flashTimer = null;
                 }
-                return T.invoke("SetTrayIcon", { icon })
-            },
-        }
+                return T.invoke('SetTrayIcon', { icon });
+            }
+        };
     }
 
     public get Event() {
@@ -461,9 +456,9 @@ class Renderer extends EventSystem {
             Emit: E.emit,
             TauriEvent: {
                 ...E.TauriEvent,
-                TAURI: "tauri://tauri"
+                TAURI: 'tauri://tauri'
             }
-        }
+        };
     }
 
     public get KeyboardKey() {
@@ -521,8 +516,8 @@ class Renderer extends EventSystem {
             UpArrow: 50,
             DownArrow: 51,
             LeftArrow: 52,
-            RightArrow: 53,
-        }
+            RightArrow: 53
+        };
     }
 
     public get WallpaperMode() {
@@ -532,8 +527,8 @@ class Renderer extends EventSystem {
             Fit: 2,
             Span: 3,
             Stretch: 4,
-            Tile: 5,
-        }
+            Tile: 5
+        };
     }
 
     public get MouseButton() {
@@ -541,7 +536,7 @@ class Renderer extends EventSystem {
             Left: 0,
             Middle: 1,
             Right: 2
-        }
+        };
     }
 
     public get ImageFormat() {
@@ -560,8 +555,8 @@ class Renderer extends EventSystem {
             OpenExr: 11,
             Farbfeld: 12,
             Avif: 13,
-            Qoi: 14,
-        }
+            Qoi: 14
+        };
     }
 
     public get ImageFilter() {
@@ -570,15 +565,15 @@ class Renderer extends EventSystem {
             Triangle: 1,
             CatmullRom: 2,
             Gaussian: 3,
-            Lanczos3: 4,
-        }
+            Lanczos3: 4
+        };
     }
 
     public get ScrollDirection() {
         return {
             Down: 0,
-            Up: 1,
-        }
+            Up: 1
+        };
     }
 
     public get RendererEvent() {
@@ -590,91 +585,89 @@ class Renderer extends EventSystem {
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
             ThemeUpdate: 'ThemeUpdate'
-        }
+        };
     }
 
     public async Run() {
         if (!window.Renderer) {
             //@ts-ignore
-            window.Renderer = this
+            window.Renderer = this;
         }
-        this.CreateEvents()
-        this.ListenEvents()
-        await this.Limit()
-        await this.Process()
-        await this.State()
+        this.CreateEvents();
+        this.ListenEvents();
+        await this.Limit();
+        await this.Process();
+        await this.State();
     }
 
     private CreateEvents() {
-        this.AddKey(this.RendererEvent.Message)
-        this.AddKey(this.RendererEvent.SecondInstance)
-        this.AddKey(this.RendererEvent.WidgetCreate)
-        this.AddKey(this.RendererEvent.WidgetDestroy)
-        this.AddKey(this.RendererEvent.WidgetEmpty)
-        this.AddKey(this.RendererEvent.FileDrop)
-        this.AddKey(this.RendererEvent.ThemeUpdate)
+        this.AddKey(this.RendererEvent.Message);
+        this.AddKey(this.RendererEvent.SecondInstance);
+        this.AddKey(this.RendererEvent.WidgetCreate);
+        this.AddKey(this.RendererEvent.WidgetDestroy);
+        this.AddKey(this.RendererEvent.WidgetEmpty);
+        this.AddKey(this.RendererEvent.FileDrop);
+        this.AddKey(this.RendererEvent.ThemeUpdate);
     }
 
     private ListenEvents() {
         this.Event.Listen<Record<string, unknown>>(this.Event.TauriEvent.TAURI, (e) => {
-            const r = e.payload
+            const r = e.payload;
             if (r.event == this.RendererEvent.SecondInstance) {
-                this.Emit(this.RendererEvent.SecondInstance, r)
+                this.Emit(this.RendererEvent.SecondInstance, r);
+            } else if (r.event == this.RendererEvent.WidgetCreate) {
+                this.Emit(this.RendererEvent.WidgetCreate, r);
+            } else if (r.event == this.RendererEvent.WidgetDestroy) {
+                this.Emit(this.RendererEvent.WidgetDestroy, r);
+            } else if (r.event == this.RendererEvent.WidgetEmpty) {
+                this.Emit(this.RendererEvent.WidgetEmpty, r);
             }
-            else if (r.event == this.RendererEvent.WidgetCreate) {
-                this.Emit(this.RendererEvent.WidgetCreate, r)
-            }
-            else if (r.event == this.RendererEvent.WidgetDestroy) {
-                this.Emit(this.RendererEvent.WidgetDestroy, r)
-            }
-            else if (r.event == this.RendererEvent.WidgetEmpty) {
-                this.Emit(this.RendererEvent.WidgetEmpty, r)
-            }
-            this.Emit(this.RendererEvent.Message, r)
-        })
+            this.Emit(this.RendererEvent.Message, r);
+        });
         this.Event.Listen<Array<string>>(this.Event.TauriEvent.WINDOW_FILE_DROP, async (e) => {
             this.Emit(this.RendererEvent.FileDrop, {
                 event: this.RendererEvent.FileDrop,
                 extra: {
-                    files: await Promise.all(e.payload.map(async (c) => {
-                        return {
-                            ...await this.Resource.GetPathMetadata(c),
-                            path: c
-                        }
-                    }))
+                    files: await Promise.all(
+                        e.payload.map(async (c) => {
+                            return {
+                                ...(await this.Resource.GetPathMetadata(c)),
+                                path: c
+                            };
+                        })
+                    )
                 }
-            })
-        })
+            });
+        });
         this.Event.Listen<string>(this.Event.TauriEvent.WINDOW_THEME_CHANGED, (e) => {
             this.Emit(this.RendererEvent.ThemeUpdate, {
                 event: this.RendererEvent.ThemeUpdate,
                 extra: {
                     current: e.payload
                 }
-            })
-        })
+            });
+        });
     }
 
     private async Limit() {
-        const path = await this.Resource.GetPathByName(`Configs/${import.meta.env.PROD ? 'Production' : 'Development'}.json`, false)
-        const json = JSON.parse(await this.Resource.ReadStringFromFile(path))
+        const path = await this.Resource.GetPathByName(`Configs/${import.meta.env.PROD ? 'Production' : 'Development'}.json`, false);
+        const json = JSON.parse(await this.Resource.ReadStringFromFile(path));
         if (!json.debug) {
             window.addEventListener('contextmenu', (e) => {
-                e.preventDefault()
-            })
+                e.preventDefault();
+            });
         }
-
     }
 
     private async Process() {
-        const dir = this.GetHrefDir()
-        const p = await this.Resource.GetPathByName(`Scripts/${dir}`, false)
+        const dir = this.GetHrefDir();
+        const p = await this.Resource.GetPathByName(`Scripts/${dir}`, false);
         if (await this.Resource.IsPathExists(p)) {
-            const files = await this.Resource.ReadDirFiles(p)
+            const files = await this.Resource.ReadDirFiles(p);
             for (let f of files) {
                 if (f.name?.indexOf('.js') != -1) {
-                    let script = document.createElement("script");
-                    script.type = "module";
+                    let script = document.createElement('script');
+                    script.type = 'module';
                     script.src = await this.Resource.GetPathByName(`Scripts/${dir}/${f.name}`);
                     document.body.appendChild(script);
                 }
@@ -683,34 +676,32 @@ class Renderer extends EventSystem {
     }
 
     private GetHrefDir() {
-        const href = location.href
-        if (href.indexOf("Application") != -1) {
-            return 'Application'
-        }
-        else if (href.indexOf("Tray") != -1) {
-            return 'Tray'
-        }
-        else {
-            return 'Application'
+        const href = location.href;
+        if (href.indexOf('Application') != -1) {
+            return 'Application';
+        } else if (href.indexOf('Tray') != -1) {
+            return 'Tray';
+        } else {
+            return 'Application';
         }
     }
 
     private async State() {
-        if (W.appWindow.label == "Application") {
+        if (W.appWindow.label == 'Application') {
             W.appWindow.onCloseRequested((e) => {
-                W.appWindow.hide()
-                e.preventDefault()
-            })
-            await this.Widget.SetSize(parseInt(localStorage.getItem("width") || '1000'), parseInt(localStorage.getItem("height") || '560'))
-            await this.Widget.Center()
+                W.appWindow.hide();
+                e.preventDefault();
+            });
+            await this.Widget.SetSize(parseInt(localStorage.getItem('width') || '1000'), parseInt(localStorage.getItem('height') || '560'));
+            await this.Widget.Center();
             W.appWindow.onResized(async (e) => {
-                localStorage.setItem("width", `${e.payload.width}`)
-                localStorage.setItem("height", `${e.payload.height}`)
-            })
+                localStorage.setItem('width', `${e.payload.width}`);
+                localStorage.setItem('height', `${e.payload.height}`);
+            });
         }
     }
 }
 
-const RendererInstance = new Renderer()
+const RendererInstance = new Renderer();
 
-export { RendererInstance as Renderer }
+export { RendererInstance as Renderer };

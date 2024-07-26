@@ -1,32 +1,31 @@
 <script lang="ts" setup>
-import { HeaderBar } from './HeaderBar'
-import minIcon from '@/Assets/MC/min.png'
-import maxIcon from '@/Assets/MC/max.png'
-import hideIcon from '@/Assets/MC/hide.png'
+import { HeaderBar } from './HeaderBar';
+import minIcon from '@/Assets/MC/min.png';
+import maxIcon from '@/Assets/MC/max.png';
+import hideIcon from '@/Assets/MC/hide.png';
 import { App } from '@/App';
 
-const attribute = withDefaults(defineProps<{
-    bgc?: string,
-    /**
-     * 窗口类型 
-     */
-    type?: 'main' | 'tool',
-}>(), {
-    bgc: '#212121',
-    type: 'tool'
-})
+const attribute = withDefaults(
+    defineProps<{
+        bgc?: string;
+        /**
+         * 窗口类型
+         */
+        type?: 'main' | 'tool';
+    }>(),
+    {
+        bgc: '#212121',
+        type: 'tool'
+    }
+);
 
-const instance = new HeaderBar()
+const instance = new HeaderBar();
 
-const {
-    isMax,
-} = App.InitStates()
+const { isMax } = App.InitStates();
 
-const {
-
-} = instance.InitStates()
-instance.InitHooks()
-instance.Run()
+const {} = instance.InitStates();
+instance.InitHooks();
+instance.Run();
 </script>
 
 <template>
@@ -58,5 +57,5 @@ instance.Run()
 </template>
 
 <style lang="scss" scoped>
-@import "./HeaderBar.scss";
+@import './HeaderBar.scss';
 </style>

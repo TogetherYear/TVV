@@ -1,15 +1,13 @@
 <script lang="ts" setup>
-import { Empty } from './Empty'
+import { Empty } from './Empty';
 import HeaderBarVue from '@/Common/HeaderBar/HeaderBar.vue';
-const instance = new Empty()
+const instance = new Empty();
 
-const {
+const {} = instance.InitStates();
 
-} = instance.InitStates()
+instance.InitHooks();
 
-instance.InitHooks()
-
-instance.Run()
+instance.Run();
 </script>
 
 <template>
@@ -20,5 +18,5 @@ instance.Run()
 </template>
 
 <style lang="scss" scoped>
-@import "./Empty.scss"
+@import './Empty.scss';
 </style>

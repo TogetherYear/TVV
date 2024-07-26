@@ -1,19 +1,17 @@
 <script lang="ts" setup>
 import { provide } from 'vue';
-import { Tray } from './Tray'
-import closeIcon from '@/assets/mc/close.png'
+import { Tray } from './Tray';
+import closeIcon from '@/assets/mc/close.png';
 
-const instance = new Tray()
+const instance = new Tray();
 
-provide('instance', instance)
+provide('instance', instance);
 
-const {
+const {} = instance.InitStates();
 
-} = instance.InitStates()
+instance.InitHooks();
 
-instance.InitHooks()
-
-instance.Run()
+instance.Run();
 </script>
 
 <template>
@@ -23,7 +21,7 @@ instance.Run()
         </span>
         <span class="Close" @click="instance.OnClose()">
             <span class="Icon">
-                <img :src="closeIcon" alt="">
+                <img :src="closeIcon" alt="" />
             </span>
             <span class="Title">退出软件</span>
         </span>
@@ -31,5 +29,5 @@ instance.Run()
 </template>
 
 <style lang="scss" scoped>
-@import "./Tray.scss";
+@import './Tray.scss';
 </style>

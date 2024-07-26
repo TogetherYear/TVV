@@ -1,41 +1,34 @@
-import { AActor } from "@/Libs/AActor"
-import { onMounted, onUnmounted } from "vue"
+import { AActor } from '@/Libs/AActor';
+import { onMounted, onUnmounted } from 'vue';
 
 class Empty extends AActor {
     public constructor() {
-        super()
+        super();
     }
-
 
     public InitStates() {
-        return {
-
-        }
+        return {};
     }
 
-    public InitHooks() {
-
-    }
+    public InitHooks() {}
 
     public Run() {
         onMounted(async () => {
-            await Renderer.Widget.SetShadow(true)
-            await Renderer.Widget.Show()
-            await this.GenerateEvent()
-        })
+            await Renderer.Widget.SetShadow(true);
+            await Renderer.Widget.Show();
+            await this.GenerateEvent();
+        });
 
         onUnmounted(() => {
-            this.Destroy()
-        })
+            this.Destroy();
+        });
     }
 
-    protected Destroy() {
-
-    }
+    protected Destroy() {}
 
     private async GenerateEvent() {
-        await Renderer.Event.Emit(Renderer.Event.TauriEvent.TAURI, { event: Renderer.RendererEvent.WidgetEmpty, extra: {} })
+        await Renderer.Event.Emit(Renderer.Event.TauriEvent.TAURI, { event: Renderer.RendererEvent.WidgetEmpty, extra: {} });
     }
 }
 
-export { Empty }
+export { Empty };

@@ -1,15 +1,17 @@
-import { EventSystem } from "@/Libs/EventSystem";
+import { EventSystem } from '@/Libs/EventSystem';
 
 abstract class AActor extends EventSystem {
-    constructor() { super() }
+    constructor() {
+        super();
+    }
 
-    public abstract InitStates(): Record<string, unknown>
+    public abstract InitStates(): Record<string, unknown>;
 
-    public abstract InitHooks(): void
+    public abstract InitHooks(): void;
 
-    public abstract Run(): void
+    public abstract Run(): void;
 
-    protected abstract Destroy(): void
+    protected abstract Destroy(): void;
 }
 
-export { AActor }
+export { AActor };

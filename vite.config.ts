@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
-import path from 'path'
+import path from 'path';
 
 export default defineConfig({
     clearScreen: false,
@@ -10,7 +10,7 @@ export default defineConfig({
             script: {
                 defineModel: true
             }
-        }),
+        })
     ],
     resolve: {
         alias: {
@@ -27,7 +27,7 @@ export default defineConfig({
             output: {
                 manualChunks: (id: string) => {
                     if (id.includes('node_modules')) {
-                        return 'Vendor'
+                        return 'Vendor';
                     }
                 }
             }
@@ -39,6 +39,6 @@ export default defineConfig({
     publicDir: 'Public',
     server: {
         port: 6768,
-        strictPort: true,
+        strictPort: true
     }
-})
+});

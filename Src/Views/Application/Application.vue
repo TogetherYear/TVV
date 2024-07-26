@@ -3,17 +3,15 @@ import { provide } from 'vue';
 import { Application } from './Application';
 import HeaderBarVue from '@/Common/HeaderBar/HeaderBar.vue';
 
-const instance = new Application()
+const instance = new Application();
 
-provide('instance', instance)
+provide('instance', instance);
 
-const {
+const {} = instance.InitStates();
 
-} = instance.InitStates()
+instance.InitHooks();
 
-instance.InitHooks()
-
-instance.Run()
+instance.Run();
 </script>
 
 <template>
@@ -23,5 +21,5 @@ instance.Run()
 </template>
 
 <style lang="scss" scoped>
-@import "./Application.scss";
+@import './Application.scss';
 </style>

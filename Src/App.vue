@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import PreloadVue from './Preload/Preload.vue';
-import { zhCN, dateZhCN } from 'naive-ui'
-import { themeOverrides } from './Naive/index'
-import { App } from './App'
+import { zhCN, dateZhCN } from 'naive-ui';
+import { themeOverrides } from './Naive/index';
+import { App } from './App';
 
-const {
-
-} = App.InitStates()
-App.InitHooks()
-App.Run()
+const {} = App.InitStates();
+App.InitHooks();
+App.Run();
 </script>
 
 <template>
@@ -25,5 +23,5 @@ App.Run()
 </template>
 
 <style lang="scss">
-@import "./App.scss";
+@import './App.scss';
 </style>
