@@ -8,24 +8,36 @@ class EventSystem extends Object {
     /**
      * 长久监听
      */
-    private continue: Array<{ key: string; callbacks: Array<{ scope: Object; callback: Callback }> }> = [];
+    private continue: Array<{
+        key: string;
+        callbacks: Array<{ scope: Object; callback: Callback }>;
+    }> = [];
 
     /**
      * 临时监听
      */
-    private temporary: Array<{ key: string; callbacks: Array<{ scope: Object; callback: Callback }> }> = [];
+    private temporary: Array<{
+        key: string;
+        callbacks: Array<{ scope: Object; callback: Callback }>;
+    }> = [];
 
     /**
      * 返回长久事件集合
      */
-    public get C(): Array<{ key: string; callbacks: Array<{ scope: Object; callback: Callback }> }> {
+    public get C(): Array<{
+        key: string;
+        callbacks: Array<{ scope: Object; callback: Callback }>;
+    }> {
         return this.continue;
     }
 
     /**
      * 返回临时事件集合
      */
-    public get T(): Array<{ key: string; callbacks: Array<{ scope: Object; callback: Callback }> }> {
+    public get T(): Array<{
+        key: string;
+        callbacks: Array<{ scope: Object; callback: Callback }>;
+    }> {
         return this.temporary;
     }
 
@@ -92,8 +104,12 @@ class EventSystem extends Object {
         let cc = this.continue.find((ci) => ci.key === key);
         let tc = this.temporary.find((ti) => ti.key === key);
         if (cc && tc) {
-            cc.callbacks = cc.callbacks.filter((item) => item.callback !== callback && item.scope !== scope);
-            tc.callbacks = tc.callbacks.filter((item) => item.callback !== callback && item.scope !== scope);
+            cc.callbacks = cc.callbacks.filter(
+                (item) => item.callback !== callback && item.scope !== scope
+            );
+            tc.callbacks = tc.callbacks.filter(
+                (item) => item.callback !== callback && item.scope !== scope
+            );
         } else {
             console.error('事件不存在!');
         }

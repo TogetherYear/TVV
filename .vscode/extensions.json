@@ -1,3 +1,10 @@
 {
-    "recommendations": []
+    "recommendations": [
+        "esbenp.prettier-vscode",
+        "gruntfuggly.todo-tree",
+        "ms-vscode.vscode-typescript-next",
+        "together.tfisher",
+        "vue.volar",
+        "formulahendry.auto-rename-tag"
+    ]
 }

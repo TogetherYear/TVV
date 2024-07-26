@@ -55,10 +55,16 @@ class Renderer extends EventSystem {
                 } else {
                     const widget = new W.WebviewWindow(label, options);
                     widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetCreate, extra: { windowLabel: label } });
+                        E.emit(this.Event.TauriEvent.TAURI, {
+                            event: this.RendererEvent.WidgetCreate,
+                            extra: { windowLabel: label }
+                        });
                     });
                     widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, { event: this.RendererEvent.WidgetDestroy, extra: { windowLabel: label } });
+                        E.emit(this.Event.TauriEvent.TAURI, {
+                            event: this.RendererEvent.WidgetDestroy,
+                            extra: { windowLabel: label }
+                        });
                     });
                     return widget;
                 }
@@ -146,12 +152,16 @@ class Renderer extends EventSystem {
     public get Window() {
         return {
             GetAllWindows: async () => {
-                return ((await T.invoke('GetAllWindows')) as Array<Record<string, unknown>>).map((w) => this.Window.TransformWindow(w));
+                return ((await T.invoke('GetAllWindows')) as Array<Record<string, unknown>>).map(
+                    (w) => this.Window.TransformWindow(w)
+                );
             },
             TransformWindow: (window: Record<string, unknown>) => {
                 return {
                     ...window,
-                    monitor: this.Monitor.TransformMonitor(window.monitor as Record<string, unknown>),
+                    monitor: this.Monitor.TransformMonitor(
+                        window.monitor as Record<string, unknown>
+                    ),
                     Capture: async (path: string) => {
                         const target = await this.Resource.GetPathByName(path, false);
                         await T.invoke('CaptureWindow', { id: window.id, path: target });
@@ -165,7 +175,10 @@ class Renderer extends EventSystem {
     public get Resource() {
         return {
             GetPathByName: async (name: string, convert: boolean = true) => {
-                const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
+                const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name))
+                    .replace('\\\\?\\', '')
+                    .replaceAll('\\', '/')
+                    .replaceAll('//', '/');
                 const path = convert ? T.convertFileSrc(base) : base;
                 return path;
             },
@@ -249,7 +262,12 @@ class Renderer extends EventSystem {
                     return F.copyFile(path, newPath);
                 }
             },
-            Download: (url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>) => {
+            Download: (
+                url: string,
+                path: string,
+                progressHandler?: (progress: number, total: number) => void,
+                headers?: Map<string, string>
+            ) => {
                 return U.download(url, path, progressHandler, headers);
             }
         };
@@ -280,10 +298,14 @@ class Renderer extends EventSystem {
     public get Monitor() {
         return {
             GetAllMonitors: async () => {
-                return ((await T.invoke('GetAllMonitors')) as Array<Record<string, unknown>>).map((m) => this.Monitor.TransformMonitor(m));
+                return ((await T.invoke('GetAllMonitors')) as Array<Record<string, unknown>>).map(
+                    (m) => this.Monitor.TransformMonitor(m)
+                );
             },
             GetMonitorFromPoint: async (x: number, y: number) => {
-                return this.Monitor.TransformMonitor(await T.invoke('GetMonitorFromPoint', { x, y }));
+                return this.Monitor.TransformMonitor(
+                    await T.invoke('GetMonitorFromPoint', { x, y })
+                );
             },
             GetCurrentMouseMonitor: async () => {
                 return this.Monitor.TransformMonitor(await T.invoke('GetCurrentMouseMonitor'));
@@ -367,7 +389,11 @@ class Renderer extends EventSystem {
 
     public get Image() {
         return {
-            ConvertImageFormat: (originPath: string, convertPath: String, options: Record<string, unknown> = {}) => {
+            ConvertImageFormat: (
+                originPath: string,
+                convertPath: String,
+                options: Record<string, unknown> = {}
+            ) => {
                 const o = {
                     format: options.format || this.ImageFormat.WebP,
                     keepAspectRatio: options.keepAspectRatio == false ? false : true,
@@ -650,7 +676,10 @@ class Renderer extends EventSystem {
     }
 
     private async Limit() {
-        const path = await this.Resource.GetPathByName(`Configs/${import.meta.env.PROD ? 'Production' : 'Development'}.json`, false);
+        const path = await this.Resource.GetPathByName(
+            `Configs/${import.meta.env.PROD ? 'Production' : 'Development'}.json`,
+            false
+        );
         const json = JSON.parse(await this.Resource.ReadStringFromFile(path));
         if (!json.debug) {
             window.addEventListener('contextmenu', (e) => {
@@ -692,7 +721,10 @@ class Renderer extends EventSystem {
                 W.appWindow.hide();
                 e.preventDefault();
             });
-            await this.Widget.SetSize(parseInt(localStorage.getItem('width') || '1000'), parseInt(localStorage.getItem('height') || '560'));
+            await this.Widget.SetSize(
+                parseInt(localStorage.getItem('width') || '1000'),
+                parseInt(localStorage.getItem('height') || '560')
+            );
             await this.Widget.Center();
             W.appWindow.onResized(async (e) => {
                 localStorage.setItem('width', `${e.payload.width}`);

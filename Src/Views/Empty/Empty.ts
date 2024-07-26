@@ -27,7 +27,10 @@ class Empty extends AActor {
     protected Destroy() {}
 
     private async GenerateEvent() {
-        await Renderer.Event.Emit(Renderer.Event.TauriEvent.TAURI, { event: Renderer.RendererEvent.WidgetEmpty, extra: {} });
+        await Renderer.Event.Emit(Renderer.Event.TauriEvent.TAURI, {
+            event: Renderer.RendererEvent.WidgetEmpty,
+            extra: {}
+        });
     }
 }
 

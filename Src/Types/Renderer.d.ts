@@ -41,7 +41,10 @@ declare namespace Renderer {
         /**
          * 创建新窗口 返回值是窗口类 如果窗口已存在则返回 并且聚焦 ( 自己翻阅文档 这里不在写类型说明 )
          */
-        export function CreateWidget(label: IT.WindowLabel, options?: IT.IWindowOptions): Promise<unknown>;
+        export function CreateWidget(
+            label: IT.WindowLabel,
+            options?: IT.IWindowOptions
+        ): Promise<unknown>;
     }
 
     /**
@@ -51,7 +54,10 @@ declare namespace Renderer {
         /**
          * 消息框
          */
-        export function Message(message: string, options?: IT.IMessageDialogOptions): Promise<boolean>;
+        export function Message(
+            message: string,
+            options?: IT.IMessageDialogOptions
+        ): Promise<boolean>;
 
         /**
          * 询问框
@@ -61,7 +67,10 @@ declare namespace Renderer {
         /**
          * 确认框
          */
-        export function Confirm(message: string, options?: IT.IConfirmDialogOptions): Promise<boolean>;
+        export function Confirm(
+            message: string,
+            options?: IT.IConfirmDialogOptions
+        ): Promise<boolean>;
     }
 
     /**
@@ -151,7 +160,10 @@ declare namespace Renderer {
         /**
          * 不要用 去用 AddListen
          */
-        export function Listen(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>;
+        export function Listen(
+            event: IT.EventName,
+            handler: IT.EventCallback
+        ): Promise<IT.UnlistenFn>;
     }
 
     /**
@@ -186,7 +198,9 @@ declare namespace Renderer {
         /**
          * 从文件资源管理器选择资源
          */
-        export function GetSelectResources(options?: IT.SelectOptions): Promise<Array<string> | string | null>;
+        export function GetSelectResources(
+            options?: IT.SelectOptions
+        ): Promise<Array<string> | string | null>;
 
         /**
          * 从文件资源管理器选择保存资源路径
@@ -221,7 +235,10 @@ declare namespace Renderer {
         /**
          * 将字节数组写入文件 不能用Tauri转换后的地址
          */
-        export function WriteBinaryToFile(path: string, content: IT.BinaryFileContents): Promise<void>;
+        export function WriteBinaryToFile(
+            path: string,
+            content: IT.BinaryFileContents
+        ): Promise<void>;
 
         /**
          * 使用系统默认应用程序打开路径 ( 如果是文件夹 则会在文件资源管理器打开 ) 不能用Tauri转换后的地址
@@ -266,7 +283,12 @@ declare namespace Renderer {
         /**
          * 下载文件 不能用Tauri转换后的地址
          */
-        export function Download(url: string, path: string, progressHandler?: IT.ProgressHandler, headers?: Map<string, string>): Promise<void>;
+        export function Download(
+            url: string,
+            path: string,
+            progressHandler?: IT.ProgressHandler,
+            headers?: Map<string, string>
+        ): Promise<void>;
     }
 
     /**
@@ -443,7 +465,11 @@ declare namespace Renderer {
         /**
          * 转换图片格式 不能用Tauri转换后的地址
          */
-        export function ConvertImageFormat(originPath: string, convertPath: string, options?: IT.ImageOptions): Promise<void>;
+        export function ConvertImageFormat(
+            originPath: string,
+            convertPath: string,
+            options?: IT.ImageOptions
+        ): Promise<void>;
 
         /**
          * 将 webp 格式的 base64图片保存为文件 webp 格式
@@ -455,9 +481,18 @@ declare namespace Renderer {
      * 不要用 去用 AddListen
      */
     export namespace Event {
-        export function Listen(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>;
-        export function Once(event: IT.EventName, handler: IT.EventCallback): Promise<IT.UnlistenFn>;
-        export function Emit(event: Renderer.Event.TauriEvent.TAURI, payload?: IT.IRendererSendMessage): Promise<void>;
+        export function Listen(
+            event: IT.EventName,
+            handler: IT.EventCallback
+        ): Promise<IT.UnlistenFn>;
+        export function Once(
+            event: IT.EventName,
+            handler: IT.EventCallback
+        ): Promise<IT.UnlistenFn>;
+        export function Emit(
+            event: Renderer.Event.TauriEvent.TAURI,
+            payload?: IT.IRendererSendMessage
+        ): Promise<void>;
         export enum TauriEvent {
             TAURI = 'tauri://tauri',
             WINDOW_RESIZED = 'tauri://resize',
@@ -597,12 +632,21 @@ declare namespace Renderer {
     /**
      * 监听事件
      */
-    export function AddListen(key: RendererEvent, scope: Object, callback: IT.RendererEventCallback, once?: boolean): void;
+    export function AddListen(
+        key: RendererEvent,
+        scope: Object,
+        callback: IT.RendererEventCallback,
+        once?: boolean
+    ): void;
 
     /**
      * 取消监听事件
      */
-    export function RemoveListen(key: RendererEvent, scope: Object, callback: IT.RendererEventCallback): void;
+    export function RemoveListen(
+        key: RendererEvent,
+        scope: Object,
+        callback: IT.RendererEventCallback
+    ): void;
 }
 
 declare namespace IT {

@@ -8,7 +8,19 @@ class Time {
         let minutes = time.getMinutes();
         let seconds = time.getSeconds();
         if (isForce) {
-            return year + l + this.FormatZero(month) + l + this.FormatZero(day) + ' ' + this.FormatZero(hours) + r + this.FormatZero(minutes) + r + this.FormatZero(seconds);
+            return (
+                year +
+                l +
+                this.FormatZero(month) +
+                l +
+                this.FormatZero(day) +
+                ' ' +
+                this.FormatZero(hours) +
+                r +
+                this.FormatZero(minutes) +
+                r +
+                this.FormatZero(seconds)
+            );
         } else {
             return year + l + this.FormatZero(month) + l + this.FormatZero(day);
         }
