@@ -15,7 +15,6 @@
     "vueIndentScriptAndStyle": false,
     "endOfLine": "lf",
     "semi": true,
-    "usePrettierrc": true,
     "embeddedLanguageFormatting": "auto",
     "overrides": [
         {
