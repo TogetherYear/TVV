@@ -15,18 +15,18 @@
         "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
         "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
         "tauri-plugin-upload-api": "github:tauri-apps/tauri-plugin-upload#v1",
-        "vue": "^3.4.15",
-        "vue-router": "^4.2.5"
+        "vue": "^3.4.34",
+        "vue-router": "^4.4.0"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1.5.9",
-        "@types/node": "^20.11.5",
-        "@vitejs/plugin-vue": "^4.6.2",
-        "naive-ui": "^2.37.3",
+        "@types/node": "^20.14.2",
+        "@vitejs/plugin-vue": "^5.1.0",
+        "naive-ui": "^2.39.0",
         "prettier": "^3.3.3",
-        "sass": "^1.70.0",
-        "typescript": "^5.3.3",
-        "vite": "^4.5.1",
-        "vue-tsc": "^1.8.27"
+        "sass": "^1.77.8",
+        "typescript": "^5.5.4",
+        "vite": "^5.3.5",
+        "vue-tsc": "^2.0.29"
     }
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { provide } from 'vue';
 import { Tray } from './Tray';
-import closeIcon from '@/assets/mc/close.png';
+import closeIcon from '@/Assets/MC/close.png';
 
 const instance = new Tray();
 
