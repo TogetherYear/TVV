@@ -104,12 +104,8 @@ class EventSystem extends Object {
         let cc = this.continue.find((ci) => ci.key === key);
         let tc = this.temporary.find((ti) => ti.key === key);
         if (cc && tc) {
-            cc.callbacks = cc.callbacks.filter(
-                (item) => item.callback !== callback && item.scope !== scope
-            );
-            tc.callbacks = tc.callbacks.filter(
-                (item) => item.callback !== callback && item.scope !== scope
-            );
+            cc.callbacks = cc.callbacks.filter((item) => item.callback !== callback && item.scope !== scope);
+            tc.callbacks = tc.callbacks.filter((item) => item.callback !== callback && item.scope !== scope);
         } else {
             console.error('事件不存在!');
         }
