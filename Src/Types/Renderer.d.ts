@@ -51,7 +51,7 @@ declare namespace Renderer {
         /**
          * 消息框
          */
-        export function Message(message: string, options?: IT.IMessageDialogOptions): Promise<boolean>;
+        export function Message(message: string, options?: IT.IMessageDialogOptions): Promise<void>;
 
         /**
          * 询问框
