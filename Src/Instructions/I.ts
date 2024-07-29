@@ -1,4 +1,4 @@
-namespace DR {
+namespace I {
     const debounceMap = new Map<string, NodeJS.Timeout>();
 
     const throttleMap = new Map<string, number>();
@@ -53,4 +53,4 @@ namespace DR {
         };
     }
 }
-export { DR };
+export { I };
