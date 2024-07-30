@@ -1,4 +1,4 @@
-namespace I {
+namespace TTool {
     const debounceMap = new Map<string, NodeJS.Timeout>();
 
     const throttleMap = new Map<string, number>();
@@ -53,4 +53,4 @@ namespace I {
         };
     }
 }
-export { I };
+export { TTool };
