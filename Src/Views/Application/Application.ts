@@ -1,6 +1,5 @@
 import { onMounted, onUnmounted } from 'vue';
 import { AActor } from '@/Libs/AActor';
-import { Preload } from '@/Preload/Preload';
 
 class Application extends AActor {
     public constructor() {
@@ -32,7 +31,6 @@ class Application extends AActor {
     }
 
     private async OnSecondInstance(e: IT.IRendererSendMessage) {
-        Preload.message.error('已关闭第二个实例');
         await Renderer.Widget.Show();
     }
 }
