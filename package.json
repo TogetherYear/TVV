@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@tauri-apps/api": "^1.5.3",
+        "element-plus": "^2.7.8",
         "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
         "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
         "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
@@ -25,6 +26,9 @@
         "prettier": "^3.3.3",
         "sass": "^1.77.8",
         "typescript": "^5.5.4",
+        "unplugin-auto-import": "^0.18.2",
+        "unplugin-element-plus": "^0.8.0",
+        "unplugin-vue-components": "^0.27.3",
         "vite": "^5.3.5",
         "vue-tsc": "^2.0.29"
     }
