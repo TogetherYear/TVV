@@ -1,5 +1,5 @@
 namespace TTool {
-    const debounceMap = new Map<string, NodeJS.Timeout>();
+    const debounceMap = new Map<string, number>();
 
     const throttleMap = new Map<string, number>();
 
