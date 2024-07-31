@@ -1,4 +1,4 @@
-import { EventSystem } from '@/Libs/EventSystem';
+import { EventSystem } from './EventSystem';
 
 abstract class AActor extends EventSystem {
     constructor() {

@@ -59,11 +59,9 @@ class Observer {
 }
 
 class FieldObserver extends EventSystem {
-    public Generate(options: IObserver) {
+    public static Generate(options: IObserver) {
         return new Observer(options);
     }
 }
 
-const FieldObserverInstance = new FieldObserver();
-
-export { FieldObserverInstance as FieldObserver };
+export { FieldObserver };
