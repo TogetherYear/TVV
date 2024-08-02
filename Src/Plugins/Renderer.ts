@@ -15,7 +15,7 @@ import * as W from '@tauri-apps/api/window';
 import { EventSystem } from '@/Libs/EventSystem';
 
 class Renderer extends EventSystem {
-    private flashTimer: NodeJS.Timeout | null = null;
+    private flashTimer = 0;
 
     public get App() {
         return {
@@ -448,7 +448,6 @@ class Renderer extends EventSystem {
             StopFlash: (icon: string) => {
                 if (this.flashTimer) {
                     clearInterval(this.flashTimer);
-                    this.flashTimer = null;
                 }
                 return T.invoke('SetTrayIcon', { icon });
             }
