@@ -37,7 +37,7 @@ class Observer {
         if (!this.isEnter) {
             this.isEnter = true;
             this.options.OnShow && this.options.OnShow();
-            if (this.options.once == undefined || this.options.once == true) {
+            if (this.options.once) {
                 this.Destroy();
             }
         }
