@@ -28,6 +28,9 @@ export default defineConfig(({ command, mode }) => {
                 '@': path.resolve('Src')
             }
         },
+        esbuild: {
+            drop: command === 'serve' ? [] : ['console', 'debugger']
+        },
         build: {
             target: ['esnext'],
             minify: 'esbuild',
