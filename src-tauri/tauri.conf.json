@@ -105,12 +105,10 @@
             {
                 "fullscreen": false,
                 "height": 560,
-                "minHeight": 280,
                 "resizable": true,
                 "center": true,
                 "title": "Application",
                 "width": 1000,
-                "minWidth": 550,
                 "decorations": false,
                 "focus": false,
                 "label": "Application",
