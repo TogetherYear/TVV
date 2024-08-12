@@ -697,11 +697,11 @@ class Renderer extends EventSystem {
                 W.appWindow.hide();
                 e.preventDefault();
             });
-            await this.Widget.SetSize(parseInt(localStorage.getItem('width') || '1000'), parseInt(localStorage.getItem('height') || '560'));
+            await this.Widget.SetSize(parseInt(localStorage.getItem('Application_Width') || '1000'), parseInt(localStorage.getItem('Application_Height') || '560'));
             await this.Widget.Center();
             W.appWindow.onResized(async (e) => {
-                localStorage.setItem('width', `${e.payload.width}`);
-                localStorage.setItem('height', `${e.payload.height}`);
+                localStorage.setItem('Application_Width', `${e.payload.width}`);
+                localStorage.setItem('Application_Height', `${e.payload.height}`);
             });
         }
     }
