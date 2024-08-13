@@ -4,8 +4,7 @@
     "scripts": {
         "tauri": "tauri",
         "dev": "vite",
-        "prettier:all": "prettier --write .",
-        "prettier": "prettier --write",
+        "prettier": "prettier --write .",
         "build": "vite build",
         "preview": "vite preview"
     },
