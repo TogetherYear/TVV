@@ -1,6 +1,7 @@
 {
     "name": "v3-ts-tauri",
     "version": "0.0.0",
+    "type": "module",
     "scripts": {
         "tauri": "tauri",
         "dev": "vite",
