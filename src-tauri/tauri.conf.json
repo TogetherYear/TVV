@@ -4,7 +4,7 @@
         "beforeBuildCommand": "npm run build",
         "beforeDevCommand": "npm run dev",
         "devPath": "http://localhost:6768",
-        "distDir": "../dist"
+        "distDir": "../Dist"
     },
     "package": {
         "productName": "Application",

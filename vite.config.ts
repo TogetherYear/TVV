@@ -37,6 +37,7 @@ export default defineConfig(({ command, mode }) => {
             sourcemap: false,
             emptyOutDir: true,
             assetsDir: 'Source',
+            outDir: path.join(__dirname, 'Dist'),
             rollupOptions: {
                 output: {
                     manualChunks: (id: string) => {

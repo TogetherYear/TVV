@@ -1,5 +1,5 @@
 src-tauri
-dist
+Dist
 Public
 auto-imports.d.ts
 components.d.ts
