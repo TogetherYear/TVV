@@ -1,7 +1,6 @@
 pub mod App;
 pub mod Serve;
 pub mod Setup;
-pub mod Singleton;
 pub mod Tray;
 pub mod Window;
 

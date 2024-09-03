@@ -19,6 +19,7 @@ tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspac
 window-shadows = "0.2.2"
 actix-files = "0.6.6"
 actix-web = "4.9.0"
+port_check = "0.2.1"
 
 [profile.release]
 panic = "abort"

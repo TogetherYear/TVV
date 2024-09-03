@@ -3,13 +3,15 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::{generate_context, Builder};
+use Extra::Serve::IsExistApp;
 
 mod Extra;
 
 mod Addon;
 
 fn main() {
-    Builder::default()
+    if !IsExistApp() {
+        Builder::default()
         .setup(Extra::Setup::Init)
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
@@ -22,4 +24,5 @@ fn main() {
         .build(generate_context!())
         .expect("error while building tauri application")
         .run(Extra::App::Run);
+    }
 }

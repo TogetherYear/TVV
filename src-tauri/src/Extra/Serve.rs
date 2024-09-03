@@ -1,7 +1,15 @@
 use actix_files as fs;
 use actix_web::{get, middleware, App as AApp, HttpResponse, HttpServer};
+use port_check::is_local_ipv4_port_free;
 use std::thread;
 use tauri::App;
+
+///后台服务端口
+pub const PORT:u16 = 34290;
+
+pub fn IsExistApp()->bool{
+    !is_local_ipv4_port_free(PORT)
+}
 
 pub fn CreateLocalServer(app: &mut App) {
     let path = format!(
@@ -38,7 +46,7 @@ async fn ActixServer(path: String) -> std::io::Result<()> {
             .service(fs::Files::new("/Static", path.as_str()))
             .service(Test)
     })
-    .bind(("127.0.0.1", 8676))
+    .bind(("127.0.0.1", PORT))
     .unwrap()
     .run()
     .await

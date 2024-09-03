@@ -182,7 +182,7 @@ class Renderer extends EventSystem {
                 });
             },
             GetFileByNameFromLocalServer: (name: string) => {
-                return `http://localhost:8676/Static/${name}`;
+                return `http://localhost:34290/Static/${name}`;
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
