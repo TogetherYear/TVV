@@ -429,8 +429,6 @@ declare namespace IT {
 
     export type EventCallback = (event: IEvent) => void;
 
-    export type ProgressHandler = (progress: number, total: number) => void;
-
     export type ShortcutHandler = (shortcut: string) => void;
 
     export type SelectOptions = {
