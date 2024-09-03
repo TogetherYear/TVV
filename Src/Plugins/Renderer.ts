@@ -4,13 +4,10 @@ import * as D from '@tauri-apps/api/dialog';
 import * as E from '@tauri-apps/api/event';
 import * as F from '@tauri-apps/api/fs';
 import * as G from '@tauri-apps/api/globalShortcut';
-import * as M from 'tauri-plugin-fs-extra-api';
 import * as Pa from '@tauri-apps/api/path';
 import * as Pr from '@tauri-apps/api/process';
 import * as Sh from '@tauri-apps/api/shell';
-import * as St from 'tauri-plugin-store-api';
 import * as T from '@tauri-apps/api/tauri';
-import * as U from 'tauri-plugin-upload-api';
 import * as W from '@tauri-apps/api/window';
 import { EventSystem } from '@/Libs/EventSystem';
 
@@ -22,12 +19,18 @@ class Renderer extends EventSystem {
             IsAutostart: () => {
                 return A.isEnabled();
             },
+            UpdateAutostartFlag: (flag: boolean) => {
+                return T.invoke('UpdateAutostartFlag', { flag });
+            },
             SetAutostart: async (b: boolean) => {
                 const current = await this.App.IsAutostart();
+                console.log(current);
                 if (current && !b) {
-                    return A.disable();
+                    await A.disable();
+                    return this.App.UpdateAutostartFlag(false);
                 } else if (!current && b) {
-                    return A.enable();
+                    await A.enable();
+                    return this.App.UpdateAutostartFlag(true);
                 }
             },
             Close: () => {
@@ -149,25 +152,6 @@ class Renderer extends EventSystem {
         };
     }
 
-    public get Window() {
-        return {
-            GetAllWindows: async () => {
-                return ((await T.invoke('GetAllWindows')) as Array<Record<string, unknown>>).map((w) => this.Window.TransformWindow(w));
-            },
-            TransformWindow: (window: Record<string, unknown>) => {
-                return {
-                    ...window,
-                    monitor: this.Monitor.TransformMonitor(window.monitor as Record<string, unknown>),
-                    Capture: async (path: string) => {
-                        const target = await this.Resource.GetPathByName(path, false);
-                        await T.invoke('CaptureWindow', { id: window.id, path: target });
-                        return this.Resource.ConvertFileSrcToTauri(target);
-                    }
-                };
-            }
-        };
-    }
-
     public get Resource() {
         return {
             GetPathByName: async (name: string, convert: boolean = true) => {
@@ -199,9 +183,6 @@ class Renderer extends EventSystem {
             },
             GetFileByNameFromLocalServer: (name: string) => {
                 return `http://localhost:8676/Static/${name}`;
-            },
-            GetPathMetadata: (path: string) => {
-                return M.metadata(path);
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
@@ -254,9 +235,6 @@ class Renderer extends EventSystem {
                 if (await this.Resource.IsPathExists(path)) {
                     return F.copyFile(path, newPath);
                 }
-            },
-            Download: (url: string, path: string, progressHandler?: (progress: number, total: number) => void, headers?: Map<string, string>) => {
-                return U.download(url, path, progressHandler, headers);
             }
         };
     }
@@ -279,148 +257,6 @@ class Renderer extends EventSystem {
             },
             Unregister: (shortcut: string) => {
                 return G.unregister(shortcut);
-            }
-        };
-    }
-
-    public get Monitor() {
-        return {
-            GetAllMonitors: async () => {
-                return ((await T.invoke('GetAllMonitors')) as Array<Record<string, unknown>>).map((m) => this.Monitor.TransformMonitor(m));
-            },
-            GetMonitorFromPoint: async (x: number, y: number) => {
-                return this.Monitor.TransformMonitor(await T.invoke('GetMonitorFromPoint', { x, y }));
-            },
-            GetCurrentMouseMonitor: async () => {
-                return this.Monitor.TransformMonitor(await T.invoke('GetCurrentMouseMonitor'));
-            },
-            GetPrimaryMonitor: async () => {
-                return this.Monitor.TransformMonitor(await T.invoke('GetPrimaryMonitor'));
-            },
-            TransformMonitor: (monitor: Record<string, unknown>) => {
-                return {
-                    ...monitor,
-                    Capture: async (path: string) => {
-                        const target = await this.Resource.GetPathByName(path, false);
-                        await T.invoke('CaptureMonitor', { id: monitor.id, path: target });
-                        return this.Resource.ConvertFileSrcToTauri(target);
-                    }
-                };
-            }
-        };
-    }
-
-    public get Wallpaper() {
-        return {
-            GetWallpaper: () => {
-                return T.invoke('GetWallpaper');
-            },
-            SetWallpaper: async (path: string, mode: number = 1) => {
-                if ((await this.Resource.IsPathExists(path)) && path.indexOf('.png') != -1) {
-                    await T.invoke('SetWallpaper', { path, mode });
-                    return Promise.resolve(true);
-                } else {
-                    return Promise.resolve(false);
-                }
-            }
-        };
-    }
-
-    public get Store() {
-        return {
-            Create: async (name: string) => {
-                const path = await this.Resource.GetPathByName(`Data/${name}.dat`, false);
-                const store = new St.Store(path);
-                if (await this.Resource.IsPathExists(path)) {
-                    await store.load();
-                }
-                return {
-                    instance: store,
-                    Set: (key: string, value: unknown) => {
-                        return store.set(key, value);
-                    },
-                    Get: (key: string) => {
-                        return store.get(key);
-                    },
-                    Has: (key: string) => {
-                        return store.has(key);
-                    },
-                    Delete: (key: string) => {
-                        return store.delete(key);
-                    },
-                    Keys: () => {
-                        return store.keys();
-                    },
-                    Values: () => {
-                        return store.values();
-                    },
-                    Entries: () => {
-                        return store.entries();
-                    },
-                    Length: () => {
-                        return store.length();
-                    },
-                    Clear: () => {
-                        return store.clear();
-                    },
-                    Save: () => {
-                        return store.save();
-                    }
-                };
-            }
-        };
-    }
-
-    public get Image() {
-        return {
-            ConvertImageFormat: (originPath: string, convertPath: String, options: Record<string, unknown> = {}) => {
-                const o = {
-                    format: options.format || this.ImageFormat.WebP,
-                    keepAspectRatio: options.keepAspectRatio == false ? false : true,
-                    width: options.width || 0,
-                    height: options.height || 0,
-                    filter: options.filter || this.ImageFilter.Nearest
-                };
-                return T.invoke('ConvertImageFormat', { originPath, convertPath, options: o });
-            },
-            SaveFileFromBase64: async (base64: string, path: string) => {
-                return T.invoke('SaveFileFromBase64', { base64, path });
-            }
-        };
-    }
-
-    public get Automatic() {
-        return {
-            GetMousePosition: () => {
-                return T.invoke('GetMousePosition');
-            },
-            SetMousePosition: (x: number, y: number) => {
-                return T.invoke('SetMousePosition', { x, y });
-            },
-            SetButtonClick: (button: number) => {
-                return T.invoke('SetButtonClick', { button });
-            },
-            SetButtonToggle: (button: number, down: boolean) => {
-                return T.invoke('SetButtonToggle', { button, down });
-            },
-            SetMouseScroll: (direction: number, clicks: number) => {
-                return T.invoke('SetMouseScroll', { direction, clicks });
-            },
-            GetColorFromPosition: (x: number, y: number) => {
-                return T.invoke('GetColorFromPosition', { x, y });
-            },
-            GetCurrentPositionColor: () => {
-                return T.invoke('GetCurrentPositionColor');
-            },
-            WriteText: async (content: string, paste: boolean = false) => {
-                await this.Clipboard.WriteText(content);
-                return T.invoke('WriteText', { content, paste });
-            },
-            SetKeysToggle: (toggleKeys: Array<{ key: number; down: boolean }>) => {
-                return T.invoke('SetKeysToggle', { toggleKeys });
-            },
-            SetKeysClick: (keys: Array<number>) => {
-                return T.invoke('SetKeysClick', { keys });
             }
         };
     }
@@ -466,130 +302,15 @@ class Renderer extends EventSystem {
         };
     }
 
-    public get KeyboardKey() {
-        return {
-            Num0: 0,
-            Num1: 1,
-            Num2: 2,
-            Num3: 3,
-            Num4: 4,
-            Num5: 5,
-            Num6: 6,
-            Num7: 7,
-            Num8: 8,
-            Num9: 9,
-            A: 10,
-            B: 11,
-            C: 12,
-            D: 13,
-            E: 14,
-            F: 15,
-            G: 16,
-            H: 17,
-            I: 18,
-            J: 19,
-            K: 20,
-            L: 21,
-            M: 22,
-            N: 23,
-            O: 24,
-            P: 25,
-            Q: 26,
-            R: 27,
-            S: 28,
-            T: 29,
-            U: 30,
-            V: 31,
-            W: 32,
-            X: 33,
-            Y: 34,
-            Z: 35,
-            Add: 36,
-            Subtract: 37,
-            Multiply: 38,
-            Divide: 39,
-            OEM2: 40,
-            Tab: 41,
-            CapsLock: 42,
-            Shift: 43,
-            Control: 44,
-            Alt: 45,
-            Space: 46,
-            Backspace: 47,
-            Return: 48,
-            Escape: 49,
-            UpArrow: 50,
-            DownArrow: 51,
-            LeftArrow: 52,
-            RightArrow: 53
-        };
-    }
-
-    public get WallpaperMode() {
-        return {
-            Center: 0,
-            Crop: 1,
-            Fit: 2,
-            Span: 3,
-            Stretch: 4,
-            Tile: 5
-        };
-    }
-
-    public get MouseButton() {
-        return {
-            Left: 0,
-            Middle: 1,
-            Right: 2
-        };
-    }
-
-    public get ImageFormat() {
-        return {
-            Png: 0,
-            Jpeg: 1,
-            Gif: 2,
-            WebP: 3,
-            Pnm: 4,
-            Tiff: 5,
-            Tga: 6,
-            Dds: 7,
-            Bmp: 8,
-            Ico: 9,
-            Hdr: 10,
-            OpenExr: 11,
-            Farbfeld: 12,
-            Avif: 13,
-            Qoi: 14
-        };
-    }
-
-    public get ImageFilter() {
-        return {
-            Nearest: 0,
-            Triangle: 1,
-            CatmullRom: 2,
-            Gaussian: 3,
-            Lanczos3: 4
-        };
-    }
-
-    public get ScrollDirection() {
-        return {
-            Down: 0,
-            Up: 1
-        };
-    }
-
     public get RendererEvent() {
         return {
             Message: 'Message',
-            SecondInstance: 'SecondInstance',
             WidgetCreate: 'WidgetCreate',
             WidgetDestroy: 'WidgetDestroy',
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
-            ThemeUpdate: 'ThemeUpdate'
+            ThemeUpdate: 'ThemeUpdate',
+            UpdateAutoStart: 'UpdateAutoStart'
         };
     }
 
@@ -607,25 +328,27 @@ class Renderer extends EventSystem {
 
     private CreateEvents() {
         this.AddKey(this.RendererEvent.Message);
-        this.AddKey(this.RendererEvent.SecondInstance);
         this.AddKey(this.RendererEvent.WidgetCreate);
         this.AddKey(this.RendererEvent.WidgetDestroy);
         this.AddKey(this.RendererEvent.WidgetEmpty);
         this.AddKey(this.RendererEvent.FileDrop);
         this.AddKey(this.RendererEvent.ThemeUpdate);
+        this.AddKey(this.RendererEvent.UpdateAutoStart);
     }
 
     private ListenEvents() {
-        this.Event.Listen<Record<string, unknown>>(this.Event.TauriEvent.TAURI, (e) => {
+        this.Event.Listen<Record<string, unknown>>(this.Event.TauriEvent.TAURI, async (e) => {
             const r = e.payload;
-            if (r.event == this.RendererEvent.SecondInstance) {
-                this.Emit(this.RendererEvent.SecondInstance, r);
-            } else if (r.event == this.RendererEvent.WidgetCreate) {
+            if (r.event == this.RendererEvent.WidgetCreate) {
                 this.Emit(this.RendererEvent.WidgetCreate, r);
             } else if (r.event == this.RendererEvent.WidgetDestroy) {
                 this.Emit(this.RendererEvent.WidgetDestroy, r);
             } else if (r.event == this.RendererEvent.WidgetEmpty) {
                 this.Emit(this.RendererEvent.WidgetEmpty, r);
+            } else if (r.event == this.RendererEvent.UpdateAutoStart) {
+                const isAutoStart = await this.App.IsAutostart();
+                this.App.SetAutostart(!isAutoStart);
+                this.Emit(this.RendererEvent.UpdateAutoStart, { event: this.RendererEvent.UpdateAutoStart, extra: { flag: !isAutoStart } });
             }
             this.Emit(this.RendererEvent.Message, r);
         });
@@ -633,14 +356,7 @@ class Renderer extends EventSystem {
             this.Emit(this.RendererEvent.FileDrop, {
                 event: this.RendererEvent.FileDrop,
                 extra: {
-                    files: await Promise.all(
-                        e.payload.map(async (c) => {
-                            return {
-                                ...(await this.Resource.GetPathMetadata(c)),
-                                path: c
-                            };
-                        })
-                    )
+                    files: e.payload
                 }
             });
         });
@@ -684,8 +400,6 @@ class Renderer extends EventSystem {
         const href = location.href;
         if (href.indexOf('Application') != -1) {
             return 'Application';
-        } else if (href.indexOf('Tray') != -1) {
-            return 'Tray';
         } else {
             return 'Application';
         }

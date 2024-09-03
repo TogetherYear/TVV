@@ -116,27 +116,6 @@
                 "url": "/#/Application",
                 "visible": false,
                 "maximizable": false
-            },
-            {
-                "fullscreen": false,
-                "height": 303,
-                "minHeight": 303,
-                "maxHeight": 303,
-                "resizable": false,
-                "center": false,
-                "title": "Tray",
-                "width": 260,
-                "minWidth": 260,
-                "maxWidth": 260,
-                "decorations": false,
-                "focus": false,
-                "label": "Tray",
-                "transparent": true,
-                "url": "/#/Tray",
-                "visible": false,
-                "alwaysOnTop": true,
-                "skipTaskbar": true,
-                "maximizable": false
             }
         ],
         "systemTray": {

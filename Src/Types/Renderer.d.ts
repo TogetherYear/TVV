@@ -9,6 +9,11 @@ declare namespace Renderer {
         export function IsAutostart(): Promise<boolean>;
 
         /**
+         * 更新托盘自动启动显示
+         */
+        export function UpdateAutostartFlag(flag: boolean): Promise<void>;
+
+        /**
          * 设置开机自启
          */
         export function SetAutostart(b: boolean): Promise<void>;
@@ -155,16 +160,6 @@ declare namespace Renderer {
     }
 
     /**
-     * 程序窗口
-     */
-    export namespace Window {
-        /**
-         * 获取电脑上所有运行的程序窗口
-         */
-        export function GetAllWindows(): Promise<Array<IT.Window>>;
-    }
-
-    /**
      * 资源
      */
     export namespace Resource {
@@ -197,11 +192,6 @@ declare namespace Renderer {
          * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( 使用本地文件服务器 )
          */
         export function GetFileByNameFromLocalServer(name: string): string;
-
-        /**
-         * 获取路径的元数据 不能用Tauri转换后的地址
-         */
-        export function GetPathMetadata(path: string): Promise<Record<string, unknown>>;
 
         /**
          * 从读取文件转换为字符串 不能用Tauri转换后的地址
@@ -262,11 +252,6 @@ declare namespace Renderer {
          * 复制文件 不能用Tauri转换后的地址
          */
         export function CopyFile(path: string, newPath: string): Promise<void>;
-
-        /**
-         * 下载文件 不能用Tauri转换后的地址
-         */
-        export function Download(url: string, path: string, progressHandler?: IT.ProgressHandler, headers?: Map<string, string>): Promise<void>;
     }
 
     /**
@@ -295,123 +280,6 @@ declare namespace Renderer {
     }
 
     /**
-     * 显示器
-     */
-    export namespace Monitor {
-        /**
-         * 获取所有显示器
-         */
-        export function GetAllMonitors(): Promise<Array<IT.Monitor>>;
-
-        /**
-         * 根据点获取显示器
-         */
-        export function GetMonitorFromPoint(x: number, y: number): Promise<IT.Monitor>;
-
-        /**
-         * 获取当前鼠标位置显示器
-         */
-        export function GetCurrentMouseMonitor(): Promise<IT.Monitor>;
-
-        /**
-         * 获取主显示器
-         */
-        export function GetPrimaryMonitor(): Promise<IT.Monitor>;
-    }
-
-    /**
-     * 壁纸
-     */
-    export namespace Wallpaper {
-        /**
-         * 获取桌面壁纸
-         */
-        export function GetWallpaper(): Promise<string>;
-
-        /**
-         * 设置桌面壁纸 ( 仅限 .png ) 不能用Tauri转换后的地址
-         */
-        export function SetWallpaper(path: string, mode?: Renderer.WallpaperMode): Promise<boolean>;
-    }
-
-    /**
-     * 持久化本地数据仓库
-     */
-    export namespace Store {
-        /**
-         * 创建持久化本地仓库或加载已存在的
-         */
-        export function Create(name: string): Promise<{
-            instance: unknown;
-            Set: (key: string, value: unknown) => Promise<void>;
-            Get: (key: string) => Promise<unknown>;
-            Has: (key: string) => Promise<boolean>;
-            Delete: (key: string) => Promise<boolean>;
-            Keys: () => Promise<Array<string>>;
-            Values: () => Promise<Array<unknown>>;
-            Entries: () => Promise<Array<[string, unknown]>>;
-            Length: () => Promise<number>;
-            Clear: () => Promise<void>;
-            Save: () => Promise<void>;
-        }>;
-    }
-
-    /**
-     * 自动化
-     */
-    export namespace Automatic {
-        /**
-         * 获取鼠标位置
-         */
-        export function GetMousePosition(): Promise<IT.Point>;
-
-        /**
-         * 设置鼠标位置
-         */
-        export function SetMousePosition(x: number, y: number): Promise<void>;
-
-        /**
-         * 点击鼠标
-         */
-        export function SetButtonClick(button: MouseButton): Promise<void>;
-
-        /**
-         * 设置鼠标状态
-         */
-        export function SetButtonToggle(button: MouseButton, down: boolean): Promise<void>;
-
-        /**
-         * 滑动滚轮
-         */
-        export function SetMouseScroll(direction: ScrollDirection, clicks: number): Promise<void>;
-
-        /**
-         * 获取坐标位置的颜色
-         */
-        export function GetColorFromPosition(x: number, y: number): Promise<IT.Color>;
-
-        /**
-         * 获取当前鼠标位置的颜色
-         */
-        export function GetCurrentPositionColor(): Promise<IT.Color>;
-
-        /**
-         * 写入本文 ( paste:是否用复制的方式写入 )
-         */
-        export function WriteText(content: string, paste?: boolean): Promise<void>;
-
-        /**
-         * 按顺序设置按键状态
-         */
-        export function SetKeysToggle(toggleKeys: Array<IT.IToggleKey>): Promise<void>;
-
-        /**
-         * 按顺序点击按键
-         */
-        export function SetKeysClick(keys: Array<KeyboardKey>): Promise<void>;
-    }
-
-    /**
      * 系统托盘
      */
     export namespace Tray {
@@ -434,21 +302,6 @@ declare namespace Renderer {
          * 托盘停止闪烁 不能用Tauri转换后的地址
          */
         export function StopFlash(icon: string): Promise<void>;
-    }
-
-    /**
-     * 图片
-     */
-    export namespace Image {
-        /**
-         * 转换图片格式 不能用Tauri转换后的地址
-         */
-        export function ConvertImageFormat(originPath: string, convertPath: string, options?: IT.ImageOptions): Promise<void>;
-
-        /**
-         * 将 webp 格式的 base64图片保存为文件 webp 格式
-         */
-        export function SaveFileFromBase64(base64: string, path: string): Promise<string>;
     }
 
     /**
@@ -481,117 +334,14 @@ declare namespace Renderer {
         }
     }
 
-    export enum WallpaperMode {
-        Center = 0,
-        Crop = 1,
-        Fit = 2,
-        Span = 3,
-        Stretch = 4,
-        Tile = 5
-    }
-
-    export enum ImageFormat {
-        Png = 0,
-        Jpeg = 1,
-        Gif = 2,
-        WebP = 3,
-        Pnm = 4,
-        Tiff = 5,
-        Tga = 6,
-        Dds = 7,
-        Bmp = 8,
-        Ico = 9,
-        Hdr = 10,
-        OpenExr = 11,
-        Farbfeld = 12,
-        Avif = 13,
-        Qoi = 14
-    }
-
-    export enum ImageFilter {
-        Nearest = 0,
-        Triangle = 1,
-        CatmullRom = 2,
-        Gaussian = 3,
-        Lanczos3 = 4
-    }
-
-    export enum KeyboardKey {
-        Num0 = 0,
-        Num1 = 1,
-        Num2 = 2,
-        Num3 = 3,
-        Num4 = 4,
-        Num5 = 5,
-        Num6 = 6,
-        Num7 = 7,
-        Num8 = 8,
-        Num9 = 9,
-        A = 10,
-        B = 11,
-        C = 12,
-        D = 13,
-        E = 14,
-        F = 15,
-        G = 16,
-        H = 17,
-        I = 18,
-        J = 19,
-        K = 20,
-        L = 21,
-        M = 22,
-        N = 23,
-        O = 24,
-        P = 25,
-        Q = 26,
-        R = 27,
-        S = 28,
-        T = 29,
-        U = 30,
-        V = 31,
-        W = 32,
-        X = 33,
-        Y = 34,
-        Z = 35,
-        Add = 36,
-        Subtract = 37,
-        Multiply = 38,
-        Divide = 39,
-        OEM2 = 40,
-        Tab = 41,
-        CapsLock = 42,
-        Shift = 43,
-        Control = 44,
-        Alt = 45,
-        Space = 46,
-        Backspace = 47,
-        Return = 48,
-        Escape = 49,
-        UpArrow = 50,
-        DownArrow = 51,
-        LeftArrow = 52,
-        RightArrow = 53
-    }
-
-    export enum MouseButton {
-        Left = 0,
-        Middle = 1,
-        Right = 2
-    }
-
-    export enum ScrollDirection {
-        Down = 0,
-        Up = 1
-    }
-
     export enum RendererEvent {
         Message = 'Message',
-        SecondInstance = 'SecondInstance',
         WidgetCreate = 'WidgetCreate',
         WidgetDestroy = 'WidgetDestroy',
         WidgetEmpty = 'WidgetEmpty',
         FileDrop = 'FileDrop',
-        ThemeUpdate = 'ThemeUpdate'
+        ThemeUpdate = 'ThemeUpdate',
+        UpdateAutoStart = 'UpdateAutoStart'
     }
 
     /**
@@ -703,63 +453,9 @@ declare namespace IT {
         }>;
     };
 
-    export type Color = {
-        r: number;
-        g: number;
-        b: number;
-        a: number;
-    };
-
     export type Point = {
         x: number;
         y: number;
-    };
-
-    export type Monitor = {
-        id: number;
-        name: String;
-        x: number;
-        y: number;
-        width: number;
-        height: number;
-        rotation: number;
-        scaleFactor: number;
-        frequency: number;
-        isPrimary: boolean;
-        /**
-         * 获取截屏 path填写的是Extra文件夹下 需要图片后缀
-         */
-        Capture: (path: string) => Promise<string>;
-    };
-
-    export interface IToggleKey {
-        key: Renderer.KeyboardKey;
-        down: boolean;
-    }
-
-    export type Window = {
-        id: number;
-        title: string;
-        appName: string;
-        x: number;
-        y: number;
-        width: number;
-        height: number;
-        isMinimized: boolean;
-        isMaximized: boolean;
-        monitor: Monitor;
-        /**
-         * 获取截屏 最小化的窗口无法截取 path填写的是Extra文件夹下 需要图片后缀
-         */
-        Capture: (path: string) => Promise<string>;
-    };
-
-    export type ImageOptions = {
-        format?: Renderer.ImageFormat;
-        keepAspectRatio?: boolean;
-        width?: number;
-        height?: number;
-        filter?: Renderer.ImageFilter;
     };
 
     export type EventName = `${Renderer.Event.TauriEvent}` | (string & Record<never, never>);

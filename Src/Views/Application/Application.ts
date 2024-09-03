@@ -15,7 +15,7 @@ class Application extends AActor {
 
     public Run() {
         onMounted(async () => {
-            this.ListenEvents();
+            Renderer.App.UpdateAutostartFlag(await Renderer.App.IsAutostart());
             await Renderer.Widget.SetShadow(true);
             await Renderer.Widget.Show();
         });
@@ -26,14 +26,6 @@ class Application extends AActor {
     }
 
     protected Destroy() {}
-
-    private ListenEvents() {
-        Renderer.AddListen(Renderer.RendererEvent.SecondInstance, this, this.OnSecondInstance);
-    }
-
-    private async OnSecondInstance(e: IT.IRendererSendMessage) {
-        await Renderer.Widget.Show();
-    }
 }
 
 export { Application };

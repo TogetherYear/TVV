@@ -13,9 +13,6 @@
         "@tauri-apps/api": "^1.5.3",
         "element-plus": "^2.7.8",
         "tauri-plugin-autostart-api": "github:tauri-apps/tauri-plugin-autostart#v1",
-        "tauri-plugin-fs-extra-api": "github:tauri-apps/tauri-plugin-fs-extra#v1",
-        "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
-        "tauri-plugin-upload-api": "github:tauri-apps/tauri-plugin-upload#v1",
         "vue": "^3.4.34",
         "vue-router": "^4.4.0"
     },

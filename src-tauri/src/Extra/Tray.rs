@@ -1,9 +1,14 @@
-use crate::Addon::Automatic::GetMousePosition;
-use image;
-use tauri::{command, AppHandle, Icon, Manager, PhysicalPosition, SystemTray, SystemTrayEvent};
+use serde_json::json;
+use tauri::{command, AppHandle, CustomMenuItem, Icon, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
+
+use super::TauriSendRendererPayload;
 
 pub fn Build() -> SystemTray {
     SystemTray::new().with_tooltip("去码头整点薯条")
+    .with_menu(SystemTrayMenu::new()
+    .add_item(CustomMenuItem::new("autostart", "开机自启"))
+    .add_native_item(tauri::SystemTrayMenuItem::Separator)
+    .add_item(CustomMenuItem::new("quit", "退出")))
 }
 
 pub fn OnEvent(app: &AppHandle, event: SystemTrayEvent) {
@@ -21,38 +26,38 @@ pub fn OnEvent(app: &AppHandle, event: SystemTrayEvent) {
             }
             window.set_focus().unwrap();
         }
-        SystemTrayEvent::RightClick {
-            position: _,
-            size: _,
-            ..
-        } => {
-            let window = app.get_window("Tray").unwrap();
-            let point = GetMousePosition();
-            let size = window.inner_size().unwrap();
-            window
-                .set_position(PhysicalPosition::new(
-                    (point.x as u32) - size.width + 2,
-                    (point.y as u32) - size.height + 2,
-                ))
-                .unwrap();
-            window.set_always_on_top(true).unwrap();
-            window.show().unwrap();
-            window.set_focus().unwrap();
-        }
+        SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+            "autostart" => app
+                .emit_to(
+                    "Application",
+                    "tauri://tauri",
+                    TauriSendRendererPayload {
+                        event: String::from("UpdateAutoStart"),
+                        extra: json!({}),
+                    },
+                )
+                .unwrap(),
+            "quit" => app.exit(0),
+            _ => {}
+        },
         _ => {}
     }
 }
 
 #[command]
-pub fn SetTrayIcon(icon: String, app_handle: tauri::AppHandle) {
-    let r = image::open(icon).unwrap();
+pub fn UpdateAutostartFlag(app_handle: tauri::AppHandle, flag: bool) {
     app_handle
         .tray_handle()
-        .set_icon(Icon::Rgba {
-            rgba: r.as_rgba8().unwrap().to_vec(),
-            width: r.width(),
-            height: r.height(),
-        })
+        .get_item("autostart")
+        .set_selected(flag)
+        .unwrap();
+}
+
+#[command]
+pub fn SetTrayIcon(icon: String, app_handle: tauri::AppHandle) {
+    app_handle
+        .tray_handle()
+        .set_icon(Icon::File(std::path::PathBuf::from(icon)))
         .unwrap();
 }
 
