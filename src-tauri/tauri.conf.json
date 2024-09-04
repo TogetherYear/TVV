@@ -115,7 +115,8 @@
                 "label": "Application",
                 "transparent": true,
                 "url": "/#/Application",
-                "visible": false
+                "visible": false,
+                "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --enable-features=SharedArrayBuffer"
             }
         ],
         "systemTray": {
