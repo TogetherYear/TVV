@@ -1,6 +1,5 @@
 import { onMounted, onUnmounted } from 'vue';
 import { AActor } from '@/Libs/AActor';
-import { ElMessage } from 'element-plus';
 
 class Application extends AActor {
     public constructor() {
@@ -17,7 +16,7 @@ class Application extends AActor {
         onMounted(async () => {
             Renderer.App.UpdateAutostartFlag(await Renderer.App.IsAutostart());
             await Renderer.Widget.SetShadow(true);
-            await Renderer.Widget.Show();
+            await Renderer.Widget.Focus();
         });
         onUnmounted(async () => {
             await Renderer.GlobalShortcut.UnregisterAll();

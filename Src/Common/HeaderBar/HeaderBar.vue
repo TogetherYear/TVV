@@ -21,8 +21,6 @@ const attribute = withDefaults(
 
 const instance = new HeaderBar();
 
-const { isMax } = App.InitStates();
-
 const {} = instance.InitStates();
 instance.InitHooks();
 instance.Run();
@@ -42,8 +40,7 @@ instance.Run();
                     <img :src="hideIcon" class="Icon" />
                 </span>
             </span>
-            <span class="Drag" data-tauri-drag-region v-show="!isMax"></span>
-            <span class="Drag" v-show="isMax"></span>
+            <span class="Drag" data-tauri-drag-region></span>
         </span>
         <span v-if="attribute.type == 'tool'">
             <span class="Btn">

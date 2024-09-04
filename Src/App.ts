@@ -2,12 +2,8 @@ import { EventSystem } from './Libs/EventSystem';
 import { onMounted, onUnmounted, ref } from 'vue';
 
 class App extends EventSystem {
-    public isMax = ref<boolean>(false);
-
     public InitStates() {
-        return {
-            isMax: this.isMax
-        };
+        return {};
     }
 
     public InitHooks() {}

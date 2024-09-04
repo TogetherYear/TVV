@@ -106,12 +106,10 @@ class Renderer extends EventSystem {
                 return W.appWindow.minimize();
             },
             Max: async () => {
-                if (await W.appWindow.isFullscreen()) {
-                    await W.appWindow.setFullscreen(false);
-                    return W.appWindow.setResizable(true);
+                if (await W.appWindow.isMaximized()) {
+                    return W.appWindow.unmaximize();
                 } else {
-                    await W.appWindow.setFullscreen(true);
-                    return W.appWindow.setResizable(false);
+                    return W.appWindow.maximize();
                 }
             },
             Hide: () => {
@@ -121,6 +119,9 @@ class Renderer extends EventSystem {
                 return W.appWindow.close();
             },
             Show: async () => {
+                return W.appWindow.show();
+            },
+            Focus: async () => {
                 await W.appWindow.show();
                 return W.appWindow.setFocus();
             },
@@ -144,6 +145,9 @@ class Renderer extends EventSystem {
             },
             SetShadow: (enable: boolean) => {
                 return T.invoke('SetShadow', { enable });
+            },
+            SetResizable: (b: boolean) => {
+                return W.appWindow.setResizable(b);
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
                 return W.appWindow.setIgnoreCursorEvents(ignore);

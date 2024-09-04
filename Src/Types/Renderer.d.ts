@@ -114,6 +114,11 @@ declare namespace Renderer {
         export function Show(): Promise<void>;
 
         /**
+         * 聚焦
+         */
+        export function Focus(): Promise<void>;
+
+        /**
          * 居中
          */
         export function Center(): Promise<void>;
@@ -142,6 +147,11 @@ declare namespace Renderer {
          * 获取窗口位置
          */
         export function GetPosition(): Promise<IT.Point>;
+
+        /**
+         * 设置窗口是否缩放
+         */
+        export function SetResizable(): Promise<void>;
 
         /**
          * 设置是否显示窗口阴影

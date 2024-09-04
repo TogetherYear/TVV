@@ -1,6 +1,5 @@
 import { onMounted, onUnmounted } from 'vue';
 import { AActor } from '@/Libs/AActor';
-import { App } from '@/App';
 
 class HeaderBar extends AActor {
     public constructor() {
@@ -11,7 +10,6 @@ class HeaderBar extends AActor {
         if (btn == 'Min') {
             await Renderer.Widget.Min();
         } else if (btn == 'Max') {
-            App.isMax.value = !App.isMax.value;
             await Renderer.Widget.Max();
         } else if (btn == 'Close') {
             if (type == 'main') {
