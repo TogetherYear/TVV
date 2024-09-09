@@ -9,9 +9,11 @@ import * as Pr from '@tauri-apps/api/process';
 import * as Sh from '@tauri-apps/api/shell';
 import * as T from '@tauri-apps/api/tauri';
 import * as W from '@tauri-apps/api/window';
-import { EventSystem } from '@/Libs/EventSystem';
+import { Manager } from '@/Libs/Manager';
+import { TEvent } from '@/Decorators/TEvent';
 
-class Renderer extends EventSystem {
+@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart'])
+class Renderer extends Manager {
     private flashTimer = 0;
 
     public get App() {
@@ -158,11 +160,17 @@ class Renderer extends EventSystem {
 
     public get Resource() {
         return {
+            /**
+             * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( convert 是否转换成 Webview 可使用的格式 默认 true)
+             */
             GetPathByName: async (name: string, convert: boolean = true) => {
                 const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
                 const path = convert ? T.convertFileSrc(base) : base;
                 return path;
             },
+            /**
+             * 将真实文件地址转换为 Webview 可使用的地址
+             */
             ConvertFileSrcToTauri: (path: string) => {
                 return T.convertFileSrc(path);
             },
@@ -319,25 +327,10 @@ class Renderer extends EventSystem {
     }
 
     public async Run() {
-        if (!window.Renderer) {
-            //@ts-ignore
-            window.Renderer = this;
-        }
-        this.CreateEvents();
         this.ListenEvents();
         await this.Limit();
         await this.Process();
         await this.State();
-    }
-
-    private CreateEvents() {
-        this.AddKey(this.RendererEvent.Message);
-        this.AddKey(this.RendererEvent.WidgetCreate);
-        this.AddKey(this.RendererEvent.WidgetDestroy);
-        this.AddKey(this.RendererEvent.WidgetEmpty);
-        this.AddKey(this.RendererEvent.FileDrop);
-        this.AddKey(this.RendererEvent.ThemeUpdate);
-        this.AddKey(this.RendererEvent.UpdateAutoStart);
     }
 
     private ListenEvents() {

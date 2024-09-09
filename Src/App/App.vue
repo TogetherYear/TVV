@@ -2,14 +2,11 @@
 import { App } from './App';
 
 const {} = App.InitStates();
-App.InitHooks();
 App.Run();
 </script>
 
 <template>
-    <el-config-provider>
-        <router-view />
-    </el-config-provider>
+    <router-view />
 </template>
 
 <style lang="scss">

@@ -3,7 +3,6 @@ import { HeaderBar } from './HeaderBar';
 import minIcon from '@/Assets/MC/min.png';
 import maxIcon from '@/Assets/MC/max.png';
 import hideIcon from '@/Assets/MC/hide.png';
-import { App } from '@/App';
 
 const attribute = withDefaults(
     defineProps<{
@@ -22,7 +21,7 @@ const attribute = withDefaults(
 const instance = new HeaderBar();
 
 const {} = instance.InitStates();
-instance.InitHooks();
+
 instance.Run();
 </script>
 

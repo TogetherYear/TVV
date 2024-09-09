@@ -1,7 +1,8 @@
 import { onMounted, onUnmounted } from 'vue';
-import { AActor } from '@/Libs/AActor';
+import { Component } from '@/Libs/Component';
+import { Renderer } from '@/Plugins/Renderer';
 
-class HeaderBar extends AActor {
+class HeaderBar extends Component {
     public constructor() {
         super();
     }
@@ -23,8 +24,6 @@ class HeaderBar extends AActor {
     public InitStates() {
         return {};
     }
-
-    public InitHooks() {}
 
     public Run() {
         onMounted(() => {});

@@ -1,7 +1,7 @@
-import { EventSystem } from './Libs/EventSystem';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { Manager } from '@/Libs/Manager';
+import { onMounted, onUnmounted } from 'vue';
 
-class App extends EventSystem {
+class App extends Manager {
     public InitStates() {
         return {};
     }

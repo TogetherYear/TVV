@@ -9,8 +9,6 @@ provide('instance', instance);
 
 const {} = instance.InitStates();
 
-instance.InitHooks();
-
 instance.Run();
 </script>
 
