@@ -15,6 +15,20 @@ class Entity extends EventSystem {
     public unique_Id = Time.GenerateRandomUid();
 
     /**
+     * 当前页面路由
+     */
+    public get Route() {
+        return TRouter.currentPath.value;
+    }
+
+    /**
+     * 当前页面参数
+     */
+    public get Query() {
+        return TRouter.currentQuery;
+    }
+
+    /**
      * 获取当前页面所有存活的 Component
      */
     public GetAllComponent() {

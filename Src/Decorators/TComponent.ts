@@ -1,6 +1,6 @@
 import { Component } from '@/Libs/Component';
 import { onMounted, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { TRouter } from './TRouter';
 
 namespace TComponent {
     export const ComponentMap = new Map<string, Array<Object>>();
@@ -15,18 +15,17 @@ namespace TComponent {
                 }
 
                 private TComponent_Generate_Hooks() {
-                    this.TManager_Generate_Page();
                     onMounted(() => {
-                        let currentMap = ComponentMap.get(this.tComponent_Generate_Route);
+                        let currentMap = ComponentMap.get(this.Route);
                         if (!currentMap) {
                             currentMap = [];
-                            ComponentMap.set(this.tComponent_Generate_Route, currentMap);
+                            ComponentMap.set(this.Route, currentMap);
                         }
                         currentMap.push(this);
                     });
 
                     onUnmounted(() => {
-                        let currentMap = ComponentMap.get(this.tComponent_Generate_Route);
+                        let currentMap = ComponentMap.get(TRouter.lastPath.value);
                         if (currentMap) {
                             const index = currentMap.findIndex((c) => c === this);
                             if (index !== -1) {
@@ -34,12 +33,6 @@ namespace TComponent {
                             }
                         }
                     });
-                }
-
-                private TManager_Generate_Page() {
-                    const route = useRoute();
-                    this.tComponent_Generate_Route = route.path;
-                    this.tComponent_Generate_Query = { ...route.query };
                 }
 
                 private Mount() {

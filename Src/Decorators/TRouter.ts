@@ -1,6 +1,6 @@
 import { Entity } from '@/Libs/Entity';
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
-import { RouteLocationNormalizedGeneric, RouteRecordNormalized, RouteRecordRaw } from 'vue-router';
+import { RouteLocationNormalizedGeneric, RouteRecordNormalized, RouteRecordRaw, useRoute } from 'vue-router';
 
 namespace TRouter {
     /**
@@ -107,25 +107,6 @@ namespace TRouter {
         }
     }
 
-    /**
-     * 显示路由模块
-     */
-    export function View(v: View) {
-        return function <T extends new (...args: Array<any>) => Object>(C: T) {
-            return class extends C {
-                constructor(...args: Array<any>) {
-                    super(...args);
-                    this.TRouter_View_Set();
-                }
-
-                private TRouter_View_Set() {
-                    activeView.module = v.module;
-                    activeView.duty = v.duty;
-                }
-            };
-        };
-    }
-
     //#endregion
 
     //#region 工具
@@ -139,6 +120,11 @@ namespace TRouter {
      * 当前路由
      */
     export const currentPath = ref<string>('');
+
+    /**
+     * 当前页面路由参数
+     */
+    export let currentQuery!: Record<string, unknown>;
 
     /**
      * 路由历史
@@ -158,6 +144,13 @@ namespace TRouter {
             routeHistory.value.splice(index, 1);
         }
         routeHistory.value.push({ path: to.path, query: { ...to.query } as Record<string, string> });
+        if (Object.keys(to.meta).length !== 0) {
+            const current = to.meta as TRouteMeta;
+            activeView.module = current.module;
+            activeView.duty = current.duty;
+        }
+        const route = useRoute();
+        currentQuery = { ...route.query };
     }
 
     /**

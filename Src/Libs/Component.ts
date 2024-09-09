@@ -24,16 +24,6 @@ class Component<T extends Component<T> | null = null> extends Entity {
     public get P() {
         return this.parent!;
     }
-
-    /**
-     * 当前页面路由
-     */
-    public tComponent_Generate_Route!: string;
-
-    /**
-     * 当前页面参数
-     */
-    public tComponent_Generate_Query!: Record<string, unknown>;
 }
 
 export { Component };
