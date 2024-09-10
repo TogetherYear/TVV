@@ -20,6 +20,14 @@ namespace TRouter {
         {
             path: '/Empty',
             name: 'Empty',
+            meta: {
+                module: TRouter.Module.None,
+                duty: TRouter.Duty.None,
+                menuName: '',
+                menuLabel: '',
+                menuIcon: '',
+                visibility: false
+            },
             component: () => import('@/Views/Empty/Empty.vue')
         },
         {
