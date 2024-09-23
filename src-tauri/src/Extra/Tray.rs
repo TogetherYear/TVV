@@ -1,14 +1,17 @@
 use serde_json::json;
-use tauri::{command, AppHandle, CustomMenuItem, Icon, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
+use tauri::{
+    command, AppHandle, CustomMenuItem, Icon, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,
+};
 
 use super::TauriSendRendererPayload;
 
 pub fn Build() -> SystemTray {
-    SystemTray::new().with_tooltip("去码头整点薯条")
-    .with_menu(SystemTrayMenu::new()
-    .add_item(CustomMenuItem::new("autostart", "开机自启"))
-    .add_native_item(tauri::SystemTrayMenuItem::Separator)
-    .add_item(CustomMenuItem::new("quit", "退出")))
+    SystemTray::new().with_tooltip("去码头整点薯条").with_menu(
+        SystemTrayMenu::new()
+            .add_item(CustomMenuItem::new("autostart", "开机自启"))
+            .add_native_item(tauri::SystemTrayMenuItem::Separator)
+            .add_item(CustomMenuItem::new("quit", "退出")),
+    )
 }
 
 pub fn OnEvent(app: &AppHandle, event: SystemTrayEvent) {

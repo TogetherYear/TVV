@@ -12,7 +12,7 @@ import * as W from '@tauri-apps/api/window';
 import { Manager } from '@/Libs/Manager';
 import { TEvent } from '@/Decorators/TEvent';
 
-@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart'])
+@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
 class Renderer extends Manager {
     private flashTimer = 0;
 
@@ -322,7 +322,8 @@ class Renderer extends Manager {
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
             ThemeUpdate: 'ThemeUpdate',
-            UpdateAutoStart: 'UpdateAutoStart'
+            UpdateAutoStart: 'UpdateAutoStart',
+            SecondInstance: 'SecondInstance'
         };
     }
 
@@ -346,6 +347,9 @@ class Renderer extends Manager {
                 const isAutoStart = await this.App.IsAutostart();
                 this.App.SetAutostart(!isAutoStart);
                 this.Emit(this.RendererEvent.UpdateAutoStart, { event: this.RendererEvent.UpdateAutoStart, extra: { flag: !isAutoStart } });
+            } else if (r.event == this.RendererEvent.SecondInstance) {
+                await this.Widget.Focus();
+                this.Emit(this.RendererEvent.SecondInstance, { event: this.RendererEvent.SecondInstance, extra: {} });
             }
             this.Emit(this.RendererEvent.Message, r);
         });

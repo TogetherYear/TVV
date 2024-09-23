@@ -1,17 +1,29 @@
 use actix_files as fs;
-use actix_web::{get, middleware, App as AApp, HttpResponse, HttpServer};
-use port_check::is_local_ipv4_port_free;
-use std::thread;
-use tauri::App;
+use actix_web::{get, middleware, web, App as AApp, HttpRequest, HttpResponse, HttpServer};
+use serde_json::json;
+use std::{sync::Mutex, thread};
+use tauri::{App, AppHandle, Manager};
+
+use crate::Extra::TauriSendRendererPayload;
 
 ///后台服务端口
-pub const PORT:u16 = 34290;
+pub const PORT: u16 = 34290;
 
-pub fn IsExistApp()->bool{
-    !is_local_ipv4_port_free(PORT)
+struct TauriAppState {
+    app: Mutex<AppHandle>,
 }
 
 pub fn CreateLocalServer(app: &mut App) {
+    let handle = app.handle();
+    let boxHandle = Box::new(handle);
+    thread::Builder::new()
+        .name(String::from("LocalServer"))
+        .spawn(move || ActixServer(*boxHandle))
+        .unwrap();
+}
+
+#[actix_web::main]
+async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
     let path = format!(
         "{}{}",
         app.path_resolver()
@@ -24,14 +36,9 @@ pub fn CreateLocalServer(app: &mut App) {
             .replace("\\", "/"),
         "/Extra/"
     );
-    thread::Builder::new()
-        .name(String::from("LocalServer"))
-        .spawn(move || ActixServer(path))
-        .unwrap();
-}
-
-#[actix_web::main]
-async fn ActixServer(path: String) -> std::io::Result<()> {
+    let tauriApp = web::Data::new(TauriAppState {
+        app: Mutex::new(app),
+    });
     HttpServer::new(move || {
         AApp::new()
             .wrap(
@@ -43,8 +50,9 @@ async fn ActixServer(path: String) -> std::io::Result<()> {
                     .add(("Cross-Origin-Embedder-Policy", "require-corp"))
                     .add(("Cross-Origin-Opener-Policy", "same-origin")),
             )
-            .service(fs::Files::new("/Static", path.as_str()))
-            .service(Test)
+            .app_data(tauriApp.clone())
+            .service(fs::Files::new("/Static", &path))
+            .service(SecondInstance)
     })
     .bind(("127.0.0.1", PORT))
     .unwrap()
@@ -52,7 +60,17 @@ async fn ActixServer(path: String) -> std::io::Result<()> {
     .await
 }
 
-#[get("/Test")]
-async fn Test() -> HttpResponse {
-    HttpResponse::Ok().body("Test")
+#[get("/SecondInstance")]
+async fn SecondInstance(_req: HttpRequest, state: web::Data<TauriAppState>) -> HttpResponse {
+    let app = state.app.lock().unwrap();
+    app.emit_to(
+        "Application",
+        "tauri://tauri",
+        TauriSendRendererPayload {
+            event: String::from("SecondInstance"),
+            extra: json!({}),
+        },
+    )
+    .unwrap();
+    HttpResponse::Ok().body("SecondInstance")
 }

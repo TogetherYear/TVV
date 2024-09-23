@@ -14,7 +14,7 @@ tauri-build = { version = "1.5.4", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.7.2", features = [ "window-unmaximize", "window-maximize", "window-set-ignore-cursor-events", "clipboard-all", "dialog-all", "window-close", "window-set-position", "window-set-always-on-top", "window-center", "window-set-size", "window-set-resizable", "window-hide", "window-create", "window-show", "window-start-dragging", "window-set-fullscreen", "window-minimize", "window-set-focus", "process-all", "global-shortcut-all", "shell-all", "protocol-all", "fs-all", "path-all", "system-tray", "icon-ico" ] }
+tauri = { version = "1.7.2", features = [ "http-all", "window-unmaximize", "window-maximize", "window-set-ignore-cursor-events", "clipboard-all", "dialog-all", "window-close", "window-set-position", "window-set-always-on-top", "window-center", "window-set-size", "window-set-resizable", "window-hide", "window-create", "window-show", "window-start-dragging", "window-set-fullscreen", "window-minimize", "window-set-focus", "process-all", "global-shortcut-all", "shell-all", "protocol-all", "fs-all", "path-all", "system-tray", "icon-ico" ] }
 tauri-plugin-autostart = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 window-shadows = "0.2.2"
 actix-files = "0.6.6"

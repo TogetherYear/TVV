@@ -31,6 +31,10 @@
                 "startDragging": true,
                 "setIgnoreCursorEvents": true
             },
+            "http": {
+                "all": true,
+                "scope": ["https://*","http://*"]
+            },
             "process": {
                 "all": true
             },
