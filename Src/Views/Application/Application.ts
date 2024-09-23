@@ -1,8 +1,6 @@
 import { onMounted, onUnmounted } from 'vue';
 import { Component } from '@/Libs/Component';
 import { Renderer } from '@/Plugins/Renderer';
-import { TTest } from '@/Decorators/TTest';
-import { tauri } from '@tauri-apps/api';
 
 class Application extends Component {
     public constructor() {
