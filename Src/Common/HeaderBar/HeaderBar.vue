@@ -13,7 +13,7 @@ const attribute = withDefaults(
         type?: 'main' | 'tool';
     }>(),
     {
-        bgc: '#212121',
+        bgc: '#212121ff',
         type: 'tool'
     }
 );

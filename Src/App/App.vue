@@ -10,5 +10,6 @@ App.Run();
 </template>
 
 <style lang="scss">
+@import './Root.scss';
 @import './App.scss';
 </style>
