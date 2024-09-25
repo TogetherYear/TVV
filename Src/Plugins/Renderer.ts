@@ -11,16 +11,12 @@ import * as T from '@tauri-apps/api/tauri';
 import * as W from '@tauri-apps/api/window';
 import { Manager } from '@/Libs/Manager';
 import { TEvent } from '@/Decorators/TEvent';
-import { TTool } from '@/Decorators/TTool';
-import { ref } from 'vue';
 
-@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
+@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
 class Renderer extends Manager {
     private flashTimer = 0;
 
     private port = -1;
-
-    private max = ref<boolean>(false);
 
     public get App() {
         return {
@@ -114,14 +110,10 @@ class Renderer extends Manager {
                 return W.appWindow.minimize();
             },
             Max: async () => {
-                if (await W.appWindow.isFullscreen()) {
-                    this.max.value = false;
-                    await W.appWindow.setResizable(true);
-                    return W.appWindow.setFullscreen(false);
+                if (await W.appWindow.isMaximized()) {
+                    return W.appWindow.unmaximize();
                 } else {
-                    this.max.value = true;
-                    await W.appWindow.setResizable(false);
-                    return W.appWindow.setFullscreen(true);
+                    return W.appWindow.maximize();
                 }
             },
             Hide: () => {
@@ -131,9 +123,6 @@ class Renderer extends Manager {
                 return W.appWindow.close();
             },
             Show: async () => {
-                return W.appWindow.show();
-            },
-            Focus: async () => {
                 await W.appWindow.show();
                 return W.appWindow.setFocus();
             },
@@ -157,9 +146,6 @@ class Renderer extends Manager {
             },
             SetShadow: (enable: boolean) => {
                 return T.invoke('SetShadow', { enable });
-            },
-            SetResizable: (b: boolean) => {
-                return W.appWindow.setResizable(b);
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
                 return W.appWindow.setIgnoreCursorEvents(ignore);
@@ -336,6 +322,7 @@ class Renderer extends Manager {
             Message: 'Message',
             WidgetCreate: 'WidgetCreate',
             WidgetDestroy: 'WidgetDestroy',
+            CloseRequested: 'CloseRequested',
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
             ThemeUpdate: 'ThemeUpdate',
@@ -344,17 +331,10 @@ class Renderer extends Manager {
         };
     }
 
-    public InitStates() {
-        return {
-            max: this.max
-        };
-    }
-
     public async Run() {
         this.ListenEvents();
         await this.Limit();
         await this.Process();
-        await this.State();
     }
 
     private ListenEvents() {
@@ -371,7 +351,6 @@ class Renderer extends Manager {
                 this.App.SetAutostart(!isAutoStart);
                 this.Emit(this.RendererEvent.UpdateAutoStart, { event: this.RendererEvent.UpdateAutoStart, extra: { flag: !isAutoStart } });
             } else if (r.event === this.RendererEvent.SecondInstance) {
-                await this.Widget.Focus();
                 this.Emit(this.RendererEvent.SecondInstance, { event: this.RendererEvent.SecondInstance, extra: {} });
             }
             this.Emit(this.RendererEvent.Message, r);
@@ -391,6 +370,9 @@ class Renderer extends Manager {
                     current: e.payload
                 }
             });
+        });
+        W.appWindow.onCloseRequested((e) => {
+            this.Emit(this.RendererEvent.CloseRequested, e as any);
         });
     }
 
@@ -427,32 +409,6 @@ class Renderer extends Manager {
         } else {
             return 'Application';
         }
-    }
-
-    private async State() {
-        if (W.appWindow.label === 'Application') {
-            W.appWindow.onCloseRequested((e) => {
-                W.appWindow.hide();
-                e.preventDefault();
-            });
-            this.SetDefault();
-            W.appWindow.onResized(this.OnResized.bind(this));
-        }
-    }
-
-    private async SetDefault() {
-        await this.Widget.SetSize(parseInt(localStorage.getItem('Application_Width') || '1000'), parseInt(localStorage.getItem('Application_Height') || '560'));
-        await this.Widget.Center();
-        this.max.value = localStorage.getItem('Application_Full') === '1';
-        await this.Widget.SetResizable(!this.max.value);
-    }
-
-    @TTool.Debounce(100)
-    private async OnResized(e: E.Event<W.PhysicalSize>) {
-        this.max.value = await W.appWindow.isFullscreen();
-        localStorage.setItem('Application_Full', `${this.max.value ? 1 : 0}`);
-        localStorage.setItem('Application_Width', `${e.payload.width}`);
-        localStorage.setItem('Application_Height', `${e.payload.height}`);
     }
 }
 

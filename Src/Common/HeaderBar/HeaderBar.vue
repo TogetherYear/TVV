@@ -23,8 +23,6 @@ const instance = new HeaderBar();
 
 const {} = instance.InitStates();
 
-const { max } = Renderer.InitStates();
-
 instance.Run();
 </script>
 
@@ -42,8 +40,7 @@ instance.Run();
                     <img :src="hideIcon" class="Icon" />
                 </span>
             </span>
-            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" v-show="!max" data-tauri-drag-region></span>
-            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" v-show="max"></span>
+            <span class="Drag" data-tauri-drag-region></span>
         </span>
         <span v-if="attribute.type === 'tool'">
             <span class="Btn">
