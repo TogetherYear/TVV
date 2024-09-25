@@ -14,7 +14,7 @@ class Empty extends Component {
     public Run() {
         onMounted(async () => {
             await Renderer.Widget.SetShadow(true);
-            await Renderer.Widget.Focus();
+            await Renderer.Widget.Show();
             await this.GenerateEvent();
         });
 
