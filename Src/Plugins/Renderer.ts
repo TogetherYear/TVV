@@ -11,10 +11,16 @@ import * as T from '@tauri-apps/api/tauri';
 import * as W from '@tauri-apps/api/window';
 import { Manager } from '@/Libs/Manager';
 import { TEvent } from '@/Decorators/TEvent';
+import { TTool } from '@/Decorators/TTool';
+import { ref } from 'vue';
 
 @TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
 class Renderer extends Manager {
     private flashTimer = 0;
+
+    private port = -1;
+
+    private max = ref<boolean>(false);
 
     public get App() {
         return {
@@ -49,7 +55,7 @@ class Renderer extends Manager {
             },
             GetWidgetByLabel: (label: string) => {
                 const ws = this.App.GetAllWidgets();
-                return ws.find((w) => w.label == label);
+                return ws.find((w) => w.label === label);
             },
             CreateWidget: async (label: string, options?: W.WindowOptions) => {
                 const exist = this.App.GetWidgetByLabel(label);
@@ -108,10 +114,14 @@ class Renderer extends Manager {
                 return W.appWindow.minimize();
             },
             Max: async () => {
-                if (await W.appWindow.isMaximized()) {
-                    return W.appWindow.unmaximize();
+                if (await W.appWindow.isFullscreen()) {
+                    this.max.value = false;
+                    await W.appWindow.setResizable(true);
+                    return W.appWindow.setFullscreen(false);
                 } else {
-                    return W.appWindow.maximize();
+                    this.max.value = true;
+                    await W.appWindow.setResizable(false);
+                    return W.appWindow.setFullscreen(true);
                 }
             },
             Hide: () => {
@@ -193,8 +203,15 @@ class Renderer extends Manager {
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
             },
-            GetFileByNameFromLocalServer: (name: string) => {
-                return `http://localhost:34290/Static/${name}`;
+            GetLocalServerProt: async () => {
+                if (this.port === -1) {
+                    return T.invoke('GetLocalServerProt');
+                } else {
+                    return this.port;
+                }
+            },
+            GetFileByNameFromLocalServer: async (name: string) => {
+                return `http://localhost:${await this.Resource.GetLocalServerProt()}/Static/${name}`;
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
@@ -327,6 +344,12 @@ class Renderer extends Manager {
         };
     }
 
+    public InitStates() {
+        return {
+            max: this.max
+        };
+    }
+
     public async Run() {
         this.ListenEvents();
         await this.Limit();
@@ -337,17 +360,17 @@ class Renderer extends Manager {
     private ListenEvents() {
         this.Event.Listen<Record<string, unknown>>(this.Event.TauriEvent.TAURI, async (e) => {
             const r = e.payload;
-            if (r.event == this.RendererEvent.WidgetCreate) {
+            if (r.event === this.RendererEvent.WidgetCreate) {
                 this.Emit(this.RendererEvent.WidgetCreate, r);
-            } else if (r.event == this.RendererEvent.WidgetDestroy) {
+            } else if (r.event === this.RendererEvent.WidgetDestroy) {
                 this.Emit(this.RendererEvent.WidgetDestroy, r);
-            } else if (r.event == this.RendererEvent.WidgetEmpty) {
+            } else if (r.event === this.RendererEvent.WidgetEmpty) {
                 this.Emit(this.RendererEvent.WidgetEmpty, r);
-            } else if (r.event == this.RendererEvent.UpdateAutoStart) {
+            } else if (r.event === this.RendererEvent.UpdateAutoStart) {
                 const isAutoStart = await this.App.IsAutostart();
                 this.App.SetAutostart(!isAutoStart);
                 this.Emit(this.RendererEvent.UpdateAutoStart, { event: this.RendererEvent.UpdateAutoStart, extra: { flag: !isAutoStart } });
-            } else if (r.event == this.RendererEvent.SecondInstance) {
+            } else if (r.event === this.RendererEvent.SecondInstance) {
                 await this.Widget.Focus();
                 this.Emit(this.RendererEvent.SecondInstance, { event: this.RendererEvent.SecondInstance, extra: {} });
             }
@@ -407,18 +430,29 @@ class Renderer extends Manager {
     }
 
     private async State() {
-        if (W.appWindow.label == 'Application') {
+        if (W.appWindow.label === 'Application') {
             W.appWindow.onCloseRequested((e) => {
                 W.appWindow.hide();
                 e.preventDefault();
             });
-            await this.Widget.SetSize(parseInt(localStorage.getItem('Application_Width') || '1000'), parseInt(localStorage.getItem('Application_Height') || '560'));
-            await this.Widget.Center();
-            W.appWindow.onResized(async (e) => {
-                localStorage.setItem('Application_Width', `${e.payload.width}`);
-                localStorage.setItem('Application_Height', `${e.payload.height}`);
-            });
+            this.SetDefault();
+            W.appWindow.onResized(this.OnResized.bind(this));
         }
+    }
+
+    private async SetDefault() {
+        await this.Widget.SetSize(parseInt(localStorage.getItem('Application_Width') || '1000'), parseInt(localStorage.getItem('Application_Height') || '560'));
+        await this.Widget.Center();
+        this.max.value = localStorage.getItem('Application_Full') === '1';
+        await this.Widget.SetResizable(!this.max.value);
+    }
+
+    @TTool.Debounce(100)
+    private async OnResized(e: E.Event<W.PhysicalSize>) {
+        this.max.value = await W.appWindow.isFullscreen();
+        localStorage.setItem('Application_Full', `${this.max.value ? 1 : 0}`);
+        localStorage.setItem('Application_Width', `${e.payload.width}`);
+        localStorage.setItem('Application_Height', `${e.payload.height}`);
     }
 }
 

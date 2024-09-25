@@ -3,6 +3,7 @@ import { HeaderBar } from './HeaderBar';
 import minIcon from '@/Assets/MC/min.png';
 import maxIcon from '@/Assets/MC/max.png';
 import hideIcon from '@/Assets/MC/hide.png';
+import { Renderer } from '@/Plugins/Renderer';
 
 const attribute = withDefaults(
     defineProps<{
@@ -22,12 +23,14 @@ const instance = new HeaderBar();
 
 const {} = instance.InitStates();
 
+const { max } = Renderer.InitStates();
+
 instance.Run();
 </script>
 
 <template>
     <div class="HeaderBar" :style="{ background: attribute.bgc }">
-        <span v-if="attribute.type == 'main'">
+        <span v-if="attribute.type === 'main'">
             <span class="Btn">
                 <span class="Min" @click="instance.OnOptionClick('Min', attribute.type)">
                     <img :src="minIcon" class="Icon" />
@@ -39,9 +42,10 @@ instance.Run();
                     <img :src="hideIcon" class="Icon" />
                 </span>
             </span>
-            <span class="Drag" data-tauri-drag-region></span>
+            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" v-show="!max" data-tauri-drag-region></span>
+            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" v-show="max"></span>
         </span>
-        <span v-if="attribute.type == 'tool'">
+        <span v-if="attribute.type === 'tool'">
             <span class="Btn">
                 <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
                     <img :src="hideIcon" class="Icon" />

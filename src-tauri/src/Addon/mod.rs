@@ -1,3 +1,4 @@
+use crate::Extra::Serve;
 use crate::Extra::Tray;
 use tauri::generate_handler;
 
@@ -9,5 +10,6 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Tray::SetTrayIcon,
         Tray::SetTrayTooltip,
         Tray::UpdateAutostartFlag,
+        Serve::GetLocalServerProt,
     ]
 }

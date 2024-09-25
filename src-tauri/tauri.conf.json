@@ -19,8 +19,6 @@
                 "hide": true,
                 "close": true,
                 "minimize": true,
-                "maximize": true,
-                "unmaximize": true,
                 "setAlwaysOnTop": true,
                 "setFocus": true,
                 "setFullscreen": true,
