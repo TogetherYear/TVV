@@ -309,22 +309,22 @@ namespace TTool {
                 constructor(...args: Array<any>) {
                     super(...args);
                     this.tTool_Cache_Need = needs;
-                    this.Cache_Hooks();
+                    this.TTool_Cache_Hooks();
                 }
 
                 private tTool_Cache_Key = '';
 
                 private tTool_Cache_Need: Array<keyof V> = [];
 
-                private Cache_Hooks() {
-                    this.Cache_Get();
+                private TTool_Cache_Hooks() {
+                    this.TTool_Cache_Get();
 
                     onUnmounted(() => {
-                        this.Cache_Set();
+                        this.TTool_Cache_Set();
                     });
                 }
 
-                private Cache_Get() {
+                private TTool_Cache_Get() {
                     const route = useRoute();
                     this.tTool_Cache_Key = `${route.path}:${C.name}`;
                     const current = cacheMap.get(this.tTool_Cache_Key);
@@ -338,7 +338,7 @@ namespace TTool {
                     }
                 }
 
-                private Cache_Set() {
+                private TTool_Cache_Set() {
                     const cache: Array<{ key: string; value: unknown }> = [];
                     for (let c of this.tTool_Cache_Need) {
                         if (this.hasOwnProperty(c)) {
