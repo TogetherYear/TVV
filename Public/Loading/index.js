@@ -1,4 +1,4 @@
-const loading = document.querySelector('#Loading');
+const loading = document.querySelector('#SplashLoading');
 const app = document.querySelector('#App');
 
 /**
