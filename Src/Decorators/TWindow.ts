@@ -1,12 +1,19 @@
 import { Component } from '@/Libs/Component';
 import { Renderer } from '@/Plugins/Renderer';
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 namespace TWindow {
+    let init = false;
+
+    export const enum WindowState {
+        Default,
+        Full
+    }
+
     /**
-     * 是否保存大小
+     * 当前窗口状态
      */
-    export let state = false;
+    export let currentState = ref<WindowState>(WindowState.Default);
 
     export function Generate() {
         return function <T extends new (...args: Array<any>) => Component>(C: T) {
@@ -29,7 +36,7 @@ namespace TWindow {
             return class extends C {
                 constructor(...args: Array<any>) {
                     super(...args);
-                    if (!state) {
+                    if (!init) {
                         this.TWindow_State_Hooks();
                     }
                 }
@@ -39,7 +46,7 @@ namespace TWindow {
                 private timer = -1;
 
                 private TWindow_State_Hooks() {
-                    state = true;
+                    init = true;
                     onMounted(async () => {
                         await this.TWindow_State_SetDefault();
                         this.TWindow_State_ListenEvents();
@@ -52,10 +59,19 @@ namespace TWindow {
                 }
 
                 private async TWindow_State_SetDefault() {
-                    await Renderer.Widget.SetSize(
-                        parseInt(localStorage.getItem(`Application:${this.Route}:Width`) || '1000'),
-                        parseInt(localStorage.getItem(`Application:${this.Route}:Height`) || '560')
-                    );
+                    const full = localStorage.getItem(`Application:${this.Route}:Full`) || '0';
+                    if (full === '1') {
+                        currentState.value = WindowState.Full;
+                        await Renderer.Widget.SetFullscreen(true);
+                        await Renderer.Widget.SetResizable(false);
+                        console.log('AAAAA');
+                    } else {
+                        currentState.value = WindowState.Default;
+                        await Renderer.Widget.SetSize(
+                            parseInt(localStorage.getItem(`Application:${this.Route}:Width`) || '1000'),
+                            parseInt(localStorage.getItem(`Application:${this.Route}:Height`) || '560')
+                        );
+                    }
                 }
 
                 private TWindow_State_ListenEvents() {
@@ -64,9 +80,12 @@ namespace TWindow {
                     window.addEventListener('resize', this.tWindow_Bind_Event);
                 }
 
-                private async OnResized(e: UIEvent) {
+                private OnResized(e: UIEvent) {
                     clearTimeout(this.timer);
-                    this.timer = setTimeout(() => {
+                    this.timer = setTimeout(async () => {
+                        const full = await Renderer.Widget.GetFullscreen();
+                        currentState.value = full ? WindowState.Full : WindowState.Default;
+                        localStorage.setItem(`Application:${this.Route}:Full`, `${full ? '1' : '0'}`);
                         localStorage.setItem(`Application:${this.Route}:Width`, `${window.innerWidth}`);
                         localStorage.setItem(`Application:${this.Route}:Height`, `${window.innerHeight}`);
                     }, 300);

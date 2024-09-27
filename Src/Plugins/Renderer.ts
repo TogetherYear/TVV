@@ -110,10 +110,12 @@ class Renderer extends Manager {
                 return W.appWindow.minimize();
             },
             Max: async () => {
-                if (await W.appWindow.isMaximized()) {
-                    return W.appWindow.unmaximize();
+                if (await W.appWindow.isFullscreen()) {
+                    W.appWindow.setFullscreen(false);
+                    return W.appWindow.setResizable(true);
                 } else {
-                    return W.appWindow.maximize();
+                    W.appWindow.setFullscreen(true);
+                    return W.appWindow.setResizable(false);
                 }
             },
             Hide: () => {
@@ -149,6 +151,15 @@ class Renderer extends Manager {
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
                 return W.appWindow.setIgnoreCursorEvents(ignore);
+            },
+            SetFullscreen: (b: boolean) => {
+                return W.appWindow.setFullscreen(b);
+            },
+            GetFullscreen: () => {
+                return W.appWindow.isFullscreen();
+            },
+            SetResizable: (b: boolean) => {
+                return W.appWindow.setResizable(b);
             },
             Listen: W.appWindow.listen.bind(W.appWindow)
         };

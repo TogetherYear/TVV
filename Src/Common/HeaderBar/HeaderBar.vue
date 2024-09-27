@@ -3,7 +3,7 @@ import { HeaderBar } from './HeaderBar';
 import minIcon from '@/Assets/MC/min.png';
 import maxIcon from '@/Assets/MC/max.png';
 import hideIcon from '@/Assets/MC/hide.png';
-import { Renderer } from '@/Plugins/Renderer';
+import { TWindow } from '@/Decorators/TWindow';
 
 const attribute = withDefaults(
     defineProps<{
@@ -23,6 +23,8 @@ const instance = new HeaderBar();
 
 const {} = instance.InitStates();
 
+const { currentState } = TWindow;
+
 instance.Run();
 </script>
 
@@ -40,7 +42,8 @@ instance.Run();
                     <img :src="hideIcon" class="Icon" />
                 </span>
             </span>
-            <span class="Drag" data-tauri-drag-region></span>
+            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" data-tauri-drag-region v-show="currentState == TWindow.WindowState.Default"></span>
+            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" v-show="currentState == TWindow.WindowState.Full"></span>
         </span>
         <span v-if="attribute.type === 'tool'">
             <span class="Btn">
