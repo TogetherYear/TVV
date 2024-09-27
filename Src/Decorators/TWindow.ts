@@ -64,7 +64,6 @@ namespace TWindow {
                         currentState.value = WindowState.Full;
                         await Renderer.Widget.SetFullscreen(true);
                         await Renderer.Widget.SetResizable(false);
-                        console.log('AAAAA');
                     } else {
                         currentState.value = WindowState.Default;
                         await Renderer.Widget.SetSize(
