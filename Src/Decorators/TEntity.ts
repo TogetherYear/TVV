@@ -1,8 +1,8 @@
-import { EventSystem } from '@/Libs/EventSystem';
+import { Entity } from '@/Libs/Entity';
 
 namespace TEntity {
     export function Generate() {
-        return function <T extends new (...args: Array<any>) => EventSystem>(C: T) {
+        return function <T extends new (...args: Array<any>) => Entity>(C: T) {
             return class extends C {
                 constructor(...args: Array<any>) {
                     super(...args);

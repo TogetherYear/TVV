@@ -1,4 +1,4 @@
-import { Entity } from '@/Libs/Entity';
+import { Component } from '@/Libs/Component';
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { RouteLocationNormalizedGeneric, RouteRecordNormalized, RouteRecordRaw, useRoute } from 'vue-router';
 
@@ -165,7 +165,7 @@ namespace TRouter {
      * 路由生成
      */
     export function Generate() {
-        return function <T extends new (...args: Array<any>) => Entity>(C: T) {
+        return function <T extends new (...args: Array<any>) => Component>(C: T) {
             return class extends C {
                 constructor(...args: Array<any>) {
                     super(...args);
@@ -219,7 +219,7 @@ namespace TRouter {
     /**
      * 如果从 from 路由进来 会触发的函数 我会进行匹配 只要传入参数被包含在路由中 触发函数不支持传参 ( from 为 '/' 即只要进来就会触发)
      */
-    export function WhenFrom<T extends Entity>(from: string | ((instance: T) => string)) {
+    export function WhenFrom<T extends Component>(from: string | ((instance: T) => string)) {
         return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
             //@ts-ignore
             if (target['tRouter_From_NeedCreate']) {
@@ -243,7 +243,7 @@ namespace TRouter {
     /**
      * 如果进入 to 路由 会触发的函数 我会进行匹配 只要传入参数被包含在路由中 触发函数不支持传参 ( To 为 '/' 即只要离开就会触发)
      */
-    export function WhenTo<T extends Entity>(to: string | ((instance: T) => string)) {
+    export function WhenTo<T extends Component>(to: string | ((instance: T) => string)) {
         return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
             //@ts-ignore
             if (target['tRouter_To_NeedCreate']) {
