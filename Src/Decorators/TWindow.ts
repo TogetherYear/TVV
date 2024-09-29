@@ -59,17 +59,15 @@ namespace TWindow {
                 }
 
                 private async TWindow_State_SetDefault() {
-                    const full = localStorage.getItem(`Application:${this.Route}:Full`) || '0';
+                    const name = await Renderer.App.GetName();
+                    const full = localStorage.getItem(`${name}:${this.Route}:Full`) || '0';
                     if (full === '1') {
                         currentState.value = WindowState.Full;
                         await Renderer.Widget.SetFullscreen(true);
                         await Renderer.Widget.SetResizable(false);
                     } else {
                         currentState.value = WindowState.Default;
-                        await Renderer.Widget.SetSize(
-                            parseInt(localStorage.getItem(`Application:${this.Route}:Width`) || '1000'),
-                            parseInt(localStorage.getItem(`Application:${this.Route}:Height`) || '560')
-                        );
+                        await Renderer.Widget.SetSize(parseInt(localStorage.getItem(`${name}:${this.Route}:Width`) || '1000'), parseInt(localStorage.getItem(`${name}:${this.Route}:Height`) || '560'));
                     }
                 }
 
@@ -83,10 +81,11 @@ namespace TWindow {
                     clearTimeout(this.timer);
                     this.timer = setTimeout(async () => {
                         const full = await Renderer.Widget.GetFullscreen();
+                        const name = await Renderer.App.GetName();
                         currentState.value = full ? WindowState.Full : WindowState.Default;
-                        localStorage.setItem(`Application:${this.Route}:Full`, `${full ? '1' : '0'}`);
-                        localStorage.setItem(`Application:${this.Route}:Width`, `${window.innerWidth}`);
-                        localStorage.setItem(`Application:${this.Route}:Height`, `${window.innerHeight}`);
+                        localStorage.setItem(`${name}:${this.Route}:Full`, `${full ? '1' : '0'}`);
+                        localStorage.setItem(`${name}:${this.Route}:Width`, `${window.innerWidth}`);
+                        localStorage.setItem(`${name}:${this.Route}:Height`, `${window.innerHeight}`);
                     }, 300);
                 }
             };
