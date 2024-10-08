@@ -28,6 +28,13 @@ export default defineConfig(({ command, mode }) => {
                 '@': path.resolve('Src')
             }
         },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    api: 'modern-compiler'
+                }
+            }
+        },
         esbuild: {
             drop: command === 'serve' ? [] : ['console', 'debugger']
         },
