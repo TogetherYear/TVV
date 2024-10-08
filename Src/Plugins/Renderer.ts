@@ -1,4 +1,5 @@
 import * as A from 'tauri-plugin-autostart-api';
+import { getName } from '@tauri-apps/api/app';
 import * as C from '@tauri-apps/api/clipboard';
 import * as D from '@tauri-apps/api/dialog';
 import * as E from '@tauri-apps/api/event';
@@ -20,6 +21,9 @@ class Renderer extends Manager {
 
     public get App() {
         return {
+            GetName: () => {
+                return getName();
+            },
             IsAutostart: () => {
                 return A.isEnabled();
             },

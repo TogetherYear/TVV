@@ -1,27 +1,19 @@
 <script lang="ts" setup>
 import { HeaderBar } from './HeaderBar';
-import minIcon from '@/Assets/MC/min.png';
-import maxIcon from '@/Assets/MC/max.png';
-import hideIcon from '@/Assets/MC/hide.png';
 import { TWindow } from '@/Decorators/TWindow';
 
 const attribute = withDefaults(
     defineProps<{
         bgc?: string;
-        /**
-         * 窗口类型
-         */
-        type?: 'main' | 'tool';
     }>(),
     {
-        bgc: '#212121ff',
-        type: 'tool'
+        bgc: '#212121ff'
     }
 );
 
 const instance = new HeaderBar();
 
-const {} = instance.InitStates();
+const { options } = instance.InitStates();
 
 const { currentState } = TWindow;
 
@@ -30,28 +22,14 @@ instance.Run();
 
 <template>
     <div class="HeaderBar" :style="{ background: attribute.bgc }">
-        <span v-if="attribute.type === 'main'">
+        <span>
             <span class="Btn">
-                <span class="Min" @click="instance.OnOptionClick('Min', attribute.type)">
-                    <img :src="minIcon" class="Icon" />
-                </span>
-                <span class="Max" @click="instance.OnOptionClick('Max', attribute.type)">
-                    <img :src="maxIcon" class="Icon" />
-                </span>
-                <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
-                    <img :src="hideIcon" class="Icon" />
+                <span class="Item" v-for="item in options" :key="item.type" @click="instance.OnOptionClick(item.type)">
+                    <img :src="item.icon" :title="item.label" class="Icon" />
                 </span>
             </span>
-            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" data-tauri-drag-region v-show="currentState == TWindow.WindowState.Default"></span>
-            <span class="Drag" @dblclick="instance.OnOptionClick('Max', attribute.type)" v-show="currentState == TWindow.WindowState.Full"></span>
-        </span>
-        <span v-if="attribute.type === 'tool'">
-            <span class="Btn">
-                <span class="Close" @click="instance.OnOptionClick('Close', attribute.type)">
-                    <img :src="hideIcon" class="Icon" />
-                </span>
-            </span>
-            <span class="Drag" data-tauri-drag-region></span>
+            <span class="Drag" @dblclick="instance.OnOptionClick('Max')" data-tauri-drag-region v-show="currentState == TWindow.WindowState.Default"></span>
+            <span class="Drag" @dblclick="instance.OnOptionClick('Max')" v-show="currentState == TWindow.WindowState.Full"></span>
         </span>
     </div>
 </template>

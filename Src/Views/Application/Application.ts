@@ -41,8 +41,8 @@ class Application extends Component {
 
     @TEvent.Listen(Renderer, Renderer.RendererEvent.CloseRequested)
     private async OnCloseRequested(e: Event) {
-        await Renderer.Widget.Hide();
         e.preventDefault();
+        await Renderer.Widget.Hide();
     }
 }
 
