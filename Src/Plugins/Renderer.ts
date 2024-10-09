@@ -56,14 +56,14 @@ class Renderer extends Manager {
             GetWidgetByLabel: (label: string) => {
                 return Tauri.window.Window.getByLabel(label);
             },
-            CreateWidget: async (label: string, options?: Tauri.webview.WebviewOptions) => {
+            CreateWidget: async (label: string, options?: Omit<Tauri.webview.WebviewOptions, 'x' | 'y' | 'width' | 'height'> & Tauri.window.WindowOptions) => {
                 const exist = await this.App.GetWidgetByLabel(label);
                 if (exist) {
                     await exist.show();
                     await exist.setFocus();
                     return exist;
                 } else {
-                    const widget = new Tauri.webviewWindow.WebviewWindow(label, options).window;
+                    const widget = new Tauri.webviewWindow.WebviewWindow(label, options);
                     widget.once(Tauri.event.TauriEvent.WINDOW_CREATED, (e) => {
                         Tauri.event.emit(this.Event.TauriEvent.TAURI, {
                             event: this.RendererEvent.WidgetCreate,
@@ -331,9 +331,10 @@ class Renderer extends Manager {
     }
 
     public async Run() {
-        await this.CreateTray();
         this.ListenEvents();
+        await this.CreateTray();
         await this.Limit();
+        await this.Process();
     }
 
     private async CreateTray() {
@@ -411,6 +412,31 @@ class Renderer extends Manager {
             window.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
             });
+        }
+    }
+
+    private async Process() {
+        const dir = this.GetHrefDir();
+        const p = await this.Resource.GetPathByName(`Scripts/${dir}`, false);
+        if (await this.Resource.IsPathExists(p)) {
+            const files = await this.Resource.ReadDirFiles(p);
+            for (let f of files) {
+                if (f.name?.indexOf('.js') != -1) {
+                    let script = document.createElement('script');
+                    script.type = 'module';
+                    script.src = await this.Resource.GetPathByName(`Scripts/${dir}/${f.name}`);
+                    document.body.appendChild(script);
+                }
+            }
+        }
+    }
+
+    private GetHrefDir() {
+        const href = location.href;
+        if (href.indexOf('Application') != -1) {
+            return 'Application';
+        } else {
+            return 'Application';
         }
     }
 }
