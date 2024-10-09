@@ -1,128 +1,39 @@
 {
-    "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-    "build": {
-        "beforeBuildCommand": "npm run build",
-        "beforeDevCommand": "npm run dev",
-        "devPath": "http://localhost:6768",
-        "distDir": "../Dist"
-    },
-    "package": {
-        "productName": "Application",
-        "version": "0.1.0"
-    },
-    "tauri": {
-        "allowlist": {
-            "window": {
-                "all": false,
-                "center": true,
-                "create": true,
-                "hide": true,
-                "close": true,
-                "minimize": true,
-                "setResizable": true,
-                "setFullscreen": true,
-                "setAlwaysOnTop": true,
-                "setFocus": true,
-                "setPosition": true,
-                "setSize": true,
-                "show": true,
-                "startDragging": true,
-                "setIgnoreCursorEvents": true
-            },
-            "http": {
-                "all": true,
-                "scope": ["https://*","http://*"]
-            },
-            "process": {
-                "all": true
-            },
-            "protocol": {
-                "all": true,
-                "assetScope": [
-                    "**"
-                ]
-            },
-            "path": {
-                "all": true
-            },
-            "fs": {
-                "all": true,
-                "scope": [
-                    "**"
-                ]
-            },
-            "shell": {
-                "all": true
-            },
-            "globalShortcut": {
-                "all": true
-            },
-            "clipboard": {
-                "all": true
-            },
-            "dialog": {
-                "all": true
-            }
-        },
-        "bundle": {
-            "active": true,
-            "category": "DeveloperTool",
-            "copyright": "",
-            "deb": {
-                "depends": []
-            },
-            "externalBin": [],
-            "icon": [
-                "icons/icon.ico"
-            ],
-            "identifier": "com.tauri.build",
-            "longDescription": "",
-            "resources": [
-                "./Extra"
-            ],
-            "shortDescription": "",
-            "targets": "all",
-            "windows": {
-                "webviewInstallMode": {
-                    "silent": true,
-                    "type": "downloadBootstrapper"
-                },
-                "wix": {
-                    "language": "zh-CN"
-                },
-                "nsis": {
-                    "installerIcon": "icons/icon.ico",
-                    "installMode": "perMachine"
-                },
-                "certificateThumbprint": null,
-                "digestAlgorithm": "sha256",
-                "timestampUrl": ""
-            }
-        },
-        "security": {
-            "csp": null
-        },
-        "updater": {
-            "active": false
-        },
-        "windows": [
-            {
-                "width": 1000,
-                "height": 560,
-                "resizable": true,
-                "center": true,
-                "title": "Application",
-                "decorations": false,
-                "focus": false,
-                "label": "Application",
-                "transparent": true,
-                "url": "/#/Application",
-                "visible": false
-            }
-        ],
-        "systemTray": {
-            "iconPath": "icons/tray.ico",
-            "iconAsTemplate": true
-        }
+  "$schema": "https://schema.tauri.app/config/2.0.2",
+  "productName": "Application",
+  "version": "0.1.0",
+  "identifier": "com.application.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:6768",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../Dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "width": 1000,
+        "height": 560,
+        "resizable": true,
+        "center": true,
+        "title": "Application",
+        "decorations": false,
+        "focus": false,
+        "label": "Application",
+        "transparent": true,
+        "url": "/#/Application",
+        "visible": false
     }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/icon.ico"
+    ]
+  }
 }
