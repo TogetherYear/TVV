@@ -22,7 +22,7 @@ class HeaderBar extends Component {
             await Renderer.Widget.Min();
         } else if (btn === 'Max') {
             await Renderer.Widget.Max();
-        } else if (btn === 'Close') {
+        } else if (btn === 'Hide') {
             await Renderer.Widget.Hide();
         }
     }
