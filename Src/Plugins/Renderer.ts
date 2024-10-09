@@ -1,23 +1,24 @@
-import * as A from 'tauri-plugin-autostart-api';
 import { getName } from '@tauri-apps/api/app';
-import * as C from '@tauri-apps/api/clipboard';
-import * as D from '@tauri-apps/api/dialog';
-import * as E from '@tauri-apps/api/event';
-import * as F from '@tauri-apps/api/fs';
-import * as G from '@tauri-apps/api/globalShortcut';
-import * as Pa from '@tauri-apps/api/path';
-import * as Pr from '@tauri-apps/api/process';
-import * as Sh from '@tauri-apps/api/shell';
-import * as T from '@tauri-apps/api/tauri';
-import * as W from '@tauri-apps/api/window';
 import { Manager } from '@/Libs/Manager';
 import { TEvent } from '@/Decorators/TEvent';
+import * as Tauri from '@tauri-apps/api';
+import * as A from '@tauri-apps/plugin-autostart';
+import * as C from '@tauri-apps/plugin-clipboard-manager';
+import * as D from '@tauri-apps/plugin-dialog';
+import * as F from '@tauri-apps/plugin-fs';
+import * as P from '@tauri-apps/plugin-process';
+import * as S from '@tauri-apps/plugin-shell';
+import * as G from '@tauri-apps/plugin-global-shortcut';
 
 @TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
 class Renderer extends Manager {
     private flashTimer = 0;
 
     private port = -1;
+
+    private tray!: Tauri.tray.TrayIcon;
+
+    private autostartMenu!: Tauri.menu.CheckMenuItem;
 
     public get App() {
         return {
@@ -28,11 +29,10 @@ class Renderer extends Manager {
                 return A.isEnabled();
             },
             UpdateAutostartFlag: (flag: boolean) => {
-                return T.invoke('UpdateAutostartFlag', { flag });
+                return this.autostartMenu.setChecked(flag);
             },
             SetAutostart: async (b: boolean) => {
                 const current = await this.App.IsAutostart();
-                console.log(current);
                 if (current && !b) {
                     await A.disable();
                     return this.App.UpdateAutostartFlag(false);
@@ -42,37 +42,36 @@ class Renderer extends Manager {
                 }
             },
             Close: () => {
-                return Pr.exit(0);
+                return P.exit(0);
             },
             Relaunch: () => {
-                return Pr.relaunch();
+                return P.relaunch();
             },
-            Invoke: (cmd: string, args?: T.InvokeArgs) => {
-                return T.invoke(cmd, args);
+            Invoke: (cmd: string, args?: Tauri.core.InvokeArgs) => {
+                return Tauri.core.invoke(cmd, args);
             },
             GetAllWidgets: () => {
-                return W.getAll();
+                return Tauri.window.Window.getAll();
             },
             GetWidgetByLabel: (label: string) => {
-                const ws = this.App.GetAllWidgets();
-                return ws.find((w) => w.label === label);
+                return Tauri.window.Window.getByLabel(label);
             },
-            CreateWidget: async (label: string, options?: W.WindowOptions) => {
-                const exist = this.App.GetWidgetByLabel(label);
+            CreateWidget: async (label: string, options?: Tauri.webview.WebviewOptions) => {
+                const exist = await this.App.GetWidgetByLabel(label);
                 if (exist) {
                     await exist.show();
                     await exist.setFocus();
                     return exist;
                 } else {
-                    const widget = new W.WebviewWindow(label, options);
-                    widget.once(E.TauriEvent.WINDOW_CREATED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, {
+                    const widget = new Tauri.webviewWindow.WebviewWindow(label, options).window;
+                    widget.once(Tauri.event.TauriEvent.WINDOW_CREATED, (e) => {
+                        Tauri.event.emit(this.Event.TauriEvent.TAURI, {
                             event: this.RendererEvent.WidgetCreate,
                             extra: { windowLabel: label }
                         });
                     });
-                    widget.once(E.TauriEvent.WINDOW_DESTROYED, (e) => {
-                        E.emit(this.Event.TauriEvent.TAURI, {
+                    widget.once(Tauri.event.TauriEvent.WINDOW_DESTROYED, (e) => {
+                        Tauri.event.emit(this.Event.TauriEvent.TAURI, {
                             event: this.RendererEvent.WidgetDestroy,
                             extra: { windowLabel: label }
                         });
@@ -111,61 +110,61 @@ class Renderer extends Manager {
     public get Widget() {
         return {
             Min: () => {
-                return W.appWindow.minimize();
+                return Tauri.window.Window.getCurrent().minimize();
             },
             Max: async () => {
-                if (await W.appWindow.isFullscreen()) {
-                    W.appWindow.setFullscreen(false);
-                    return W.appWindow.setResizable(true);
+                if (await Tauri.window.Window.getCurrent().isFullscreen()) {
+                    Tauri.window.Window.getCurrent().setFullscreen(false);
+                    return Tauri.window.Window.getCurrent().setResizable(true);
                 } else {
-                    W.appWindow.setFullscreen(true);
-                    return W.appWindow.setResizable(false);
+                    Tauri.window.Window.getCurrent().setFullscreen(true);
+                    return Tauri.window.Window.getCurrent().setResizable(false);
                 }
             },
             Hide: () => {
-                return W.appWindow.hide();
+                return Tauri.window.Window.getCurrent().hide();
             },
             Close: () => {
-                return W.appWindow.close();
+                return Tauri.window.Window.getCurrent().close();
             },
             Show: async () => {
-                await W.appWindow.show();
-                return W.appWindow.setFocus();
+                await Tauri.window.Window.getCurrent().show();
+                return Tauri.window.Window.getCurrent().setFocus();
             },
             Center: () => {
-                return W.appWindow.center();
+                return Tauri.window.Window.getCurrent().center();
             },
             SetAlwaysOnTop: (b: boolean) => {
-                return W.appWindow.setAlwaysOnTop(b);
+                return Tauri.window.Window.getCurrent().setAlwaysOnTop(b);
             },
             SetSize: (w: number, h: number) => {
-                return W.appWindow.setSize(new W.LogicalSize(w, h));
+                return Tauri.window.Window.getCurrent().setSize(new Tauri.window.LogicalSize(w, h));
             },
             GetSize: () => {
-                return W.appWindow.innerSize();
+                return Tauri.window.Window.getCurrent().innerSize();
             },
             SetPosition: (x: number, y: number) => {
-                return W.appWindow.setPosition(new W.LogicalPosition(x, y));
+                return Tauri.window.Window.getCurrent().setPosition(new Tauri.window.LogicalPosition(x, y));
             },
             GetPosition: () => {
-                return W.appWindow.innerPosition();
+                return Tauri.window.Window.getCurrent().innerPosition();
             },
             SetShadow: (enable: boolean) => {
-                return T.invoke('SetShadow', { enable });
+                return Tauri.window.Window.getCurrent().setShadow(enable);
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
-                return W.appWindow.setIgnoreCursorEvents(ignore);
+                return Tauri.window.Window.getCurrent().setIgnoreCursorEvents(ignore);
             },
             SetFullscreen: (b: boolean) => {
-                return W.appWindow.setFullscreen(b);
+                return Tauri.window.Window.getCurrent().setFullscreen(b);
             },
             GetFullscreen: () => {
-                return W.appWindow.isFullscreen();
+                return Tauri.window.Window.getCurrent().isFullscreen();
             },
             SetResizable: (b: boolean) => {
-                return W.appWindow.setResizable(b);
+                return Tauri.window.Window.getCurrent().setResizable(b);
             },
-            Listen: W.appWindow.listen.bind(W.appWindow)
+            Listen: Tauri.window.Window.getCurrent().listen.bind(Tauri.window.Window.getCurrent())
         };
     }
 
@@ -175,24 +174,24 @@ class Renderer extends Manager {
              * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( convert 是否转换成 Webview 可使用的格式 默认 true)
              */
             GetPathByName: async (name: string, convert: boolean = true) => {
-                const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
-                const path = convert ? T.convertFileSrc(base) : base;
+                const base = (await Tauri.path.join(await Tauri.path.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
+                const path = convert ? Tauri.core.convertFileSrc(base) : base;
                 return path;
             },
             /**
              * 将真实文件地址转换为 Webview 可使用的地址
              */
             ConvertFileSrcToTauri: (path: string) => {
-                return T.convertFileSrc(path);
+                return Tauri.core.convertFileSrc(path);
             },
             GetDesktopDir: () => {
-                return Pa.desktopDir();
+                return Tauri.path.desktopDir();
             },
             GetSelectResources: async (options: Record<string, unknown> = {}) => {
                 return D.open({
                     title: (options.title as string) || undefined,
                     multiple: (options.multiple as boolean) || false,
-                    defaultPath: (options.defaultPath as string) || (await Pa.resourceDir()),
+                    defaultPath: (options.defaultPath as string) || (await Tauri.path.resourceDir()),
                     directory: (options.directory as boolean) || false,
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
@@ -200,13 +199,13 @@ class Renderer extends Manager {
             GetSaveResources: async (options: Record<string, unknown>) => {
                 return D.save({
                     title: (options.title as string) || undefined,
-                    defaultPath: (options.defaultPath as string) || (await Pa.resourceDir()),
+                    defaultPath: (options.defaultPath as string) || (await Tauri.path.resourceDir()),
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
             },
             GetLocalServerProt: async () => {
                 if (this.port === -1) {
-                    return T.invoke('GetLocalServerProt');
+                    return Tauri.core.invoke('GetLocalServerProt');
                 } else {
                     return this.port;
                 }
@@ -223,17 +222,8 @@ class Renderer extends Manager {
                 await this.Resource.CreateDir(dir);
                 return F.writeTextFile(path, content);
             },
-            ReadBinaryFromFile: (path: string) => {
-                return F.readBinaryFile(path);
-            },
-            WriteBinaryToFile: async (path: string, content: F.BinaryFileContents) => {
-                const file = path.split('/').slice(-1)[0];
-                const dir = path.replace(file, '');
-                await this.Resource.CreateDir(dir);
-                return F.writeBinaryFile(path, content);
-            },
             OpenPathDefault: (path: string) => {
-                return Sh.open(path);
+                return S.open(path);
             },
             IsPathExists: (path: string) => {
                 return F.exists(path);
@@ -243,22 +233,17 @@ class Renderer extends Manager {
             },
             CreateDir: async (path: string) => {
                 if (!(await this.Resource.IsPathExists(path))) {
-                    return F.createDir(path);
+                    return F.mkdir(path);
                 }
             },
-            RemoveDir: async (path: string) => {
+            Remove: async (path: string) => {
                 if (await this.Resource.IsPathExists(path)) {
-                    return F.removeDir(path);
-                }
-            },
-            RemoveFile: async (path: string) => {
-                if (await this.Resource.IsPathExists(path)) {
-                    return F.removeFile(path);
+                    return F.remove(path);
                 }
             },
             Rename: async (path: string, newPath: string) => {
                 if (await this.Resource.IsPathExists(path)) {
-                    return F.renameFile(path, newPath);
+                    return F.rename(path, newPath);
                 }
             },
             CopyFile: async (path: string, newPath: string) => {
@@ -293,40 +278,39 @@ class Renderer extends Manager {
 
     public get Tray() {
         return {
-            SetTrayIcon: (icon: string) => {
-                return T.invoke('SetTrayIcon', { icon });
+            SetTrayIcon: async (icon: string) => {
+                return this.tray.setIcon(await Tauri.image.Image.fromPath(await this.Resource.GetPathByName(icon, false)));
             },
             SetTrayTooltip: (tooltip: string) => {
-                return T.invoke('SetTrayTooltip', { tooltip });
+                return this.tray.setTooltip(tooltip);
             },
             Flash: async (icon: string) => {
                 let show = true;
-                const emptyIcon = await this.Resource.GetPathByName('Images/empty.ico', false);
-                this.flashTimer = setInterval(() => {
+                this.flashTimer = setInterval(async () => {
                     if (show) {
-                        T.invoke('SetTrayIcon', { icon: emptyIcon });
+                        this.tray.setVisible(false);
                     } else {
-                        T.invoke('SetTrayIcon', { icon });
+                        this.tray.setVisible(true);
                     }
                     show = !show;
                 }, 700);
             },
-            StopFlash: (icon: string) => {
+            StopFlash: async (icon: string) => {
                 if (this.flashTimer) {
                     clearInterval(this.flashTimer);
                 }
-                return T.invoke('SetTrayIcon', { icon });
+                return this.Tray.SetTrayIcon(icon);
             }
         };
     }
 
     public get Event() {
         return {
-            Listen: E.listen,
-            Once: E.once,
-            Emit: E.emit,
+            Listen: Tauri.event.listen,
+            Once: Tauri.event.once,
+            Emit: Tauri.event.emit,
             TauriEvent: {
-                ...E.TauriEvent,
+                ...Tauri.event.TauriEvent,
                 TAURI: 'tauri://tauri'
             }
         };
@@ -347,9 +331,38 @@ class Renderer extends Manager {
     }
 
     public async Run() {
+        await this.CreateTray();
         this.ListenEvents();
         await this.Limit();
-        await this.Process();
+    }
+
+    private async CreateTray() {
+        this.autostartMenu = await Tauri.menu.CheckMenuItem.new({
+            id: 'autostart',
+            text: '开机自启',
+            action: async () => {
+                const isAutoStart = await this.App.IsAutostart();
+                this.App.SetAutostart(!isAutoStart);
+            }
+        });
+        this.tray = await Tauri.tray.TrayIcon.new({
+            tooltip: '去码头整点薯条',
+            icon: await Tauri.image.Image.fromPath(await this.Resource.GetPathByName('Images/tray.ico', false)),
+            iconAsTemplate: true,
+            menu: await Tauri.menu.Menu.new({
+                items: [
+                    this.autostartMenu,
+                    await Tauri.menu.PredefinedMenuItem.new({ item: 'Separator' }),
+                    await Tauri.menu.CheckMenuItem.new({
+                        id: 'quit',
+                        text: '退出',
+                        action: async () => {
+                            await this.App.Close();
+                        }
+                    })
+                ]
+            })
+        });
     }
 
     private ListenEvents() {
@@ -370,7 +383,7 @@ class Renderer extends Manager {
             }
             this.Emit(this.RendererEvent.Message, r);
         });
-        this.Event.Listen<Array<string>>(this.Event.TauriEvent.WINDOW_FILE_DROP, async (e) => {
+        this.Event.Listen<Array<string>>(this.Event.TauriEvent.DRAG_DROP, async (e) => {
             this.Emit(this.RendererEvent.FileDrop, {
                 event: this.RendererEvent.FileDrop,
                 extra: {
@@ -386,7 +399,7 @@ class Renderer extends Manager {
                 }
             });
         });
-        W.appWindow.onCloseRequested((e) => {
+        Tauri.window.Window.getCurrent().onCloseRequested((e) => {
             this.Emit(this.RendererEvent.CloseRequested, e as any);
         });
     }
@@ -398,31 +411,6 @@ class Renderer extends Manager {
             window.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
             });
-        }
-    }
-
-    private async Process() {
-        const dir = this.GetHrefDir();
-        const p = await this.Resource.GetPathByName(`Scripts/${dir}`, false);
-        if (await this.Resource.IsPathExists(p)) {
-            const files = await this.Resource.ReadDirFiles(p);
-            for (let f of files) {
-                if (f.name?.indexOf('.js') != -1) {
-                    let script = document.createElement('script');
-                    script.type = 'module';
-                    script.src = await this.Resource.GetPathByName(`Scripts/${dir}/${f.name}`);
-                    document.body.appendChild(script);
-                }
-            }
-        }
-    }
-
-    private GetHrefDir() {
-        const href = location.href;
-        if (href.indexOf('Application') != -1) {
-            return 'Application';
-        } else {
-            return 'Application';
         }
     }
 }

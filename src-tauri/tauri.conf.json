@@ -1,39 +1,61 @@
 {
-  "$schema": "https://schema.tauri.app/config/2.0.2",
-  "productName": "Application",
-  "version": "0.1.0",
-  "identifier": "com.application.app",
-  "build": {
-    "beforeDevCommand": "npm run dev",
-    "devUrl": "http://localhost:6768",
-    "beforeBuildCommand": "npm run build",
-    "frontendDist": "../Dist"
-  },
-  "app": {
-    "windows": [
-      {
-        "width": 1000,
-        "height": 560,
-        "resizable": true,
-        "center": true,
-        "title": "Application",
-        "decorations": false,
-        "focus": false,
-        "label": "Application",
-        "transparent": true,
-        "url": "/#/Application",
-        "visible": false
+    "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+    "productName": "Application",
+    "version": "0.1.0",
+    "identifier": "com.tauri.build",
+    "build": {
+        "frontendDist": "../Dist",
+        "devUrl": "http://localhost:6768",
+        "beforeDevCommand": "npm run dev",
+        "beforeBuildCommand": "npm run build"
+    },
+    "app": {
+        "windows": [
+            {
+                "width": 1000,
+                "height": 560,
+                "resizable": true,
+                "center": true,
+                "title": "Application",
+                "decorations": false,
+                "focus": false,
+                "label": "Application",
+                "transparent": true,
+                "url": "/#/Application",
+                "visible": false
+            }
+        ],
+        "security": {
+            "csp": null,
+            "assetProtocol": {
+                "enable": true,
+                "scope": ["**"]
+            }
+        }
+    },
+    "bundle": {
+        "active": true,
+        "resources": [
+            "./Extra"
+        ],
+        "windows": {
+            "webviewInstallMode": {
+                "silent": true,
+                "type": "downloadBootstrapper"
+            },
+            "wix": {
+                "language": "zh-CN"
+            },
+            "nsis": {
+                "installerIcon": "icons/icon.ico",
+                "installMode": "perMachine"
+            },
+            "certificateThumbprint": null,
+            "digestAlgorithm": "sha256"
+        },
+        "targets": "all",
+        "icon": [
+            "icons/icon.ico"
+        ]
     }
-    ],
-    "security": {
-      "csp": null
-    }
-  },
-  "bundle": {
-    "active": true,
-    "targets": "all",
-    "icon": [
-      "icons/icon.ico"
-    ]
-  }
 }
