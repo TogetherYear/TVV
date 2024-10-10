@@ -158,7 +158,7 @@ class Renderer extends Manager {
             SetFullscreen: (b: boolean) => {
                 return Tauri.window.Window.getCurrent().setFullscreen(b);
             },
-            GetFullscreen: () => {
+            IsFullscreen: () => {
                 return Tauri.window.Window.getCurrent().isFullscreen();
             },
             SetResizable: (b: boolean) => {
