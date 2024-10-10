@@ -161,6 +161,12 @@ class Renderer extends Manager {
             IsFullscreen: () => {
                 return Tauri.window.Window.getCurrent().isFullscreen();
             },
+            IsMinimized: () => {
+                return Tauri.window.Window.getCurrent().isMinimized();
+            },
+            UnMinimized: () => {
+                return Tauri.window.Window.getCurrent().unminimize();
+            },
             SetResizable: (b: boolean) => {
                 return Tauri.window.Window.getCurrent().setResizable(b);
             },
@@ -284,7 +290,7 @@ class Renderer extends Manager {
             SetTrayTooltip: (tooltip: string) => {
                 return this.tray.setTooltip(tooltip);
             },
-            Flash: async (icon: string) => {
+            Flash: async () => {
                 let show = true;
                 this.flashTimer = setInterval(async () => {
                     if (show) {
@@ -295,11 +301,11 @@ class Renderer extends Manager {
                     show = !show;
                 }, 700);
             },
-            StopFlash: async (icon: string) => {
+            StopFlash: async () => {
                 if (this.flashTimer) {
                     clearInterval(this.flashTimer);
                 }
-                return this.Tray.SetTrayIcon(icon);
+                return this.tray.setVisible(true);
             }
         };
     }
@@ -362,7 +368,15 @@ class Renderer extends Manager {
                         }
                     })
                 ]
-            })
+            }),
+            action: async (event) => {
+                if (event.type === 'DoubleClick') {
+                    if (await this.Widget.IsMinimized()) {
+                        await this.Widget.UnMinimized();
+                    }
+                    await this.Widget.Show();
+                }
+            }
         });
     }
 
