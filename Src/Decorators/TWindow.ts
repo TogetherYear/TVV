@@ -80,7 +80,7 @@ namespace TWindow {
                 private OnResized(e: UIEvent) {
                     clearTimeout(this.timer);
                     this.timer = setTimeout(async () => {
-                        const full = await Renderer.Widget.GetFullscreen();
+                        const full = await Renderer.Widget.IsFullscreen();
                         const name = await Renderer.App.GetName();
                         currentState.value = full ? WindowState.Full : WindowState.Default;
                         localStorage.setItem(`${name}:${this.Route}:Full`, `${full ? '1' : '0'}`);

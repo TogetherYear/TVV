@@ -159,7 +159,7 @@ class Renderer extends Manager {
             SetFullscreen: (b: boolean) => {
                 return W.appWindow.setFullscreen(b);
             },
-            GetFullscreen: () => {
+            IsFullscreen: () => {
                 return W.appWindow.isFullscreen();
             },
             SetResizable: (b: boolean) => {
