@@ -353,6 +353,7 @@ class Renderer extends Manager {
             }
         });
         this.tray = await Tauri.tray.TrayIcon.new({
+            id: 'Tray',
             tooltip: '去码头整点薯条',
             icon: await Tauri.image.Image.fromPath(await this.Resource.GetPathByName('Images/tray.ico', false)),
             iconAsTemplate: true,
