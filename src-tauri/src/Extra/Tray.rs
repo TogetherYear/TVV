@@ -1,11 +1,12 @@
+use serde_json::json;
 use tauri::{
     command,
     image::Image,
-    menu::{CheckMenuItem, Menu, MenuEvent, MenuItem, PredefinedMenuItem},
-    tray::{TrayIcon, TrayIconBuilder, TrayIconEvent},
-    AppHandle, Manager, Wry,
+    tray::{MouseButton, MouseButtonState, TrayIcon, TrayIconBuilder, TrayIconEvent},
+    AppHandle, Emitter, Manager,
 };
-use tauri_plugin_autostart::AutoLaunchManager;
+
+use super::TauriSendRendererPayload;
 
 pub fn CreateTray(app: &AppHandle) {
     let icon = format!(
@@ -24,62 +25,52 @@ pub fn CreateTray(app: &AppHandle) {
     let _ = TrayIconBuilder::with_id("Tray")
         .tooltip("去码头整点薯条")
         .icon(Image::from_path(icon).unwrap())
-        .menu(&CreateMenu(app))
         .on_tray_icon_event(OnTrayEvent)
-        .on_menu_event(OnMenuClick)
         .build(app)
         .unwrap();
 }
 
-fn CreateMenu(app: &AppHandle) -> Menu<Wry> {
-    let autostart = &CheckMenuItem::with_id(
-        app,
-        "autostart",
-        "开机自启",
-        true,
-        app.state::<AutoLaunchManager>().is_enabled().unwrap(),
-        None::<&str>,
-    )
-    .unwrap();
-
-    let separator = &PredefinedMenuItem::separator(app).unwrap();
-
-    let quit = &MenuItem::with_id(app, "quit", "退出", true, None::<&str>).unwrap();
-
-    let menu = tauri::menu::MenuBuilder::new(app)
-        .items(&[autostart, separator, quit])
-        .build()
-        .unwrap();
-    menu
-}
-
 fn OnTrayEvent(tray: &TrayIcon, event: TrayIconEvent) {
     match event {
-        TrayIconEvent::DoubleClick { .. } => {
-            let window = tray.app_handle().get_webview_window("Application").unwrap();
-            if window.is_minimized().unwrap() {
-                window.unminimize().unwrap();
-            } else {
-                window.show().unwrap();
+        TrayIconEvent::DoubleClick {
+            id: _,
+            position: _,
+            rect: _,
+            button,
+        } => {
+            if button == MouseButton::Left {
+                let window = tray.app_handle().get_webview_window("Application").unwrap();
+                if window.is_minimized().unwrap() {
+                    window.unminimize().unwrap();
+                } else {
+                    window.show().unwrap();
+                }
+                window.set_focus().unwrap();
             }
-            window.set_focus().unwrap();
         }
-        _ => {}
-    }
-}
-
-fn OnMenuClick(app: &AppHandle, event: MenuEvent) {
-    match event.id.as_ref() {
-        "autostart" => {
-            let at = app.state::<AutoLaunchManager>();
-            if at.is_enabled().unwrap() {
-                at.disable().unwrap();
-            } else {
-                at.enable().unwrap();
+        TrayIconEvent::Click {
+            id: _,
+            position,
+            rect: _,
+            button,
+            button_state,
+        } => {
+            if button == MouseButton::Right && button_state == MouseButtonState::Up {
+                tray.app_handle()
+                    .emit_to(
+                        "Tray",
+                        "tauri://tauri",
+                        TauriSendRendererPayload {
+                            event: String::from("PopupTray"),
+                            extra: json!({
+                                "x": position.x,
+                                "y": position.y,
+                            }),
+                        },
+                    )
+                    .unwrap();
             }
-            UpdateMenu(app.clone());
         }
-        "quit" => app.exit(0),
         _ => {}
     }
 }
@@ -99,14 +90,5 @@ pub fn SetTrayTooltip(tooltip: String, app_handle: AppHandle) {
         .tray_by_id("Tray")
         .unwrap()
         .set_tooltip(Some(tooltip.as_str()))
-        .unwrap();
-}
-
-#[command]
-pub fn UpdateMenu(app_handle: AppHandle) {
-    app_handle
-        .tray_by_id("Tray")
-        .unwrap()
-        .set_menu(Some(CreateMenu(&app_handle)))
         .unwrap();
 }

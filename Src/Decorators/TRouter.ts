@@ -42,6 +42,11 @@ namespace TRouter {
                 visibility: true
             },
             component: () => import('@/Views/Application/Application.vue')
+        },
+        {
+            path: '/Tray',
+            name: 'Tray',
+            component: () => import('@/Views/Tray/Tray.vue')
         }
     ];
 

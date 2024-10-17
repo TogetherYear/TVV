@@ -15,14 +15,27 @@
                 "width": 1000,
                 "height": 560,
                 "resizable": true,
-                "center": true,
                 "title": "Application",
                 "decorations": false,
                 "focus": false,
                 "label": "Application",
                 "transparent": true,
                 "url": "/#/Application",
-                "visible": false
+                "visible": false,
+                "shadow": false
+            },
+            {
+                "resizable": false,
+                "title": "Tray",
+                "decorations": false,
+                "focus": false,
+                "label": "Tray",
+                "transparent": true,
+                "url": "/#/Tray",
+                "visible": false,
+                "alwaysOnTop": true,
+                "shadow": false,
+                "skipTaskbar": true
             }
         ],
         "security": {

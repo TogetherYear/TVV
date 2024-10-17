@@ -10,7 +10,7 @@ import * as P from '@tauri-apps/plugin-process';
 import * as S from '@tauri-apps/plugin-shell';
 import * as T from '@tauri-apps/api';
 
-@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
+@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'SecondInstance', 'PopupTray', 'Show', 'Blur'])
 class Renderer extends Manager {
     private flashTimer = 0;
 
@@ -26,11 +26,10 @@ class Renderer extends Manager {
             },
             SetAutostart: async (flag: boolean) => {
                 if (flag) {
-                    await A.enable();
+                    return A.enable();
                 } else {
-                    await A.disable();
+                    return A.disable();
                 }
-                return T.core.invoke('UpdateMenu');
             },
             Close: () => {
                 return P.exit(0);
@@ -323,8 +322,10 @@ class Renderer extends Manager {
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
             ThemeUpdate: 'ThemeUpdate',
-            UpdateAutoStart: 'UpdateAutoStart',
-            SecondInstance: 'SecondInstance'
+            SecondInstance: 'SecondInstance',
+            PopupTray: 'PopupTray',
+            Show: 'Show',
+            Blur: 'Blur'
         };
     }
 
@@ -343,12 +344,10 @@ class Renderer extends Manager {
                 this.Emit(this.RendererEvent.WidgetDestroy, r);
             } else if (r.event === this.RendererEvent.WidgetEmpty) {
                 this.Emit(this.RendererEvent.WidgetEmpty, r);
-            } else if (r.event === this.RendererEvent.UpdateAutoStart) {
-                const isAutoStart = await this.App.IsAutostart();
-                this.App.SetAutostart(!isAutoStart);
-                this.Emit(this.RendererEvent.UpdateAutoStart, { event: this.RendererEvent.UpdateAutoStart, extra: { flag: !isAutoStart } });
             } else if (r.event === this.RendererEvent.SecondInstance) {
                 this.Emit(this.RendererEvent.SecondInstance, { event: this.RendererEvent.SecondInstance, extra: {} });
+            } else if (r.event === this.RendererEvent.PopupTray) {
+                this.Emit(this.RendererEvent.PopupTray, r);
             }
             this.Emit(this.RendererEvent.Message, r);
         });
@@ -366,6 +365,18 @@ class Renderer extends Manager {
                 extra: {
                     current: e.payload
                 }
+            });
+        });
+        this.Event.Listen<string>(this.Event.TauriEvent.WINDOW_FOCUS, (e) => {
+            this.Emit(this.RendererEvent.Show, {
+                event: this.RendererEvent.Show,
+                extra: {}
+            });
+        });
+        this.Event.Listen<string>(this.Event.TauriEvent.WINDOW_BLUR, (e) => {
+            this.Emit(this.RendererEvent.Blur, {
+                event: this.RendererEvent.Blur,
+                extra: {}
             });
         });
         T.window.Window.getCurrent().onCloseRequested((e) => {

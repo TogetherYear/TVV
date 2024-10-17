@@ -7,6 +7,5 @@ pub fn Generate() -> impl Fn(tauri::ipc::Invoke) -> bool {
         Serve::GetLocalServerProt,
         Tray::SetTrayIcon,
         Tray::SetTrayTooltip,
-        Tray::UpdateMenu
     ]
 }

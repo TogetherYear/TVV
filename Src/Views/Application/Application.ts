@@ -3,7 +3,6 @@ import { Component } from '@/Libs/Component';
 import { Renderer } from '@/Plugins/Renderer';
 import { TEvent } from '@/Decorators/TEvent';
 import { TWindow } from '@/Decorators/TWindow';
-import { TTest } from '@/Decorators/TTest';
 
 @TWindow.State()
 class Application extends Component {
@@ -29,7 +28,6 @@ class Application extends Component {
     protected Destroy() {}
 
     private async SetDefault() {
-        await Renderer.Widget.SetShadow(false);
         await Renderer.Widget.Center();
         await Renderer.Widget.Show();
     }
@@ -43,11 +41,6 @@ class Application extends Component {
     private async OnCloseRequested(e: Event) {
         e.preventDefault();
         await Renderer.Widget.Hide();
-    }
-
-    @TTest.BindFunction('Test')
-    private async Test() {
-        console.log(await Renderer.Tray.StopFlash());
     }
 }
 
