@@ -1,8 +1,8 @@
 use actix_files as fs;
-use actix_web::{get, middleware, web, App as AApp, HttpRequest, HttpResponse, HttpServer};
+use actix_web::{get, middleware, web, App, HttpRequest, HttpResponse, HttpServer};
 use serde_json::json;
 use std::{sync::Mutex, thread};
-use tauri::{command, App, AppHandle, Emitter, Manager};
+use tauri::{command, AppHandle, Emitter, Manager};
 
 use crate::Extra::TauriSendRendererPayload;
 
@@ -18,9 +18,8 @@ pub fn GetLocalServerProt() -> u16 {
     return PORT;
 }
 
-pub fn CreateLocalServer(app: &mut App) {
-    let handle = app.handle().clone();
-    let boxHandle = Box::new(handle);
+pub fn CreateLocalServer(app_handle: &AppHandle) {
+    let boxHandle = Box::new(app_handle.clone());
     thread::Builder::new()
         .name(String::from("LocalServer"))
         .spawn(move || ActixServer(*boxHandle))
@@ -45,7 +44,7 @@ async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
         app: Mutex::new(app),
     });
     HttpServer::new(move || {
-        AApp::new()
+        App::new()
             .wrap(
                 middleware::DefaultHeaders::new()
                     .add(("Access-Control-Allow-Origin", "*"))

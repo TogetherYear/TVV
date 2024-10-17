@@ -1,10 +1,14 @@
 use port_check::is_local_ipv4_port_free;
 use tauri::App;
 
-use super::Serve::{self, PORT};
+use super::{
+    Serve::{self, PORT},
+    Tray::CreateTray,
+};
 
 pub fn Init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
-    Serve::CreateLocalServer(app);
+    CreateTray(app.handle());
+    Serve::CreateLocalServer(app.handle());
     Ok(())
 }
 

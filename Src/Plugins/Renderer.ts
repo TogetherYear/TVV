@@ -1,24 +1,20 @@
 import { getName } from '@tauri-apps/api/app';
 import { Manager } from '@/Libs/Manager';
 import { TEvent } from '@/Decorators/TEvent';
-import * as Tauri from '@tauri-apps/api';
 import * as A from '@tauri-apps/plugin-autostart';
 import * as C from '@tauri-apps/plugin-clipboard-manager';
 import * as D from '@tauri-apps/plugin-dialog';
 import * as F from '@tauri-apps/plugin-fs';
+import * as G from '@tauri-apps/plugin-global-shortcut';
 import * as P from '@tauri-apps/plugin-process';
 import * as S from '@tauri-apps/plugin-shell';
-import * as G from '@tauri-apps/plugin-global-shortcut';
+import * as T from '@tauri-apps/api';
 
 @TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
 class Renderer extends Manager {
     private flashTimer = 0;
 
     private port = -1;
-
-    private tray!: Tauri.tray.TrayIcon;
-
-    private autostartMenu!: Tauri.menu.CheckMenuItem;
 
     public get App() {
         return {
@@ -28,18 +24,13 @@ class Renderer extends Manager {
             IsAutostart: () => {
                 return A.isEnabled();
             },
-            UpdateAutostartFlag: (flag: boolean) => {
-                return this.autostartMenu.setChecked(flag);
-            },
-            SetAutostart: async (b: boolean) => {
-                const current = await this.App.IsAutostart();
-                if (current && !b) {
-                    await A.disable();
-                    return this.App.UpdateAutostartFlag(false);
-                } else if (!current && b) {
+            SetAutostart: async (flag: boolean) => {
+                if (flag) {
                     await A.enable();
-                    return this.App.UpdateAutostartFlag(true);
+                } else {
+                    await A.disable();
                 }
+                return T.core.invoke('UpdateMenu');
             },
             Close: () => {
                 return P.exit(0);
@@ -47,31 +38,31 @@ class Renderer extends Manager {
             Relaunch: () => {
                 return P.relaunch();
             },
-            Invoke: (cmd: string, args?: Tauri.core.InvokeArgs) => {
-                return Tauri.core.invoke(cmd, args);
+            Invoke: (cmd: string, args?: T.core.InvokeArgs) => {
+                return T.core.invoke(cmd, args);
             },
             GetAllWidgets: () => {
-                return Tauri.window.Window.getAll();
+                return T.window.Window.getAll();
             },
             GetWidgetByLabel: (label: string) => {
-                return Tauri.window.Window.getByLabel(label);
+                return T.window.Window.getByLabel(label);
             },
-            CreateWidget: async (label: string, options?: Omit<Tauri.webview.WebviewOptions, 'x' | 'y' | 'width' | 'height'> & Tauri.window.WindowOptions) => {
+            CreateWidget: async (label: string, options?: Omit<T.webview.WebviewOptions, 'x' | 'y' | 'width' | 'height'> & T.window.WindowOptions) => {
                 const exist = await this.App.GetWidgetByLabel(label);
                 if (exist) {
                     await exist.show();
                     await exist.setFocus();
                     return exist;
                 } else {
-                    const widget = new Tauri.webviewWindow.WebviewWindow(label, options);
-                    widget.once(Tauri.event.TauriEvent.WINDOW_CREATED, (e) => {
-                        Tauri.event.emit(this.Event.TauriEvent.TAURI, {
+                    const widget = new T.webviewWindow.WebviewWindow(label, options);
+                    widget.once(T.event.TauriEvent.WINDOW_CREATED, (e) => {
+                        T.event.emit(this.Event.TauriEvent.TAURI, {
                             event: this.RendererEvent.WidgetCreate,
                             extra: { windowLabel: label }
                         });
                     });
-                    widget.once(Tauri.event.TauriEvent.WINDOW_DESTROYED, (e) => {
-                        Tauri.event.emit(this.Event.TauriEvent.TAURI, {
+                    widget.once(T.event.TauriEvent.WINDOW_DESTROYED, (e) => {
+                        T.event.emit(this.Event.TauriEvent.TAURI, {
                             event: this.RendererEvent.WidgetDestroy,
                             extra: { windowLabel: label }
                         });
@@ -110,67 +101,67 @@ class Renderer extends Manager {
     public get Widget() {
         return {
             Min: () => {
-                return Tauri.window.Window.getCurrent().minimize();
+                return T.window.Window.getCurrent().minimize();
             },
             Max: async () => {
-                if (await Tauri.window.Window.getCurrent().isFullscreen()) {
-                    Tauri.window.Window.getCurrent().setFullscreen(false);
-                    return Tauri.window.Window.getCurrent().setResizable(true);
+                if (await T.window.Window.getCurrent().isFullscreen()) {
+                    T.window.Window.getCurrent().setFullscreen(false);
+                    return T.window.Window.getCurrent().setResizable(true);
                 } else {
-                    Tauri.window.Window.getCurrent().setFullscreen(true);
-                    return Tauri.window.Window.getCurrent().setResizable(false);
+                    T.window.Window.getCurrent().setFullscreen(true);
+                    return T.window.Window.getCurrent().setResizable(false);
                 }
             },
             Hide: () => {
-                return Tauri.window.Window.getCurrent().hide();
+                return T.window.Window.getCurrent().hide();
             },
             Close: () => {
-                return Tauri.window.Window.getCurrent().close();
+                return T.window.Window.getCurrent().close();
             },
             Show: async () => {
-                await Tauri.window.Window.getCurrent().show();
-                return Tauri.window.Window.getCurrent().setFocus();
+                await T.window.Window.getCurrent().show();
+                return T.window.Window.getCurrent().setFocus();
             },
             Center: () => {
-                return Tauri.window.Window.getCurrent().center();
+                return T.window.Window.getCurrent().center();
             },
             SetAlwaysOnTop: (b: boolean) => {
-                return Tauri.window.Window.getCurrent().setAlwaysOnTop(b);
+                return T.window.Window.getCurrent().setAlwaysOnTop(b);
             },
             SetSize: (w: number, h: number) => {
-                return Tauri.window.Window.getCurrent().setSize(new Tauri.window.LogicalSize(w, h));
+                return T.window.Window.getCurrent().setSize(new T.window.LogicalSize(w, h));
             },
             GetSize: () => {
-                return Tauri.window.Window.getCurrent().innerSize();
+                return T.window.Window.getCurrent().innerSize();
             },
             SetPosition: (x: number, y: number) => {
-                return Tauri.window.Window.getCurrent().setPosition(new Tauri.window.LogicalPosition(x, y));
+                return T.window.Window.getCurrent().setPosition(new T.window.LogicalPosition(x, y));
             },
             GetPosition: () => {
-                return Tauri.window.Window.getCurrent().innerPosition();
+                return T.window.Window.getCurrent().innerPosition();
             },
             SetShadow: (enable: boolean) => {
-                return Tauri.window.Window.getCurrent().setShadow(enable);
+                return T.window.Window.getCurrent().setShadow(enable);
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
-                return Tauri.window.Window.getCurrent().setIgnoreCursorEvents(ignore);
+                return T.window.Window.getCurrent().setIgnoreCursorEvents(ignore);
             },
             SetFullscreen: (b: boolean) => {
-                return Tauri.window.Window.getCurrent().setFullscreen(b);
+                return T.window.Window.getCurrent().setFullscreen(b);
             },
             IsFullscreen: () => {
-                return Tauri.window.Window.getCurrent().isFullscreen();
+                return T.window.Window.getCurrent().isFullscreen();
             },
             IsMinimized: () => {
-                return Tauri.window.Window.getCurrent().isMinimized();
+                return T.window.Window.getCurrent().isMinimized();
             },
             UnMinimized: () => {
-                return Tauri.window.Window.getCurrent().unminimize();
+                return T.window.Window.getCurrent().unminimize();
             },
             SetResizable: (b: boolean) => {
-                return Tauri.window.Window.getCurrent().setResizable(b);
+                return T.window.Window.getCurrent().setResizable(b);
             },
-            Listen: Tauri.window.Window.getCurrent().listen.bind(Tauri.window.Window.getCurrent())
+            Listen: T.window.Window.getCurrent().listen.bind(T.window.Window.getCurrent())
         };
     }
 
@@ -180,24 +171,24 @@ class Renderer extends Manager {
              * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( convert 是否转换成 Webview 可使用的格式 默认 true)
              */
             GetPathByName: async (name: string, convert: boolean = true) => {
-                const base = (await Tauri.path.join(await Tauri.path.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
-                const path = convert ? Tauri.core.convertFileSrc(base) : base;
+                const base = (await T.path.join(await T.path.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
+                const path = convert ? T.core.convertFileSrc(base) : base;
                 return path;
             },
             /**
              * 将真实文件地址转换为 Webview 可使用的地址
              */
             ConvertFileSrcToTauri: (path: string) => {
-                return Tauri.core.convertFileSrc(path);
+                return T.core.convertFileSrc(path);
             },
             GetDesktopDir: () => {
-                return Tauri.path.desktopDir();
+                return T.path.desktopDir();
             },
             GetSelectResources: async (options: Record<string, unknown> = {}) => {
                 return D.open({
                     title: (options.title as string) || undefined,
                     multiple: (options.multiple as boolean) || false,
-                    defaultPath: (options.defaultPath as string) || (await Tauri.path.resourceDir()),
+                    defaultPath: (options.defaultPath as string) || (await T.path.resourceDir()),
                     directory: (options.directory as boolean) || false,
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
@@ -205,13 +196,13 @@ class Renderer extends Manager {
             GetSaveResources: async (options: Record<string, unknown>) => {
                 return D.save({
                     title: (options.title as string) || undefined,
-                    defaultPath: (options.defaultPath as string) || (await Tauri.path.resourceDir()),
+                    defaultPath: (options.defaultPath as string) || (await T.path.resourceDir()),
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
             },
             GetLocalServerProt: async () => {
                 if (this.port === -1) {
-                    return Tauri.core.invoke('GetLocalServerProt');
+                    return T.core.invoke('GetLocalServerProt');
                 } else {
                     return this.port;
                 }
@@ -285,38 +276,39 @@ class Renderer extends Manager {
     public get Tray() {
         return {
             SetTrayIcon: async (icon: string) => {
-                return this.tray.setIcon(await Tauri.image.Image.fromPath(await this.Resource.GetPathByName(icon, false)));
+                return T.core.invoke('SetTrayIcon', { icon });
             },
             SetTrayTooltip: (tooltip: string) => {
-                return this.tray.setTooltip(tooltip);
+                return T.core.invoke('SetTrayTooltip', { tooltip });
             },
-            Flash: async () => {
+            Flash: async (icon?: string) => {
                 let show = true;
+                const emptyIcon = await this.Resource.GetPathByName('Images/empty.ico', false);
                 this.flashTimer = setInterval(async () => {
                     if (show) {
-                        this.tray.setVisible(false);
+                        T.core.invoke('SetTrayIcon', { icon: emptyIcon });
                     } else {
-                        this.tray.setVisible(true);
+                        T.core.invoke('SetTrayIcon', { icon: icon || (await this.Resource.GetPathByName('Images/tray.ico', false)) });
                     }
                     show = !show;
                 }, 700);
             },
-            StopFlash: async () => {
+            StopFlash: async (icon?: string) => {
                 if (this.flashTimer) {
                     clearInterval(this.flashTimer);
                 }
-                return this.tray.setVisible(true);
+                return T.core.invoke('SetTrayIcon', { icon: icon || (await this.Resource.GetPathByName('Images/tray.ico', false)) });
             }
         };
     }
 
     public get Event() {
         return {
-            Listen: Tauri.event.listen,
-            Once: Tauri.event.once,
-            Emit: Tauri.event.emit,
+            Listen: T.event.listen,
+            Once: T.event.once,
+            Emit: T.event.emit,
             TauriEvent: {
-                ...Tauri.event.TauriEvent,
+                ...T.event.TauriEvent,
                 TAURI: 'tauri://tauri'
             }
         };
@@ -338,47 +330,8 @@ class Renderer extends Manager {
 
     public async Run() {
         this.ListenEvents();
-        await this.CreateTray();
         await this.Limit();
         await this.Process();
-    }
-
-    private async CreateTray() {
-        this.autostartMenu = await Tauri.menu.CheckMenuItem.new({
-            id: 'autostart',
-            text: '开机自启',
-            action: async () => {
-                const isAutoStart = await this.App.IsAutostart();
-                this.App.SetAutostart(!isAutoStart);
-            }
-        });
-        this.tray = await Tauri.tray.TrayIcon.new({
-            id: 'Tray',
-            tooltip: '去码头整点薯条',
-            icon: await Tauri.image.Image.fromPath(await this.Resource.GetPathByName('Images/tray.ico', false)),
-            iconAsTemplate: true,
-            menu: await Tauri.menu.Menu.new({
-                items: [
-                    this.autostartMenu,
-                    await Tauri.menu.PredefinedMenuItem.new({ item: 'Separator' }),
-                    await Tauri.menu.CheckMenuItem.new({
-                        id: 'quit',
-                        text: '退出',
-                        action: async () => {
-                            await this.App.Close();
-                        }
-                    })
-                ]
-            }),
-            action: async (event) => {
-                if (event.type === 'DoubleClick') {
-                    if (await this.Widget.IsMinimized()) {
-                        await this.Widget.UnMinimized();
-                    }
-                    await this.Widget.Show();
-                }
-            }
-        });
     }
 
     private ListenEvents() {
@@ -415,7 +368,7 @@ class Renderer extends Manager {
                 }
             });
         });
-        Tauri.window.Window.getCurrent().onCloseRequested((e) => {
+        T.window.Window.getCurrent().onCloseRequested((e) => {
             this.Emit(this.RendererEvent.CloseRequested, e as any);
         });
     }
