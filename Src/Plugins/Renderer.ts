@@ -117,6 +117,9 @@ class Renderer extends Manager {
             Close: () => {
                 return T.window.Window.getCurrent().close();
             },
+            Destroy: () => {
+                return T.window.Window.getCurrent().destroy();
+            },
             Show: async () => {
                 await T.window.Window.getCurrent().show();
                 return T.window.Window.getCurrent().setFocus();
