@@ -12,8 +12,6 @@
     "app": {
         "windows": [
             {
-                "width": 1000,
-                "height": 560,
                 "resizable": true,
                 "title": "Application",
                 "decorations": false,
