@@ -403,7 +403,7 @@ class Renderer extends Manager {
         if (await this.Resource.IsPathExists(p)) {
             const files = await this.Resource.ReadDirFiles(p);
             for (let f of files) {
-                if (f.name?.indexOf('.js') != -1) {
+                if (f.name?.indexOf('.js') !== -1) {
                     let script = document.createElement('script');
                     script.type = 'module';
                     script.src = await this.Resource.GetPathByName(`Scripts/${dir}/${f.name}`);
@@ -415,8 +415,10 @@ class Renderer extends Manager {
 
     private GetHrefDir() {
         const href = location.href;
-        if (href.indexOf('Application') != -1) {
+        if (href.indexOf('Application') !== -1) {
             return 'Application';
+        } else if (href.indexOf('Tray') !== -1) {
+            return 'Tray';
         } else {
             return 'Application';
         }

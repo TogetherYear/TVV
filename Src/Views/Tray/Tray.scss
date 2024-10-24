@@ -16,7 +16,7 @@
         display: block;
         width: calc(100% - 6px);
         left: 3px;
-        height: 26px;
+        height: 24px;
         transition: all 0.15s;
         cursor: pointer;
         border-radius: 2px;
@@ -31,7 +31,7 @@
             top: 0;
             img {
                 position: absolute;
-                height: 62%;
+                height: 70%;
                 top: 0;
                 bottom: 0;
                 left: 0;
@@ -43,9 +43,9 @@
             position: absolute;
             width: calc(100% - 32px);
             height: 100%;
-            line-height: 26px;
+            line-height: 24px;
             color: #dddddd;
-            font-size: 14px;
+            font-size: 13px;
             left: 32px;
         }
     }

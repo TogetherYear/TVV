@@ -54,7 +54,9 @@ class Tray extends Component {
     protected Destroy() {}
 
     private async SetDefault() {
-        await Renderer.Widget.SetSize(126, 68);
+        const spe = this.menu.value.filter((m) => m.key === 'Separator').length;
+        const height = (spe + 1) * 8 + (this.menu.value.length - spe) * 24;
+        await Renderer.Widget.SetSize(126, height);
     }
 
     private async SetAutostart() {
