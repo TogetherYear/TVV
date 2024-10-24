@@ -339,7 +339,7 @@ class Renderer extends Manager {
     }
 
     private ListenEvents() {
-        this.Event.Listen<Record<string, unknown>>(this.Event.TauriEvent.TAURI, async (e) => {
+        this.Widget.Listen<Record<string, unknown>>(this.Event.TauriEvent.TAURI, async (e) => {
             const r = e.payload;
             if (r.event === this.RendererEvent.WidgetCreate) {
                 this.Emit(this.RendererEvent.WidgetCreate, r);
@@ -354,7 +354,7 @@ class Renderer extends Manager {
             }
             this.Emit(this.RendererEvent.Message, r);
         });
-        this.Event.Listen<Array<string>>(this.Event.TauriEvent.DRAG_DROP, async (e) => {
+        this.Widget.Listen<Array<string>>(this.Event.TauriEvent.DRAG_DROP, async (e) => {
             this.Emit(this.RendererEvent.FileDrop, {
                 event: this.RendererEvent.FileDrop,
                 extra: {
@@ -362,7 +362,7 @@ class Renderer extends Manager {
                 }
             });
         });
-        this.Event.Listen<string>(this.Event.TauriEvent.WINDOW_THEME_CHANGED, (e) => {
+        this.Widget.Listen<string>(this.Event.TauriEvent.WINDOW_THEME_CHANGED, (e) => {
             this.Emit(this.RendererEvent.ThemeUpdate, {
                 event: this.RendererEvent.ThemeUpdate,
                 extra: {
@@ -370,13 +370,13 @@ class Renderer extends Manager {
                 }
             });
         });
-        this.Event.Listen<string>(this.Event.TauriEvent.WINDOW_FOCUS, (e) => {
+        this.Widget.Listen<string>(this.Event.TauriEvent.WINDOW_FOCUS, (e) => {
             this.Emit(this.RendererEvent.Show, {
                 event: this.RendererEvent.Show,
                 extra: {}
             });
         });
-        this.Event.Listen<string>(this.Event.TauriEvent.WINDOW_BLUR, (e) => {
+        this.Widget.Listen<string>(this.Event.TauriEvent.WINDOW_BLUR, (e) => {
             this.Emit(this.RendererEvent.Blur, {
                 event: this.RendererEvent.Blur,
                 extra: {}
