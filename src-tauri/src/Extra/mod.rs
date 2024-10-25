@@ -1,3 +1,4 @@
+pub mod Link;
 pub mod Serve;
 pub mod Setup;
 pub mod Tray;

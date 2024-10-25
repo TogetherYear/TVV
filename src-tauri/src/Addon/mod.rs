@@ -1,3 +1,4 @@
+use crate::Extra::Link;
 use crate::Extra::Serve;
 use crate::Extra::Tray;
 use tauri::generate_handler;
@@ -7,5 +8,6 @@ pub fn Generate() -> impl Fn(tauri::ipc::Invoke) -> bool {
         Serve::GetLocalServerProt,
         Tray::SetTrayIcon,
         Tray::SetTrayTooltip,
+        Link::GetDeepLinkProtocol,
     ]
 }

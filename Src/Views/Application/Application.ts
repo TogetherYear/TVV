@@ -32,11 +32,6 @@ class Application extends Component {
         await Renderer.Widget.Show();
     }
 
-    @TEvent.Listen(Renderer, Renderer.RendererEvent.SecondInstance)
-    private async OnSecondInstance() {
-        await Renderer.Widget.Show();
-    }
-
     @TEvent.Listen(Renderer, Renderer.RendererEvent.CloseRequested)
     private async OnCloseRequested(e: Event) {
         e.preventDefault();

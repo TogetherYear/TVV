@@ -10,11 +10,13 @@ import * as P from '@tauri-apps/plugin-process';
 import * as S from '@tauri-apps/plugin-shell';
 import * as T from '@tauri-apps/api';
 
-@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'SecondInstance', 'PopupTray', 'Show', 'Blur'])
+@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'SecondInstance', 'DeepLink', 'PopupTray', 'Show', 'Blur'])
 class Renderer extends Manager {
     private flashTimer = 0;
 
     private port = -1;
+
+    private protocol = '';
 
     public get App() {
         return {
@@ -67,6 +69,20 @@ class Renderer extends Manager {
                         });
                     });
                     return widget;
+                }
+            },
+            GetLocalServerProt: async () => {
+                if (this.port === -1) {
+                    return T.core.invoke('GetLocalServerProt');
+                } else {
+                    return this.port;
+                }
+            },
+            GetDeepLinkProtocol: async () => {
+                if (this.protocol === '') {
+                    return T.core.invoke('GetDeepLinkProtocol');
+                } else {
+                    return this.protocol;
                 }
             }
         };
@@ -202,15 +218,9 @@ class Renderer extends Manager {
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
             },
-            GetLocalServerProt: async () => {
-                if (this.port === -1) {
-                    return T.core.invoke('GetLocalServerProt');
-                } else {
-                    return this.port;
-                }
-            },
+
             GetFileByNameFromLocalServer: async (name: string) => {
-                return `http://localhost:${await this.Resource.GetLocalServerProt()}/Static/${name}`;
+                return `http://localhost:${await this.App.GetLocalServerProt()}/Static/${name}`;
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
@@ -286,6 +296,7 @@ class Renderer extends Manager {
             Flash: async (icon?: string) => {
                 let show = true;
                 const emptyIcon = await this.Resource.GetPathByName('Images/empty.ico', false);
+                //@ts-ignore
                 this.flashTimer = setInterval(async () => {
                     if (show) {
                         T.core.invoke('SetTrayIcon', { icon: emptyIcon });
@@ -326,6 +337,7 @@ class Renderer extends Manager {
             FileDrop: 'FileDrop',
             ThemeUpdate: 'ThemeUpdate',
             SecondInstance: 'SecondInstance',
+            DeepLink: 'DeepLink',
             PopupTray: 'PopupTray',
             Show: 'Show',
             Blur: 'Blur'
@@ -348,7 +360,9 @@ class Renderer extends Manager {
             } else if (r.event === this.RendererEvent.WidgetEmpty) {
                 this.Emit(this.RendererEvent.WidgetEmpty, r);
             } else if (r.event === this.RendererEvent.SecondInstance) {
-                this.Emit(this.RendererEvent.SecondInstance, { event: this.RendererEvent.SecondInstance, extra: {} });
+                this.Emit(this.RendererEvent.SecondInstance, r);
+            } else if (r.event === this.RendererEvent.DeepLink) {
+                this.Emit(this.RendererEvent.DeepLink, r);
             } else if (r.event === this.RendererEvent.PopupTray) {
                 this.Emit(this.RendererEvent.PopupTray, r);
             }
@@ -415,9 +429,9 @@ class Renderer extends Manager {
 
     private GetHrefDir() {
         const href = location.href;
-        if (href.indexOf('Application') !== -1) {
+        if (href.indexOf('Application') != -1) {
             return 'Application';
-        } else if (href.indexOf('Tray') !== -1) {
+        } else if (href.indexOf('Tray') != -1) {
             return 'Tray';
         } else {
             return 'Application';

@@ -88,6 +88,18 @@ class Tray extends Component {
     private async OnBlur() {
         await Renderer.Widget.Hide();
     }
+
+    @TEvent.Listen(Renderer, Renderer.RendererEvent.SecondInstance)
+    private async OnSecondInstance() {
+        const mainWindow = await Renderer.App.GetWidgetByLabel('Application');
+        await mainWindow?.show();
+        await mainWindow?.setFocus();
+    }
+
+    @TEvent.Listen(Renderer, Renderer.RendererEvent.DeepLink)
+    private async OnDeepLink(e: Record<string, unknown>) {
+        console.log(e);
+    }
 }
 
 export { Tray };

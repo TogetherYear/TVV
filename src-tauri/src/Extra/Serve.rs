@@ -57,6 +57,7 @@ async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
             .app_data(tauriApp.clone())
             .service(fs::Files::new("/Static", &path))
             .service(SecondInstance)
+            .service(DeepLink)
     })
     .bind(("127.0.0.1", PORT))
     .unwrap()
@@ -68,7 +69,7 @@ async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
 async fn SecondInstance(_req: HttpRequest, state: web::Data<TauriAppState>) -> HttpResponse {
     let app = state.app.lock().unwrap();
     app.emit_to(
-        "Application",
+        "Tray",
         "tauri://tauri",
         TauriSendRendererPayload {
             event: String::from("SecondInstance"),
@@ -77,4 +78,21 @@ async fn SecondInstance(_req: HttpRequest, state: web::Data<TauriAppState>) -> H
     )
     .unwrap();
     HttpResponse::Ok().body("SecondInstance")
+}
+
+#[get("/DeepLink")]
+async fn DeepLink(req: HttpRequest, state: web::Data<TauriAppState>) -> HttpResponse {
+    let app = state.app.lock().unwrap();
+    app.emit_to(
+        "Tray",
+        "tauri://tauri",
+        TauriSendRendererPayload {
+            event: String::from("DeepLink"),
+            extra: json!({
+                "url":&req.query_string()[4..]
+            }),
+        },
+    )
+    .unwrap();
+    HttpResponse::Ok().body("DeepLink")
 }
