@@ -73,14 +73,16 @@ class Renderer extends Manager {
             },
             GetLocalServerProt: async () => {
                 if (this.port === -1) {
-                    return T.core.invoke('GetLocalServerProt');
+                    this.port = await T.core.invoke('GetLocalServerProt');
+                    return this.port;
                 } else {
                     return this.port;
                 }
             },
             GetDeepLinkProtocol: async () => {
                 if (this.protocol === '') {
-                    return T.core.invoke('GetDeepLinkProtocol');
+                    this.protocol = await T.core.invoke('GetDeepLinkProtocol');
+                    return this.protocol;
                 } else {
                     return this.protocol;
                 }
