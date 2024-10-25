@@ -69,6 +69,8 @@ namespace TWindow {
                         currentState.value = WindowState.Default;
                         await Renderer.Widget.SetSize(parseInt(localStorage.getItem(`${name}:${this.Route}:Width`) || '1000'), parseInt(localStorage.getItem(`${name}:${this.Route}:Height`) || '560'));
                     }
+                    await Renderer.Widget.Center();
+                    await Renderer.Widget.Show();
                 }
 
                 private TWindow_State_ListenEvents() {
