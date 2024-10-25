@@ -79,6 +79,7 @@ namespace TWindow {
 
                 private OnResized(e: UIEvent) {
                     clearTimeout(this.timer);
+                    //@ts-ignore
                     this.timer = setTimeout(async () => {
                         const full = await Renderer.Widget.IsFullscreen();
                         const name = await Renderer.App.GetName();
