@@ -14,7 +14,7 @@ struct TauriAppState {
 }
 
 #[command]
-pub fn GetLocalServerProt() -> u16 {
+pub fn GetLocalServerPort() -> u16 {
     return PORT;
 }
 

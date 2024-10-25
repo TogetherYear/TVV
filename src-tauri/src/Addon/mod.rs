@@ -5,7 +5,7 @@ use tauri::generate_handler;
 
 pub fn Generate() -> impl Fn(tauri::ipc::Invoke) -> bool {
     generate_handler![
-        Serve::GetLocalServerProt,
+        Serve::GetLocalServerPort,
         Tray::SetTrayIcon,
         Tray::SetTrayTooltip,
         Link::GetDeepLinkProtocol,

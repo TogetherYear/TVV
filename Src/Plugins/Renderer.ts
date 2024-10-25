@@ -71,9 +71,9 @@ class Renderer extends Manager {
                     return widget;
                 }
             },
-            GetLocalServerProt: async () => {
+            GetLocalServerPort: async () => {
                 if (this.port === -1) {
-                    this.port = await T.core.invoke('GetLocalServerProt');
+                    this.port = await T.core.invoke('GetLocalServerPort');
                     return this.port;
                 } else {
                     return this.port;
@@ -222,7 +222,7 @@ class Renderer extends Manager {
             },
 
             GetFileByNameFromLocalServer: async (name: string) => {
-                return `http://localhost:${await this.App.GetLocalServerProt()}/Static/${name}`;
+                return `http://localhost:${await this.App.GetLocalServerPort()}/Static/${name}`;
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
