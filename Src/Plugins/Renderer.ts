@@ -14,10 +14,6 @@ import * as T from '@tauri-apps/api';
 class Renderer extends Manager {
     private flashTimer = 0;
 
-    private port = -1;
-
-    private protocol = '';
-
     public get App() {
         return {
             GetName: () => {
@@ -48,7 +44,7 @@ class Renderer extends Manager {
             GetWidgetByLabel: (label: string) => {
                 return T.window.Window.getByLabel(label);
             },
-            CreateWidget: async (label: string, options?: Omit<T.webview.WebviewOptions, 'x' | 'y' | 'width' | 'height'> & T.window.WindowOptions) => {
+            CreateCustomWidget: async (label: string, options?: Omit<T.webview.WebviewOptions, 'x' | 'y' | 'width' | 'height'> & T.window.WindowOptions) => {
                 const exist = await this.App.GetWidgetByLabel(label);
                 if (exist) {
                     await exist.show();
@@ -69,22 +65,6 @@ class Renderer extends Manager {
                         });
                     });
                     return widget;
-                }
-            },
-            GetLocalServerPort: async () => {
-                if (this.port === -1) {
-                    this.port = await T.core.invoke('GetLocalServerPort');
-                    return this.port;
-                } else {
-                    return this.port;
-                }
-            },
-            GetDeepLinkProtocol: async () => {
-                if (this.protocol === '') {
-                    this.protocol = await T.core.invoke('GetDeepLinkProtocol');
-                    return this.protocol;
-                } else {
-                    return this.protocol;
                 }
             }
         };
@@ -222,7 +202,7 @@ class Renderer extends Manager {
             },
 
             GetFileByNameFromLocalServer: async (name: string) => {
-                return `http://localhost:${await this.App.GetLocalServerPort()}/Static/${name}`;
+                return `http://localhost:${await T.core.invoke('GetLocalServerPort')}/Static/${name}`;
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
