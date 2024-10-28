@@ -2,7 +2,7 @@ use actix_files as fs;
 use actix_web::{get, middleware, web, App, HttpRequest, HttpResponse, HttpServer};
 use serde_json::json;
 use std::{sync::Mutex, thread};
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::{command, AppHandle, Emitter, Manager};
 
 use crate::Extra::TauriSendRendererPayload;
 
@@ -11,6 +11,11 @@ pub const PORT: u16 = 34290;
 
 struct TauriAppState {
     app: Mutex<AppHandle>,
+}
+
+#[command]
+pub fn GetLocalServerPort() -> u16 {
+    return PORT;
 }
 
 pub fn CreateLocalServer(app_handle: &AppHandle) {
