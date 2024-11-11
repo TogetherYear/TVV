@@ -277,7 +277,7 @@ class Renderer extends Manager {
             },
             Flash: async (icon?: string) => {
                 let show = true;
-                const emptyIcon = await this.Resource.GetPathByName('Images/empty.ico', false);
+                const emptyIcon = await this.Resource.GetPathByName('Images/icon.ico', false);
                 //@ts-ignore
                 this.flashTimer = setInterval(async () => {
                     if (show) {
