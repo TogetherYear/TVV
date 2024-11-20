@@ -32,7 +32,7 @@ namespace TTool {
                     super(...args);
                     this.TTool_Generate_Debounce();
                     this.TTool_Generate_Throttle();
-                    this.TTool_Generaye_Retry();
+                    this.TTool_Generate_Retry();
                     this.TTool_Generate_MountRange();
                     this.TTool_Generate_MountLength();
                     this.TTool_Generate_MountWatch();
@@ -123,7 +123,7 @@ namespace TTool {
                     }
                 }
 
-                private TTool_Generaye_Retry() {
+                private TTool_Generate_Retry() {
                     //@ts-ignore
                     const retry = (this['tTool_Retry_Need'] || []) as Array<{
                         retryCount: number | ((instance: Object) => number);
@@ -153,7 +153,7 @@ namespace TTool {
                                 const count = typeof r.retryCount === 'function' ? r.retryCount(this) : r.retryCount;
                                 for (let i = 0; i < count; ++i) {
                                     const result = await temp(...args);
-                                    if (i === count - 1) {
+                                    if (i === count - 1 || r.PassRetryCondition(result.data)) {
                                         result.type === 'Success' ? resolve(result.data) : reject(result.data);
                                         break;
                                     }
