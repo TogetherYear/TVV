@@ -18,5 +18,11 @@ namespace I {
             Light = 'Light'
         }
     }
+
+    export type LocalStoreKey = {
+        Account: string;
+        Password: string;
+        Token: string;
+    };
 }
 export { I };

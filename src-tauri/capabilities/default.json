@@ -86,6 +86,21 @@
         "clipboard-manager:default",
         "clipboard-manager:allow-write-text",
         "clipboard-manager:allow-read-text",
+
+        "http:default",
+        "http:allow-fetch",
+        "http:allow-fetch-cancel",
+        "http:allow-fetch-read-body",
+        "http:allow-fetch-send",
+
+        {
+            "identifier":"http:default",
+            "allow": [
+                {"url": "https://**"},
+                {"url": "http://**"},
+                {"url":"http://localhost:34290/**"}
+            ]
+        },
         
         {
             "identifier": "fs:scope",
