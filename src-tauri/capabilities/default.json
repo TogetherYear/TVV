@@ -37,8 +37,6 @@
         "core:window:allow-start-dragging",
         "core:window:allow-create",
         "core:window:allow-destroy",
-        "core:window:allow-theme",
-        "core:window:allow-set-theme",
 
         "core:webview:allow-create-webview-window",
 

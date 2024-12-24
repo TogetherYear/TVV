@@ -162,12 +162,6 @@ class Renderer extends Manager {
             SetResizable: (b: boolean) => {
                 return T.window.Window.getCurrent().setResizable(b);
             },
-            GetTheme: () => {
-                return T.window.Window.getCurrent().theme();
-            },
-            SetTheme: (b: T.window.Theme) => {
-                return T.window.Window.getCurrent().setTheme(b);
-            },
             Listen: T.window.Window.getCurrent().listen.bind(T.window.Window.getCurrent())
         };
     }
