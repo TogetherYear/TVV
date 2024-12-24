@@ -8,7 +8,9 @@
     ],
     "permissions": [
         "core:default",
+
         "core:app:allow-name",
+
         "core:window:allow-get-all-windows",
         "core:window:allow-show",
         "core:window:allow-set-focus",
@@ -35,14 +37,20 @@
         "core:window:allow-start-dragging",
         "core:window:allow-create",
         "core:window:allow-destroy",
+        "core:window:allow-theme",
+        "core:window:allow-set-theme",
+
         "core:webview:allow-create-webview-window",
+
         "core:path:allow-join",
+
         "core:tray:allow-new",
         "core:tray:allow-set-icon",
         "core:tray:allow-set-icon-as-template",
         "core:tray:allow-set-menu",
         "core:tray:allow-set-tooltip",
         "core:tray:allow-set-visible",
+
         "core:event:allow-emit",
         "core:event:allow-emit-to",
         "core:event:allow-listen",
