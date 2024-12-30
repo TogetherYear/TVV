@@ -1,14 +1,9 @@
 import { Component } from '@/Libs/Component';
 import { Renderer } from '@/Plugins/Renderer';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 
 namespace TWindow {
     let init = false;
-
-    export const enum WindowState {
-        Default,
-        Full
-    }
 
     export function Generate() {
         return function <T extends new (...args: Array<any>) => Component>(C: T) {
