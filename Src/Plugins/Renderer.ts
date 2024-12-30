@@ -97,17 +97,18 @@ class Renderer extends Manager {
 
     public get Widget() {
         return {
-            Min: () => {
+            Minimize: () => {
                 return T.window.Window.getCurrent().minimize();
             },
             Max: async () => {
-                if (await T.window.Window.getCurrent().isFullscreen()) {
-                    T.window.Window.getCurrent().setFullscreen(false);
-                    return T.window.Window.getCurrent().setResizable(true);
+                if (await T.window.Window.getCurrent().isMaximized()) {
+                    return T.window.Window.getCurrent().unmaximize();
                 } else {
-                    T.window.Window.getCurrent().setFullscreen(true);
-                    return T.window.Window.getCurrent().setResizable(false);
+                    return T.window.Window.getCurrent().maximize();
                 }
+            },
+            IsMaximized: () => {
+                return T.window.Window.getCurrent().isMaximized();
             },
             Hide: () => {
                 return T.window.Window.getCurrent().hide();
@@ -145,21 +146,6 @@ class Renderer extends Manager {
             },
             SetIgnoreCursorEvents: (ignore: boolean) => {
                 return T.window.Window.getCurrent().setIgnoreCursorEvents(ignore);
-            },
-            SetFullscreen: (b: boolean) => {
-                return T.window.Window.getCurrent().setFullscreen(b);
-            },
-            IsFullscreen: () => {
-                return T.window.Window.getCurrent().isFullscreen();
-            },
-            IsMinimized: () => {
-                return T.window.Window.getCurrent().isMinimized();
-            },
-            UnMinimized: () => {
-                return T.window.Window.getCurrent().unminimize();
-            },
-            SetResizable: (b: boolean) => {
-                return T.window.Window.getCurrent().setResizable(b);
             },
             Listen: T.window.Window.getCurrent().listen.bind(T.window.Window.getCurrent())
         };

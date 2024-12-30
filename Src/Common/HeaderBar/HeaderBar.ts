@@ -19,7 +19,7 @@ class HeaderBar extends Component {
 
     public async OnOptionClick(btn: string) {
         if (btn === 'Min') {
-            await Renderer.Widget.Min();
+            await Renderer.Widget.Minimize();
         } else if (btn === 'Max') {
             await Renderer.Widget.Max();
         } else if (btn === 'Hide') {

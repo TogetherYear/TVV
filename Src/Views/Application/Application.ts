@@ -15,7 +15,9 @@ class Application extends Component {
     }
 
     public Run() {
-        onMounted(() => {});
+        onMounted(async () => {
+            await this.SetDefault();
+        });
 
         onUnmounted(async () => {
             await Renderer.GlobalShortcut.UnregisterAll();
@@ -24,6 +26,10 @@ class Application extends Component {
     }
 
     protected Destroy() {}
+
+    private async SetDefault() {
+        await Renderer.Widget.SetShadow(true);
+    }
 
     @TEvent.Listen(Renderer, Renderer.RendererEvent.CloseRequested)
     private async OnCloseRequested(e: Event) {
