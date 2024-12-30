@@ -6,7 +6,6 @@ import * as C from '@tauri-apps/plugin-clipboard-manager';
 import * as D from '@tauri-apps/plugin-dialog';
 import * as F from '@tauri-apps/plugin-fs';
 import * as G from '@tauri-apps/plugin-global-shortcut';
-import * as H from '@tauri-apps/plugin-http';
 import * as P from '@tauri-apps/plugin-process';
 import * as S from '@tauri-apps/plugin-shell';
 import * as T from '@tauri-apps/api';
@@ -324,12 +323,6 @@ class Renderer extends Manager {
             PopupTray: 'PopupTray',
             Show: 'Show',
             Blur: 'Blur'
-        };
-    }
-
-    public get Request() {
-        return {
-            Fetch: H.fetch
         };
     }
 
