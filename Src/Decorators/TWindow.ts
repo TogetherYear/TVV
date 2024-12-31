@@ -3,7 +3,7 @@ import { Renderer } from '@/Plugins/Renderer';
 import { onMounted, onUnmounted } from 'vue';
 
 namespace TWindow {
-    let init = false;
+    let state = false;
 
     export function Generate() {
         return function <T extends new (...args: Array<any>) => Component>(C: T) {
@@ -26,7 +26,8 @@ namespace TWindow {
             return class extends C {
                 constructor(...args: Array<any>) {
                     super(...args);
-                    if (!init) {
+                    if (!state) {
+                        state = true;
                         this.TWindow_State_Hooks();
                     }
                 }
@@ -36,7 +37,6 @@ namespace TWindow {
                 private timer = -1;
 
                 private TWindow_State_Hooks() {
-                    init = true;
                     onMounted(async () => {
                         await this.TWindow_State_SetDefault();
                         this.TWindow_State_ListenEvents();
