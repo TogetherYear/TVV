@@ -186,7 +186,6 @@ class Renderer extends Manager {
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
             },
-
             GetFileByNameFromLocalServer: async (name: string) => {
                 return `http://localhost:${await T.core.invoke('GetLocalServerPort')}/Static/${name}`;
             },
