@@ -119,6 +119,10 @@ class Renderer extends Manager {
             Close: () => {
                 return W.appWindow.close();
             },
+            Destroy: () => {
+                W.appWindow.onCloseRequested(() => {});
+                return W.appWindow.close();
+            },
             Show: async () => {
                 await W.appWindow.show();
                 return W.appWindow.setFocus();
