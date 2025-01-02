@@ -10,7 +10,7 @@ import * as P from '@tauri-apps/plugin-process';
 import * as S from '@tauri-apps/plugin-shell';
 import * as T from '@tauri-apps/api';
 
-@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'SecondInstance', 'DeepLink', 'PopupTray', 'Show', 'Blur'])
+@TEvent.Create(['WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'SecondInstance', 'DeepLink', 'PopupTray', 'Show', 'Blur'])
 class Renderer extends Manager {
     private flashTimer = 0;
 
@@ -297,7 +297,6 @@ class Renderer extends Manager {
 
     public get RendererEvent() {
         return {
-            Message: 'Message',
             WidgetCreate: 'WidgetCreate',
             WidgetDestroy: 'WidgetDestroy',
             CloseRequested: 'CloseRequested',
@@ -334,7 +333,6 @@ class Renderer extends Manager {
             } else if (r.event === this.RendererEvent.PopupTray) {
                 this.Emit(this.RendererEvent.PopupTray, r);
             }
-            this.Emit(this.RendererEvent.Message, r);
         });
         this.Widget.Listen<Array<string>>(this.Event.TauriEvent.DRAG_DROP, async (e) => {
             this.Emit(this.RendererEvent.FileDrop, {
