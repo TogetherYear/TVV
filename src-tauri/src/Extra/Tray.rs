@@ -1,17 +1,10 @@
 use serde_json::json;
-use tauri::{
-    command, AppHandle, CustomMenuItem, Icon, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,
-};
+use tauri::{command, AppHandle, Icon, Manager, SystemTray, SystemTrayEvent};
 
 use super::TauriSendRendererPayload;
 
 pub fn Build() -> SystemTray {
-    SystemTray::new().with_tooltip("去码头整点薯条").with_menu(
-        SystemTrayMenu::new()
-            .add_item(CustomMenuItem::new("autostart", "开机自启"))
-            .add_native_item(tauri::SystemTrayMenuItem::Separator)
-            .add_item(CustomMenuItem::new("quit", "退出")),
-    )
+    SystemTray::new().with_tooltip("去码头整点薯条")
 }
 
 pub fn OnEvent(app: &AppHandle, event: SystemTrayEvent) {
@@ -29,31 +22,27 @@ pub fn OnEvent(app: &AppHandle, event: SystemTrayEvent) {
             }
             window.set_focus().unwrap();
         }
-        SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-            "autostart" => app
-                .emit_to(
-                    "Application",
-                    "tauri://tauri",
-                    TauriSendRendererPayload {
-                        event: String::from("UpdateAutoStart"),
-                        extra: json!({}),
-                    },
-                )
-                .unwrap(),
-            "quit" => app.exit(0),
-            _ => {}
-        },
+        SystemTrayEvent::RightClick {
+            tray_id: _,
+            position,
+            size: _,
+            ..
+        } => {
+            app.emit_to(
+                "Tray",
+                "tauri://tauri",
+                TauriSendRendererPayload {
+                    event: String::from("PopupTray"),
+                    extra: json!({
+                        "x": position.x,
+                        "y": position.y,
+                    }),
+                },
+            )
+            .unwrap();
+        }
         _ => {}
     }
-}
-
-#[command]
-pub fn UpdateAutostartFlag(app_handle: tauri::AppHandle, flag: bool) {
-    app_handle
-        .tray_handle()
-        .get_item("autostart")
-        .set_selected(flag)
-        .unwrap();
 }
 
 #[command]

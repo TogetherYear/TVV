@@ -60,15 +60,10 @@ namespace TWindow {
 
                 private async TWindow_State_SetDefault() {
                     const name = await Renderer.App.GetName();
-                    const full = localStorage.getItem(`${name}:${this.Route}:Full`) || '0';
-                    if (full === '1') {
-                        currentState.value = WindowState.Full;
-                        await Renderer.Widget.SetFullscreen(true);
-                        await Renderer.Widget.SetResizable(false);
-                    } else {
-                        currentState.value = WindowState.Default;
-                        await Renderer.Widget.SetSize(parseInt(localStorage.getItem(`${name}:${this.Route}:Width`) || '1000'), parseInt(localStorage.getItem(`${name}:${this.Route}:Height`) || '560'));
-                    }
+                    currentState.value = WindowState.Default;
+                    await Renderer.Widget.SetSize(parseInt(localStorage.getItem(`${name}:${this.Route}:Width`) || '1000'), parseInt(localStorage.getItem(`${name}:${this.Route}:Height`) || '560'));
+                    await Renderer.Widget.Center();
+                    await Renderer.Widget.Show();
                 }
 
                 private TWindow_State_ListenEvents() {
@@ -80,12 +75,12 @@ namespace TWindow {
                 private OnResized(e: UIEvent) {
                     clearTimeout(this.timer);
                     this.timer = setTimeout(async () => {
-                        const full = await Renderer.Widget.IsFullscreen();
                         const name = await Renderer.App.GetName();
-                        currentState.value = full ? WindowState.Full : WindowState.Default;
-                        localStorage.setItem(`${name}:${this.Route}:Full`, `${full ? '1' : '0'}`);
-                        localStorage.setItem(`${name}:${this.Route}:Width`, `${window.innerWidth}`);
-                        localStorage.setItem(`${name}:${this.Route}:Height`, `${window.innerHeight}`);
+                        currentState.value = (await Renderer.Widget.IsFullscreen()) ? WindowState.Full : WindowState.Default;
+                        if (!(await Renderer.Widget.IsFullscreen())) {
+                            localStorage.setItem(`${name}:${this.Route}:Width`, `${window.innerWidth}`);
+                            localStorage.setItem(`${name}:${this.Route}:Height`, `${window.innerHeight}`);
+                        }
                     }, 300);
                 }
             };

@@ -28,15 +28,7 @@ class Application extends Component {
     protected Destroy() {}
 
     private async SetDefault() {
-        Renderer.App.UpdateAutostartFlag(await Renderer.App.IsAutostart());
         await Renderer.Widget.SetShadow(true);
-        await Renderer.Widget.Center();
-        await Renderer.Widget.Show();
-    }
-
-    @TEvent.Listen(Renderer, Renderer.RendererEvent.SecondInstance)
-    private async OnSecondInstance() {
-        await Renderer.Widget.Show();
     }
 
     @TEvent.Listen(Renderer, Renderer.RendererEvent.CloseRequested)

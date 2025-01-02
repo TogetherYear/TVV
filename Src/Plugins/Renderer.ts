@@ -13,11 +13,9 @@ import * as W from '@tauri-apps/api/window';
 import { Manager } from '@/Libs/Manager';
 import { TEvent } from '@/Decorators/TEvent';
 
-@TEvent.Create(['Message', 'WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'UpdateAutoStart', 'SecondInstance'])
+@TEvent.Create(['WidgetCreate', 'WidgetDestroy', 'CloseRequested', 'WidgetEmpty', 'FileDrop', 'ThemeUpdate', 'SecondInstance', 'PopupTray', 'Show', 'Blur'])
 class Renderer extends Manager {
     private flashTimer = 0;
-
-    private port = -1;
 
     public get App() {
         return {
@@ -27,18 +25,11 @@ class Renderer extends Manager {
             IsAutostart: () => {
                 return A.isEnabled();
             },
-            UpdateAutostartFlag: (flag: boolean) => {
-                return T.invoke('UpdateAutostartFlag', { flag });
-            },
-            SetAutostart: async (b: boolean) => {
-                const current = await this.App.IsAutostart();
-                console.log(current);
-                if (current && !b) {
-                    await A.disable();
-                    return this.App.UpdateAutostartFlag(false);
-                } else if (!current && b) {
-                    await A.enable();
-                    return this.App.UpdateAutostartFlag(true);
+            SetAutostart: async (flag: boolean) => {
+                if (flag) {
+                    return A.enable();
+                } else {
+                    return A.disable();
                 }
             },
             Close: () => {
@@ -172,7 +163,7 @@ class Renderer extends Manager {
     public get Resource() {
         return {
             /**
-             * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/icon.ico ( convert 是否转换成 Webview 可使用的格式 默认 true)
+             * 通过名称获取文件路径 ( 仅限 Extra 文件夹 ) 例如: Images/tray.ico ( convert 是否转换成 Webview 可使用的格式 默认 true)
              */
             GetPathByName: async (name: string, convert: boolean = true) => {
                 const base = (await Pa.join(await Pa.resourceDir(), '/Extra/', name)).replace('\\\\?\\', '').replaceAll('\\', '/').replaceAll('//', '/');
@@ -204,15 +195,8 @@ class Renderer extends Manager {
                     filters: (options.filters as Array<D.DialogFilter>) || undefined
                 });
             },
-            GetLocalServerProt: async () => {
-                if (this.port === -1) {
-                    return T.invoke('GetLocalServerProt');
-                } else {
-                    return this.port;
-                }
-            },
             GetFileByNameFromLocalServer: async (name: string) => {
-                return `http://localhost:${await this.Resource.GetLocalServerProt()}/Static/${name}`;
+                return `http://localhost:${await T.invoke('GetLocalServerProt')}/Static/${name}`;
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
@@ -301,7 +285,7 @@ class Renderer extends Manager {
             },
             Flash: async (icon: string) => {
                 let show = true;
-                const emptyIcon = await this.Resource.GetPathByName('Images/empty.ico', false);
+                const emptyIcon = await this.Resource.GetPathByName('Images/tray.ico', false);
                 this.flashTimer = setInterval(() => {
                     if (show) {
                         T.invoke('SetTrayIcon', { icon: emptyIcon });
@@ -334,15 +318,16 @@ class Renderer extends Manager {
 
     public get RendererEvent() {
         return {
-            Message: 'Message',
             WidgetCreate: 'WidgetCreate',
             WidgetDestroy: 'WidgetDestroy',
             CloseRequested: 'CloseRequested',
             WidgetEmpty: 'WidgetEmpty',
             FileDrop: 'FileDrop',
             ThemeUpdate: 'ThemeUpdate',
-            UpdateAutoStart: 'UpdateAutoStart',
-            SecondInstance: 'SecondInstance'
+            SecondInstance: 'SecondInstance',
+            PopupTray: 'PopupTray',
+            Show: 'Show',
+            Blur: 'Blur'
         };
     }
 
@@ -361,14 +346,11 @@ class Renderer extends Manager {
                 this.Emit(this.RendererEvent.WidgetDestroy, r);
             } else if (r.event === this.RendererEvent.WidgetEmpty) {
                 this.Emit(this.RendererEvent.WidgetEmpty, r);
-            } else if (r.event === this.RendererEvent.UpdateAutoStart) {
-                const isAutoStart = await this.App.IsAutostart();
-                this.App.SetAutostart(!isAutoStart);
-                this.Emit(this.RendererEvent.UpdateAutoStart, { event: this.RendererEvent.UpdateAutoStart, extra: { flag: !isAutoStart } });
             } else if (r.event === this.RendererEvent.SecondInstance) {
                 this.Emit(this.RendererEvent.SecondInstance, { event: this.RendererEvent.SecondInstance, extra: {} });
+            } else if (r.event === this.RendererEvent.PopupTray) {
+                this.Emit(this.RendererEvent.PopupTray, r);
             }
-            this.Emit(this.RendererEvent.Message, r);
         });
         this.Widget.Listen<Array<string>>(this.Event.TauriEvent.WINDOW_FILE_DROP, async (e) => {
             this.Emit(this.RendererEvent.FileDrop, {
@@ -384,6 +366,18 @@ class Renderer extends Manager {
                 extra: {
                     current: e.payload
                 }
+            });
+        });
+        this.Widget.Listen<string>(this.Event.TauriEvent.WINDOW_FOCUS, (e) => {
+            this.Emit(this.RendererEvent.Show, {
+                event: this.RendererEvent.Show,
+                extra: {}
+            });
+        });
+        this.Widget.Listen<string>(this.Event.TauriEvent.WINDOW_BLUR, (e) => {
+            this.Emit(this.RendererEvent.Blur, {
+                event: this.RendererEvent.Blur,
+                extra: {}
             });
         });
         W.appWindow.onCloseRequested((e) => {

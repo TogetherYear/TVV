@@ -9,7 +9,6 @@ pub fn Generate() -> impl Fn(tauri::Invoke) {
         Widget::SetShadow,
         Tray::SetTrayIcon,
         Tray::SetTrayTooltip,
-        Tray::UpdateAutostartFlag,
         Serve::GetLocalServerProt,
     ]
 }

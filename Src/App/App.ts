@@ -1,4 +1,5 @@
 import { Manager } from '@/Libs/Manager';
+import { Theme } from '@/Theme/Theme';
 import { onMounted, onUnmounted } from 'vue';
 
 class App extends Manager {
@@ -9,6 +10,7 @@ class App extends Manager {
     public InitHooks() {}
 
     public Run() {
+        Theme.LoadTheme('Dark');
         onMounted(() => {});
 
         onUnmounted(() => {

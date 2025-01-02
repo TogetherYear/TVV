@@ -1,6 +1,6 @@
 import { Component } from '@/Libs/Component';
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
-import { RouteLocationNormalizedGeneric, RouteRecordNormalized, RouteRecordRaw, useRoute } from 'vue-router';
+import { RouteLocationNormalizedGeneric, RouteRecordNormalized, RouteRecordRaw } from 'vue-router';
 
 namespace TRouter {
     /**
@@ -42,6 +42,11 @@ namespace TRouter {
                 visibility: true
             },
             component: () => import('@/Views/Application/Application.vue')
+        },
+        {
+            path: '/Tray',
+            name: 'Tray',
+            component: () => import('@/Views/Tray/Tray.vue')
         }
     ];
 
@@ -144,7 +149,28 @@ namespace TRouter {
      */
     let isLoad = false;
 
-    export function RefreshRoute(to: RouteLocationNormalizedGeneric, from: RouteLocationNormalizedGeneric) {
+    export const requestAbort: Array<AbortController> = [];
+
+    export function BeforeRouteHandler(to: RouteLocationNormalizedGeneric, from: RouteLocationNormalizedGeneric) {
+        RequestCancelHandler();
+    }
+
+    function RequestCancelHandler() {
+        if (isLoad) {
+            for (let ra of requestAbort) {
+                if (!ra.signal.aborted) {
+                    ra.abort();
+                }
+            }
+            requestAbort.splice(0, requestAbort.length);
+        }
+    }
+
+    export function AfterRouteHandler(to: RouteLocationNormalizedGeneric, from: RouteLocationNormalizedGeneric) {
+        HistoryAndQueryHandler(to, from);
+    }
+
+    export function HistoryAndQueryHandler(to: RouteLocationNormalizedGeneric, from: RouteLocationNormalizedGeneric) {
         lastPath.value = from.path;
         currentPath.value = to.path;
         const index = routeHistory.value.findIndex((r) => r.path === to.path);
@@ -157,8 +183,7 @@ namespace TRouter {
             activeView.module = current.module;
             activeView.duty = current.duty;
         }
-        const route = useRoute();
-        currentQuery = { ...route.query };
+        currentQuery = { ...to.query };
     }
 
     /**
@@ -185,8 +210,9 @@ namespace TRouter {
 
                 private TRouter_Generate_EmitFrom() {
                     //@ts-ignore
-                    const from = (this['tRouter_From_NeedCreate'] || []) as Array<{ funcName: string; from: string | ((instance: Object) => string) }>;
+                    const from = (this['tRouter_From_NeedCreate'] || []) as Array<{ funcName: string; from: string | ((instance: T) => string) }>;
                     for (let f of from) {
+                        //@ts-ignore
                         if (lastPath.value.indexOf(typeof f.from === 'function' ? f.from(this) : f.from) !== -1) {
                             //@ts-ignore
                             this[`${f.funcName}`]();
@@ -196,8 +222,9 @@ namespace TRouter {
 
                 private TRouter_Generate_EmitTo() {
                     //@ts-ignore
-                    const to = (this['tRouter_To_NeedCreate'] || []) as Array<{ funcName: string; to: string | ((instance: Object) => string) }>;
+                    const to = (this['tRouter_To_NeedCreate'] || []) as Array<{ funcName: string; to: string | ((instance: T) => string) }>;
                     for (let t of to) {
+                        //@ts-ignore
                         if (currentPath.value.indexOf(typeof t.to === 'function' ? t.to(this) : t.to) !== -1) {
                             //@ts-ignore
                             this[`${t.funcName}`]();
@@ -220,7 +247,7 @@ namespace TRouter {
      * 如果从 from 路由进来 会触发的函数 我会进行匹配 只要传入参数被包含在路由中 触发函数不支持传参 ( from 为 '/' 即只要进来就会触发)
      */
     export function WhenFrom<T extends Component>(from: string | ((instance: T) => string)) {
-        return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+        return function (target: T, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
             //@ts-ignore
             if (target['tRouter_From_NeedCreate']) {
                 //@ts-ignore
@@ -244,7 +271,7 @@ namespace TRouter {
      * 如果进入 to 路由 会触发的函数 我会进行匹配 只要传入参数被包含在路由中 触发函数不支持传参 ( To 为 '/' 即只要离开就会触发)
      */
     export function WhenTo<T extends Component>(to: string | ((instance: T) => string)) {
-        return function (target: Object, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
+        return function (target: T, propertyKey: string | symbol, descriptor: PropertyDescriptor) {
             //@ts-ignore
             if (target['tRouter_To_NeedCreate']) {
                 //@ts-ignore

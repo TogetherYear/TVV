@@ -1,10 +1,10 @@
 use port_check::is_local_ipv4_port_free;
-use tauri::{api::http::HttpRequestBuilder, App};
+use tauri::{api::http::HttpRequestBuilder, App, Manager};
 
 use super::Serve::{self, PORT};
 
 pub fn Init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
-    Serve::CreateLocalServer(app);
+    Serve::CreateLocalServer(app.app_handle());
     Ok(())
 }
 
