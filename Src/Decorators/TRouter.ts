@@ -196,8 +196,6 @@ namespace TRouter {
                 private TRouter_Generate_Loading() {
                     if (!isLoad) {
                         isLoad = true;
-                        //@ts-ignore
-                        window.HideLoading();
                     }
                 }
             };
