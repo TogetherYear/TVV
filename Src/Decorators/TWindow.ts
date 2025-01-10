@@ -1,19 +1,9 @@
 import { Component } from '@/Libs/Component';
 import { Renderer } from '@/Plugins/Renderer';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 
 namespace TWindow {
-    let init = false;
-
-    export const enum WindowState {
-        Default,
-        Full
-    }
-
-    /**
-     * 当前窗口状态
-     */
-    export let currentState = ref<WindowState>(WindowState.Default);
+    let state = false;
 
     export function Generate() {
         return function <T extends new (...args: Array<any>) => Component>(C: T) {
@@ -36,7 +26,8 @@ namespace TWindow {
             return class extends C {
                 constructor(...args: Array<any>) {
                     super(...args);
-                    if (!init) {
+                    if (!state) {
+                        state = true;
                         this.TWindow_State_Hooks();
                     }
                 }
@@ -46,7 +37,6 @@ namespace TWindow {
                 private timer = -1;
 
                 private TWindow_State_Hooks() {
-                    init = true;
                     onMounted(async () => {
                         await this.TWindow_State_SetDefault();
                         this.TWindow_State_ListenEvents();
@@ -60,7 +50,6 @@ namespace TWindow {
 
                 private async TWindow_State_SetDefault() {
                     const name = await Renderer.App.GetName();
-                    currentState.value = WindowState.Default;
                     await Renderer.Widget.SetSize(parseInt(localStorage.getItem(`${name}:${this.Route}:Width`) || '1000'), parseInt(localStorage.getItem(`${name}:${this.Route}:Height`) || '560'));
                     await Renderer.Widget.Center();
                     await Renderer.Widget.Show();
@@ -74,9 +63,9 @@ namespace TWindow {
 
                 private OnResized(e: UIEvent) {
                     clearTimeout(this.timer);
+                    //@ts-ignore
                     this.timer = setTimeout(async () => {
                         const name = await Renderer.App.GetName();
-                        currentState.value = (await Renderer.Widget.IsFullscreen()) ? WindowState.Full : WindowState.Default;
                         if (!(await Renderer.Widget.IsFullscreen())) {
                             localStorage.setItem(`${name}:${this.Route}:Width`, `${window.innerWidth}`);
                             localStorage.setItem(`${name}:${this.Route}:Height`, `${window.innerHeight}`);
