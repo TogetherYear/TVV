@@ -68,7 +68,7 @@ async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
 async fn SecondInstance(_req: HttpRequest, state: web::Data<TauriAppState>) -> HttpResponse {
     let app = state.app.lock().unwrap();
     app.emit_to(
-        "Application",
+        "Tray",
         "tauri://tauri",
         TauriSendRendererPayload {
             event: String::from("SecondInstance"),
