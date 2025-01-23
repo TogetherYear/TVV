@@ -288,6 +288,7 @@ dependencies = [
  "actix-files",
  "actix-web",
  "port_check",
+ "reqwest",
  "serde",
  "serde_json",
  "tauri",
