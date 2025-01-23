@@ -64,7 +64,7 @@ async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
     .await
 }
 
-#[get("/SecondInstance")]
+#[get("/secondinstance")]
 async fn SecondInstance(_req: HttpRequest, state: web::Data<TauriAppState>) -> HttpResponse {
     let app = state.app.lock().unwrap();
     app.emit_to(

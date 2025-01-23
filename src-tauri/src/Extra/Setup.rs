@@ -15,7 +15,7 @@ pub fn IsExistApp() -> bool {
 pub async fn FocusFirstApp() {
     let client = tauri::api::http::ClientBuilder::new().build().unwrap();
     let request =
-        HttpRequestBuilder::new("GET", format!("http://localhost:{}/SecondInstance", PORT))
+        HttpRequestBuilder::new("GET", format!("http://localhost:{}/secondinstance", PORT))
             .unwrap();
     let _ = client.send(request).await;
 }
