@@ -65,7 +65,7 @@ async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
     .await
 }
 
-#[get("/SecondInstance")]
+#[get("/secondinstance")]
 async fn SecondInstance(_req: HttpRequest, state: web::Data<TauriAppState>) -> HttpResponse {
     let app = state.app.lock().unwrap();
     app.emit_to(
@@ -80,7 +80,7 @@ async fn SecondInstance(_req: HttpRequest, state: web::Data<TauriAppState>) -> H
     HttpResponse::Ok().body("SecondInstance")
 }
 
-#[get("/DeepLink")]
+#[get("/deeplink")]
 async fn DeepLink(req: HttpRequest, state: web::Data<TauriAppState>) -> HttpResponse {
     let app = state.app.lock().unwrap();
     app.emit_to(

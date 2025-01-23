@@ -25,7 +25,7 @@ pub async fn FocusFirstApp() {
             .build()
             .unwrap()
             .get(format!(
-                "http://localhost:{}/DeepLink?url={}",
+                "http://localhost:{}/deeplink?url={}",
                 PORT, argvs[1]
             ))
             .send()
@@ -34,7 +34,7 @@ pub async fn FocusFirstApp() {
         let _ = tauri_plugin_http::reqwest::ClientBuilder::new()
             .build()
             .unwrap()
-            .get(format!("http://localhost:{}/SecondInstance", PORT))
+            .get(format!("http://localhost:{}/secondinstance", PORT))
             .send()
             .await;
     }
