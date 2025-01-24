@@ -58,6 +58,10 @@
             },
             "dialog": {
                 "all": true
+            },
+            "http": {
+                "all": true,
+                "scope": ["https://**","http://**"]
             }
         },
         "bundle": {
