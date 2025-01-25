@@ -55,7 +55,7 @@ async fn ActixServer(app: AppHandle) -> std::io::Result<()> {
                     .add(("Cross-Origin-Opener-Policy", "same-origin")),
             )
             .app_data(tauriApp.clone())
-            .service(fs::Files::new("/Static", &path))
+            .service(fs::Files::new("/static", &path))
             .service(SecondInstance)
             .service(DeepLink)
     })
