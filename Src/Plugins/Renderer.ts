@@ -200,7 +200,7 @@ class Renderer extends Manager {
                 });
             },
             GetFileByNameFromLocalServer: async (name: string) => {
-                return `http://localhost:${await T.invoke('GetLocalServerProt')}/Static/${name}`;
+                return `http://localhost:${await T.invoke('GetLocalServerProt')}/static/${name}`;
             },
             ReadStringFromFile: (path: string) => {
                 return F.readTextFile(path);
