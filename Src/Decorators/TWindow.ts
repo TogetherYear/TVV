@@ -1,9 +1,11 @@
 import { Component } from '@/Libs/Component';
 import { Renderer } from '@/Plugins/Renderer';
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 namespace TWindow {
     let state = false;
+
+    export const full = ref(false);
 
     export function Generate() {
         return function <T extends new (...args: Array<any>) => Component>(C: T) {
@@ -69,6 +71,9 @@ namespace TWindow {
                         if (!(await Renderer.Widget.IsFullscreen())) {
                             localStorage.setItem(`${name}:${this.Route}:Width`, `${window.innerWidth}`);
                             localStorage.setItem(`${name}:${this.Route}:Height`, `${window.innerHeight}`);
+                            full.value = false;
+                        } else {
+                            full.value = true;
                         }
                     }, 300);
                 }
