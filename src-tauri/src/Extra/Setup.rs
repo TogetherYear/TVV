@@ -1,4 +1,5 @@
 use port_check::is_local_ipv4_port_free;
+use reqwest::Client;
 use tauri::{App, Manager};
 
 use super::{
@@ -21,21 +22,12 @@ pub fn IsExistApp() -> bool {
 pub async fn FocusFirstApp() {
     let argvs: Vec<String> = std::env::args().collect();
     if argvs.len() > 1 {
-        let _ = tauri_plugin_http::reqwest::ClientBuilder::new()
-            .build()
-            .unwrap()
-            .get(format!(
-                "http://localhost:{}/DeepLink?url={}",
-                PORT, argvs[1]
-            ))
-            .send()
-            .await;
+        let client = Client::new();
+        let url = format!("http://localhost:{}/deeplink?url={}", PORT, argvs[1]);
+        let _ = client.get(&url).send().await;
     } else {
-        let _ = tauri_plugin_http::reqwest::ClientBuilder::new()
-            .build()
-            .unwrap()
-            .get(format!("http://localhost:{}/SecondInstance", PORT))
-            .send()
-            .await;
+        let client = Client::new();
+        let url = format!("http://localhost:{}/secondinstance", PORT);
+        let _ = client.get(&url).send().await;
     }
 }

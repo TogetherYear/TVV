@@ -27,9 +27,7 @@ class Application extends Component {
 
     protected Destroy() {}
 
-    private async SetDefault() {
-        await Renderer.Widget.SetShadow(true);
-    }
+    private async SetDefault() {}
 
     @TEvent.Listen(Renderer, Renderer.RendererEvent.CloseRequested)
     private async OnCloseRequested(e: Event) {

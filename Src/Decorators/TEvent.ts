@@ -30,7 +30,6 @@ namespace TEvent {
                     super(...args);
                     this.tEvent_Generate_Type = type;
                     this.tEvent_Generate_IsFinish = true;
-                    this.TEvent_Generate_ListenEvents();
                     if (this.tEvent_Generate_Type === Lifecycle.Global) {
                         this.TEvent_Generate_Global_Hooks();
                     } else {
@@ -82,10 +81,14 @@ namespace TEvent {
                     });
                 }
 
-                private TEvent_Generate_Global_Hooks() {}
+                private TEvent_Generate_Global_Hooks() {
+                    this.TEvent_Generate_ListenEvents();
+                }
 
                 private TEvent_Generate_Temporary_Hooks() {
-                    onMounted(() => {});
+                    onMounted(() => {
+                        this.TEvent_Generate_ListenEvents();
+                    });
 
                     onBeforeUnmount(() => {
                         //@ts-ignore
@@ -100,7 +103,7 @@ namespace TEvent {
                             const t = typeof e.listenTarget === 'function' ? e.listenTarget(this) : e.listenTarget;
                             if (t.hasOwnProperty('unique_Id')) {
                                 //@ts-ignore
-                                t.RemoveListen(e.eventName, this, te.funcName);
+                                t.RemoveListen(e.eventName, this);
                             } else {
                                 const bindEvent = this.tEvent_Generate_OtherEvents.get(e.eventName)!;
                                 //@ts-ignore
