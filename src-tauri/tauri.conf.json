@@ -91,6 +91,8 @@
                     "language": "zh-CN"
                 },
                 "nsis": {
+                    "languages": ["SimpChinese", "English"],
+                    "displayLanguageSelector": false,
                     "installerIcon": "icons/icon.ico",
                     "installMode": "perMachine"
                 },
